@@ -233,6 +233,77 @@ body::after{
 .proj-prog{height:4px;background:var(--bg-inset);border-radius:4px;margin-top:8px;overflow:hidden}
 .proj-prog i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-dim));border-radius:4px}
 
+/* ====== 项目与复盘：新建按钮 + 卡片 + 模态框 ====== */
+.proj-new-btn{display:flex;align-items:center;gap:8px;padding:12px 22px;border-radius:12px;border:1px dashed var(--gold-dim);background:rgba(212,165,116,.06);color:var(--gold-bright);font-size:14px;font-weight:500;font-family:var(--sans);cursor:pointer;transition:.2s;justify-content:center;width:100%}
+.proj-new-btn:hover{background:rgba(212,165,116,.12);border-color:var(--gold);transform:translateY(-1px)}
+.proj-new-btn:active{transform:translateY(0)}
+.proj-new-btn svg{width:18px;height:18px}
+.proj-toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:12px;flex-wrap:wrap}
+.proj-filter{display:flex;gap:8px;flex-wrap:wrap}
+.proj-filter-btn{padding:6px 14px;border-radius:20px;border:1px solid var(--border-soft);background:var(--bg-inset);color:var(--text-muted);font-size:12px;font-family:var(--sans);cursor:pointer;transition:.2s}
+.proj-filter-btn.active{border-color:var(--gold-dim);background:rgba(212,165,116,.1);color:var(--gold-bright)}
+.proj-filter-btn:hover{border-color:var(--border)}
+.proj-card-dyn{padding:22px;display:flex;gap:20px;align-items:center;cursor:pointer;transition:.2s;position:relative}
+.proj-card-dyn:hover{border-color:var(--gold-dim);background:rgba(212,165,116,.03)}
+.proj-card-dyn .proj-del{position:absolute;top:12px;right:12px;width:28px;height:28px;border-radius:8px;display:none;align-items:center;justify-content:center;background:rgba(201,112,100,.1);color:#C97064;cursor:pointer;transition:.2s}
+.proj-card-dyn:hover .proj-del{display:flex}
+.proj-card-dyn .proj-del:hover{background:rgba(201,112,100,.2)}
+.proj-card-dyn .proj-retro-badge{position:absolute;top:12px;right:46px;font-size:10px;padding:2px 8px;border-radius:6px;background:rgba(111,184,154,.15);color:#6FB89A;display:none}
+.proj-card-dyn .proj-retro-badge.show{display:block}
+.proj-ico{width:50px;height:50px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.proj-ico svg{width:24px;height:24px}
+.proj-body{flex:1;min-width:0}
+.proj-body h4{font-size:16px;font-weight:500;margin-bottom:4px}
+.proj-body p{font-size:12.5px;color:var(--text-faint)}
+.proj-prog-wrap{width:180px;flex-shrink:0}
+.proj-prog-wrap .proj-prog{margin-top:0}
+.proj-prog-label{font-size:11px;color:var(--text-muted);margin-top:6px;font-family:var(--mono)}
+.proj-empty{text-align:center;padding:48px 20px;color:var(--text-faint)}
+.proj-empty svg{width:48px;height:48px;opacity:.3;margin-bottom:12px}
+.proj-empty div{font-size:14px}
+.proj-type-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.proj-type-tag{padding:5px 12px;border-radius:8px;border:1px solid var(--border-soft);background:var(--bg-inset);color:var(--text-muted);font-size:12px;cursor:pointer;transition:.2s;font-family:var(--sans)}
+.proj-type-tag:hover{border-color:var(--border)}
+.proj-type-tag.active{border-color:var(--gold-dim);background:rgba(212,165,116,.1);color:var(--gold-bright)}
+.proj-type-tag.custom{border-style:dashed}
+.proj-type-input{display:none}
+.proj-type-input.show{display:block}
+.proj-modal-body{padding:24px}
+.proj-modal-body .set-field{margin-bottom:16px}
+.proj-modal-body .set-field label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px}
+.proj-modal-body .set-field input,.proj-modal-body .set-field select,.proj-modal-body .set-field textarea{width:100%;background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:10px;padding:11px 14px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:.2s}
+.proj-modal-body .set-field input:focus,.proj-modal-body .set-field select:focus,.proj-modal-body .set-field textarea:focus{border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(212,165,116,.1)}
+.proj-modal-body .set-field textarea{min-height:80px;resize:vertical;line-height:1.6}
+.proj-retro-toggle{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;background:var(--bg-inset);border:1px solid var(--border-soft);cursor:pointer;transition:.2s;margin-bottom:12px}
+.proj-retro-toggle:hover{border-color:var(--border)}
+.proj-retro-toggle input[type=checkbox]{width:16px;height:16px;accent-color:var(--gold-dim)}
+.proj-retro-toggle label{font-size:13px;color:var(--text);cursor:pointer;flex:1}
+.proj-retro-area{display:none}
+.proj-retro-area.show{display:block}
+.proj-retro-area textarea{min-height:120px!important}
+.proj-prog-slider{display:flex;align-items:center;gap:12px}
+.proj-prog-slider input[type=range]{flex:1;accent-color:var(--gold-dim)}
+.proj-prog-slider span{font-size:13px;font-family:var(--mono);color:var(--gold-bright);min-width:40px;text-align:right}
+.proj-form-actions{display:flex;gap:10px;margin-top:20px}
+.proj-form-actions button{flex:1;padding:12px;border-radius:10px;border:none;cursor:pointer;font-size:14px;font-weight:600;font-family:var(--sans);transition:.2s}
+.proj-form-actions .btn-cancel{background:var(--bg-inset);border:1px solid var(--border-soft);color:var(--text-muted)}
+.proj-form-actions .btn-cancel:hover{border-color:var(--border);color:var(--text)}
+.proj-form-actions .btn-save{background:linear-gradient(135deg,var(--gold),var(--gold-dim));color:#1A1208}
+.proj-form-actions .btn-save:hover{box-shadow:0 8px 24px rgba(212,165,116,.35);transform:translateY(-1px)}
+.proj-form-actions .btn-save:disabled{opacity:.5;cursor:wait}
+.proj-color-picker{display:flex;gap:8px;flex-wrap:wrap}
+.proj-color-dot{width:28px;height:28px;border-radius:8px;cursor:pointer;border:2px solid transparent;transition:.2s}
+.proj-color-dot.active{border-color:var(--text)}
+.proj-color-dot:hover{transform:scale(1.1)}
+@media(max-width:768px){
+  .proj-prog-wrap{width:80px}
+  .proj-prog-label{font-size:10px}
+  .proj-card-dyn{padding:16px;gap:12px}
+  .proj-ico{width:40px;height:40px}
+  .proj-body h4{font-size:14px}
+  .proj-body p{font-size:11px}
+}
+
 /* ====== AI Advisor ====== */
 .ai-layout{display:grid;grid-template-columns:1fr 300px;gap:0;height:calc(100vh - 67px)}
 .chat{padding:30px 36px;overflow-y:auto}
@@ -1103,32 +1174,26 @@ body::after{
           <h1>项目与复盘</h1>
           <p>项目结果记录后进入待整理箱，经确认才写入正式知识。AI 不得把项目结果直接当作已验证经验。</p>
         </div>
-        <div class="stagger" style="display:flex;flex-direction:column;gap:14px">
-          <div class="card" style="padding:22px;display:flex;gap:20px;align-items:center;cursor:pointer" onclick="toast('打开项目详情')">
-            <div class="action-ico" style="background:rgba(107,138,232,.12);width:50px;height:50px"><svg viewBox="0 0 24 24" fill="none" stroke="#6B8AE8" stroke-width="1.7"><path d="M9 11l3 3 8-8M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11"/></svg></div>
-            <div style="flex:1"><h4 style="font-size:16px;font-weight:500;margin-bottom:4px">知识号矩阵第三号 · 起号中</h4><p style="font-size:12.5px;color:var(--text-faint)">第 18 天 · 目标 1 万粉 · 当前 6,840 · 完播率均值 38%</p></div>
-            <div style="width:180px"><div class="proj-prog"><i style="width:68%"></i></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px;font-family:var(--mono)">68% · 进行中</div></div>
-            <span class="tag tag-ai">进行中</span>
+        <!-- 工具栏：筛选 + 统计 -->
+        <div class="proj-toolbar">
+          <div class="proj-filter" id="projFilter">
+            <div class="proj-filter-btn active" onclick="setProjFilter('all',this)">全部</div>
+            <div class="proj-filter-btn" onclick="setProjFilter('进行中',this)">进行中</div>
+            <div class="proj-filter-btn" onclick="setProjFilter('已完成',this)">已完成</div>
+            <div class="proj-filter-btn" onclick="setProjFilter('规划中',this)">规划中</div>
+            <div class="proj-filter-btn" onclick="setProjFilter('复盘待确认',this)">复盘待确认</div>
           </div>
-          <div class="card" style="padding:22px;display:flex;gap:20px;align-items:center;cursor:pointer" onclick="toast('打开复盘')">
-            <div class="action-ico" style="background:rgba(212,165,116,.12);width:50px;height:50px"><svg viewBox="0 0 24 24" fill="none" stroke="#E8B86D" stroke-width="1.7"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 4v4h4"/></svg></div>
-            <div style="flex:1"><h4 style="font-size:16px;font-weight:500;margin-bottom:4px">Dou+ 投放策略 A/B 测试</h4><p style="font-size:12.5px;color:var(--text-faint)">5000 元预算 · 方案 B 胜出 · ROI 1:3.2 · 经验已入待整理箱待确认</p></div>
-            <div style="width:180px"><div class="proj-prog"><i style="width:100%"></i></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px;font-family:var(--mono)">100% · 已完成</div></div>
-            <span class="tag tag-gold">复盘待确认</span>
-          </div>
-          <div class="card" style="padding:22px;display:flex;gap:20px;align-items:center;cursor:pointer" onclick="toast('打开项目详情')">
-            <div class="action-ico" style="background:rgba(111,184,154,.12);width:50px;height:50px"><svg viewBox="0 0 24 24" fill="none" stroke="#6FB89A" stroke-width="1.7"><path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3M8 8h8M8 12h8M8 16h5"/></svg></div>
-            <div style="flex:1"><h4 style="font-size:16px;font-weight:500;margin-bottom:4px">AI 辅助脚本工作流</h4><p style="font-size:12.5px;color:var(--text-faint)">SOP 草案 v3 · 待人工确认后发布 · 关联 KU-0023</p></div>
-            <div style="width:180px"><div class="proj-prog"><i style="width:82%"></i></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px;font-family:var(--mono)">82% · 进行中</div></div>
-            <span class="tag tag-ai">进行中</span>
-          </div>
-          <div class="card" style="padding:22px;display:flex;gap:20px;align-items:center;cursor:pointer" onclick="toast('打开复盘')">
-            <div class="action-ico" style="background:rgba(212,146,94,.12);width:50px;height:50px"><svg viewBox="0 0 24 24" fill="none" stroke="#D4925E" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
-            <div style="flex:1"><h4 style="font-size:16px;font-weight:500;margin-bottom:4px">私域转化路径梳理</h4><p style="font-size:12.5px;color:var(--text-faint)">知识缺口标记 · 待收集资料 · 已创建收集任务</p></div>
-            <div style="width:180px"><div class="proj-prog"><i style="width:15%"></i></div><div style="font-size:11px;color:var(--text-muted);margin-top:6px;font-family:var(--mono)">15% · 规划中</div></div>
-            <span class="tag tag-web">规划中</span>
-          </div>
+          <div style="font-size:12px;color:var(--text-faint)" id="projCount">共 0 个项目</div>
         </div>
+
+        <!-- 新建项目按钮 -->
+        <button class="proj-new-btn" onclick="openNewProjectModal()" style="margin-bottom:14px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          新建项目 / 记录想法复盘
+        </button>
+
+        <!-- 项目列表（动态渲染） -->
+        <div class="stagger" id="projList" style="display:flex;flex-direction:column;gap:14px"></div>
       </div>
     </section>
 
@@ -1239,6 +1304,98 @@ body::after{
     <div class="modal-foot">
       <button class="btn btn-ghost" onclick="closeModal('settingsModal')">取消</button>
       <button class="btn btn-primary" onclick="saveSettings()">保存设置</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== New Project Modal ====== -->
+<div class="modal-overlay" id="newProjectModal">
+  <div class="modal" style="width:560px">
+    <div class="modal-head">
+      <h2>新建项目 / 记录想法复盘</h2>
+      <div class="modal-close" onclick="closeModal('newProjectModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="proj-modal-body">
+      <!-- 项目名称 -->
+      <div class="set-field">
+        <label>项目 / 想法名称</label>
+        <input type="text" id="npTitle" placeholder="例如：知识号矩阵第四号 · 起号、Dou+ 新策略测试、关于评论区互动的新想法…" maxlength="80">
+      </div>
+
+      <!-- 项目类型 -->
+      <div class="set-field">
+        <label>项目类型 / 领域</label>
+        <div class="proj-type-tags" id="npTypeTags">
+          <div class="proj-type-tag" onclick="selProjType(this)">起号运营</div>
+          <div class="proj-type-tag" onclick="selProjType(this)">投放测试</div>
+          <div class="proj-type-tag" onclick="selProjType(this)">内容创作</div>
+          <div class="proj-type-tag" onclick="selProjType(this)">商业变现</div>
+          <div class="proj-type-tag" onclick="selProjType(this)">工具实验</div>
+          <div class="proj-type-tag" onclick="selProjType(this)">个人成长</div>
+          <div class="proj-type-tag" onclick="selProjType(this)">想法灵感</div>
+          <div class="proj-type-tag" onclick="selProjType(this)">复盘总结</div>
+          <div class="proj-type-tag custom" onclick="showCustomTypeInput()">+ 自定义</div>
+        </div>
+        <div class="proj-type-input" id="npCustomTypeWrap">
+          <input type="text" id="npCustomType" placeholder="输入自定义类型名称，回车确认" style="margin-top:8px" onkeydown="if(event.key==='Enter'){event.preventDefault();confirmCustomType();}">
+        </div>
+      </div>
+
+      <!-- 状态 -->
+      <div class="set-field">
+        <label>当前状态</label>
+        <select id="npStatus">
+          <option value="规划中">规划中 — 还没开始执行</option>
+          <option value="进行中" selected>进行中 — 正在执行</option>
+          <option value="已完成">已完成 — 项目结束</option>
+          <option value="复盘待确认">复盘待确认 — 结果已出，待沉淀经验</option>
+        </select>
+      </div>
+
+      <!-- 项目描述 -->
+      <div class="set-field">
+        <label>项目描述 / 关键信息</label>
+        <textarea id="npDesc" placeholder="描述这个项目的目标、关键数据、当前进展等……&#10;例如：目标 1 万粉 · 当前 3500 粉 · 日均涨粉 120 · 测试评论区投票式互动钩子"></textarea>
+      </div>
+
+      <!-- 进度 -->
+      <div class="set-field">
+        <label>完成进度</label>
+        <div class="proj-prog-slider">
+          <input type="range" id="npProgress" min="0" max="100" value="0" oninput="document.getElementById('npProgressVal').textContent=this.value+'%'">
+          <span id="npProgressVal">0%</span>
+        </div>
+      </div>
+
+      <!-- 颜色标记 -->
+      <div class="set-field">
+        <label>颜色标记</label>
+        <div class="proj-color-picker" id="npColorPicker">
+          <div class="proj-color-dot active" style="background:#6B8AE8" onclick="selProjColor(this,'#6B8AE8')"></div>
+          <div class="proj-color-dot" style="background:#E8B86D" onclick="selProjColor(this,'#E8B86D')"></div>
+          <div class="proj-color-dot" style="background:#6FB89A" onclick="selProjColor(this,'#6FB89A')"></div>
+          <div class="proj-color-dot" style="background:#D4925E" onclick="selProjColor(this,'#D4925E')"></div>
+          <div class="proj-color-dot" style="background:#C97064" onclick="selProjColor(this,'#C97064')"></div>
+          <div class="proj-color-dot" style="background:#9B7EC4" onclick="selProjColor(this,'#9B7EC4')"></div>
+        </div>
+      </div>
+
+      <!-- 同时记录复盘 -->
+      <div class="proj-retro-toggle" onclick="document.getElementById('npHasRetro').click()">
+        <input type="checkbox" id="npHasRetro" onchange="toggleRetroArea()">
+        <label for="npHasRetro">同时记录想法 / 复盘内容（可稍后补充）</label>
+      </div>
+      <div class="proj-retro-area" id="npRetroArea">
+        <div class="set-field" style="margin:0">
+          <textarea id="npRetro" placeholder="写下你的想法、经验总结、复盘要点……&#10;&#10;例如：&#10;• 评论区用"投票式提问"比直接提问，评论数高了近 3 倍&#10;• 发布后2小时内的互动数据决定了推不推流&#10;• 下一步：测试争议性话题是否能进一步提升互动"></textarea>
+        </div>
+      </div>
+
+      <!-- 操作按钮 -->
+      <div class="proj-form-actions">
+        <button class="btn-cancel" onclick="closeModal('newProjectModal')">取消</button>
+        <button class="btn-save" id="npSaveBtn" onclick="saveNewProject()">创建项目</button>
+      </div>
     </div>
   </div>
 </div>
@@ -1599,6 +1756,7 @@ function go(v){
   if(v==='ai'){setTimeout(()=>{const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;updateModelDisplay();},100);}
   if(v==='inbox'){setTimeout(()=>{updateInboxStats();renderInboxTabs();renderInboxList();},50);}
   if(v==='knowledge'){setTimeout(()=>{if(kcData.raw.length===0)initKcData();updateKcCounts();renderKcSubTabs();renderKcList();renderKcDetail();},50);}
+  if(v==='project'){setTimeout(()=>{if(!window._projInited)initProjectData();renderProjectList();},50);}
 }
 document.querySelectorAll('.nav-item[data-view]').forEach(n=>n.addEventListener('click',()=>go(n.dataset.view)));
 function askFromHome(){const v=document.getElementById('homeAsk').value.trim()||'短视频起号阶段，我之前踩过哪些坑？';document.getElementById('homeAsk').value='';go('ai');const ci=document.getElementById('chatInput');if(ci){ci.value=v;setTimeout(()=>sendChat({preventDefault:()=>{}}),300);}}
@@ -2921,6 +3079,271 @@ function delGap(id){
   toast('已忽略');
 }
 
+/* ============================================================
+ *  项目与复盘：动态数据层 + 新建/删除/筛选/渲染
+ *  数据持久化到 localStorage，云端模式同步到 Supabase
+ * ============================================================ */
+const PROJ_KEY='zhiyuan_projects_v1';
+let projData=[];             // 项目列表
+let projFilter='all';        // 筛选状态
+let npSelectedType='';       // 新建表单选中的类型
+let npSelectedColor='#6B8AE8'; // 新建表单选中的颜色
+const PROJ_ICONS={
+  '起号运营':'<path d="M13 2L3 14h7v8l10-12h-7V2z"/>',
+  '投放测试':'<path d="M12 2v20M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/>',
+  '内容创作':'<path d="M12 19l7-7 3 3-7 7-3-3zM18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5zM2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/>',
+  '商业变现':'<path d="M12 1v22M17 5H9.5a3.5 3.5 0 100 7h5a3.5 3.5 0 110 7H6"/>',
+  '工具实验':'<path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>',
+  '个人成长':'<path d="M12 2a15 15 0 00-7 1.8V12c0 5 3 8 7 10 4-2 7-5 7-10V3.8A15 15 0 0012 2zM8 12l2 2 4-4"/>',
+  '想法灵感':'<path d="M9 18h6M10 22h4M15.09 14c.18-.96.65-1.79 1.41-2.56A5.97 5.97 0 0018 8a6 6 0 00-12 0c0 1.4.5 2.5 1.5 3.44.76.77 1.23 1.6 1.41 2.56"/>',
+  '复盘总结':'<path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 4v4h4"/>'
+};
+const STATUS_TAG_CLASS={
+  '进行中':'tag-ai',
+  '已完成':'tag-personal',
+  '规划中':'tag-web',
+  '复盘待确认':'tag-gold'
+};
+
+/* ====== 初始化项目数据（首次加载，写入预设项目） ====== */
+function initProjectData(){
+  const saved=localStorage.getItem(PROJ_KEY);
+  if(saved){
+    try{
+      projData=JSON.parse(saved);
+      window._projInited=true;
+      return;
+    }catch(e){}
+  }
+  // 首次：写入 4 个预设项目
+  const now=Date.now();
+  projData=[
+    {id:'P-001',title:'知识号矩阵第三号 · 起号中',type:'起号运营',status:'进行中',progress:68,color:'#6B8AE8',desc:'第 18 天 · 目标 1 万粉 · 当前 6,840 · 完播率均值 38%',retro:'',ts:now-18*86400000},
+    {id:'P-002',title:'Dou+ 投放策略 A/B 测试',type:'投放测试',status:'复盘待确认',progress:100,color:'#E8B86D',desc:'5000 元预算 · 方案 B 胜出 · ROI 1:3.2 · 经验已入待整理箱待确认',retro:'A/B 测试结论：方案 B（自然流跑 24h 后加热首条）ROI 1:3.2，方案 A（立即加热）ROI 1:1.4。建议沉淀为已确认经验，并转化为 SOP。',ts:now-7*86400000},
+    {id:'P-003',title:'AI 辅助脚本工作流',type:'工具实验',status:'进行中',progress:82,color:'#6FB89A',desc:'SOP 草案 v3 · 待人工确认后发布 · 关联 KU-0023',retro:'',ts:now-14*86400000},
+    {id:'P-004',title:'私域转化路径梳理',type:'商业变现',status:'规划中',progress:15,color:'#D4925E',desc:'知识缺口标记 · 待收集资料 · 已创建收集任务',retro:'',ts:now-3*86400000}
+  ];
+  saveProjData();
+  window._projInited=true;
+}
+
+/* ====== 保存项目数据 ====== */
+function saveProjData(){
+  localStorage.setItem(PROJ_KEY,JSON.stringify(projData));
+}
+
+/* ====== 渲染项目列表 ====== */
+function renderProjectList(){
+  const list=document.getElementById('projList');
+  if(!list)return;
+  let items=projData.slice();
+  // 筛选
+  if(projFilter!=='all'){
+    items=items.filter(p=>p.status===projFilter);
+  }
+  // 按时间倒序
+  items.sort((a,b)=>b.ts-a.ts);
+  // 统计
+  document.getElementById('projCount').textContent='共 '+items.length+' 个项目';
+  // 空状态
+  if(items.length===0){
+    list.innerHTML='<div class="card proj-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 11l3 3 8-8M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11"/></svg><div>'+(projFilter==='all'?'还没有项目，点击上方按钮新建第一个项目':'该状态下暂无项目')+'</div></div>';
+    return;
+  }
+  // 渲染卡片
+  list.innerHTML=items.map(p=>renderProjCard(p)).join('');
+}
+
+/* ====== 渲染单个项目卡片 ====== */
+function renderProjCard(p){
+  const iconPath=PROJ_ICONS[p.type]||'<path d="M9 11l3 3 8-8M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11"/>';
+  const tagClass=STATUS_TAG_CLASS[p.status]||'tag-soft';
+  const hasRetro=p.retro&&p.retro.trim();
+  const c=p.color||'#6B8AE8';
+  return '<div class="card proj-card-dyn" onclick="openProjDetail(\''+p.id+'\')">'+
+    '<div class="proj-ico" style="background:'+c+'22">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="'+c+'" stroke-width="1.7">'+iconPath+'</svg>'+
+    '</div>'+
+    '<div class="proj-body">'+
+      '<h4>'+escHtmlP(p.title)+'</h4>'+
+      '<p>'+escHtmlP(p.desc||'暂无描述')+'</p>'+
+      '<div style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap">'+
+        '<span class="tag tag-soft" style="padding:1px 6px;font-size:10px">'+escHtmlP(p.type)+'</span>'+
+        (hasRetro?'<span class="tag tag-personal" style="padding:1px 6px;font-size:10px">含复盘</span>':'')+
+      '</div>'+
+    '</div>'+
+    '<div class="proj-prog-wrap">'+
+      '<div class="proj-prog"><i style="width:'+p.progress+'%"></i></div>'+
+      '<div class="proj-prog-label">'+p.progress+'% · '+escHtmlP(p.status)+'</div>'+
+    '</div>'+
+    '<span class="tag '+tagClass+'">'+escHtmlP(p.status)+'</span>'+
+    '<div class="proj-retro-badge '+(hasRetro?'show':'')+'" title="包含复盘内容">复盘</div>'+
+    '<div class="proj-del" onclick="event.stopPropagation();delProject(\''+p.id+'\')" title="删除项目">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>'+
+    '</div>'+
+  '</div>';
+}
+
+/* ====== HTML 转义 ====== */
+function escHtmlP(s){return (s||'').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+/* ====== 筛选 ====== */
+function setProjFilter(f,el){
+  projFilter=f;
+  document.querySelectorAll('#projFilter .proj-filter-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderProjectList();
+}
+
+/* ====== 打开新建项目模态框 ====== */
+function openNewProjectModal(){
+  // 重置表单
+  document.getElementById('npTitle').value='';
+  document.getElementById('npDesc').value='';
+  document.getElementById('npRetro').value='';
+  document.getElementById('npProgress').value='0';
+  document.getElementById('npProgressVal').textContent='0%';
+  document.getElementById('npStatus').value='进行中';
+  document.getElementById('npHasRetro').checked=false;
+  document.getElementById('npRetroArea').classList.remove('show');
+  // 重置类型选择
+  npSelectedType='';
+  document.querySelectorAll('#npTypeTags .proj-type-tag').forEach(t=>t.classList.remove('active'));
+  // 重置自定义输入
+  document.getElementById('npCustomTypeWrap').classList.remove('show');
+  document.getElementById('npCustomType').value='';
+  // 重置颜色
+  npSelectedColor='#6B8AE8';
+  document.querySelectorAll('#npColorPicker .proj-color-dot').forEach(d=>d.classList.remove('active'));
+  document.querySelector('#npColorPicker .proj-color-dot').classList.add('active');
+  // 重置按钮
+  document.getElementById('npSaveBtn').textContent='创建项目';
+  document.getElementById('npSaveBtn').disabled=false;
+  // 显示
+  document.getElementById('newProjectModal').classList.add('show');
+}
+
+/* ====== 选择项目类型 ====== */
+function selProjType(el){
+  document.querySelectorAll('#npTypeTags .proj-type-tag').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  npSelectedType=el.textContent.trim();
+  // 隐藏自定义输入
+  document.getElementById('npCustomTypeWrap').classList.remove('show');
+  document.getElementById('npCustomType').value='';
+}
+
+/* ====== 显示自定义类型输入 ====== */
+function showCustomTypeInput(){
+  document.getElementById('npCustomTypeWrap').classList.add('show');
+  document.getElementById('npCustomType').focus();
+}
+
+/* ====== 确认自定义类型 ====== */
+function confirmCustomType(){
+  const val=document.getElementById('npCustomType').value.trim();
+  if(!val)return;
+  // 检查是否已存在
+  const exists=Array.from(document.querySelectorAll('#npTypeTags .proj-type-tag')).some(t=>t.textContent.trim()===val);
+  if(exists){
+    // 选中已有的
+    document.querySelectorAll('#npTypeTags .proj-type-tag').forEach(t=>{
+      t.classList.toggle('active',t.textContent.trim()===val);
+    });
+  }else{
+    // 新增标签
+    document.querySelectorAll('#npTypeTags .proj-type-tag').forEach(t=>t.classList.remove('active'));
+    const tag=document.createElement('div');
+    tag.className='proj-type-tag active';
+    tag.textContent=val;
+    tag.onclick=function(){selProjType(this);};
+    document.getElementById('npCustomType').insertAdjacentElement('beforebegin',tag);
+  }
+  npSelectedType=val;
+  document.getElementById('npCustomTypeWrap').classList.remove('show');
+  document.getElementById('npCustomType').value='';
+}
+
+/* ====== 选择颜色 ====== */
+function selProjColor(el,color){
+  document.querySelectorAll('#npColorPicker .proj-color-dot').forEach(d=>d.classList.remove('active'));
+  el.classList.add('active');
+  npSelectedColor=color;
+}
+
+/* ====== 切换复盘区域 ====== */
+function toggleRetroArea(){
+  const cb=document.getElementById('npHasRetro');
+  document.getElementById('npRetroArea').classList.toggle('show',cb.checked);
+}
+
+/* ====== 保存新项目 ====== */
+function saveNewProject(){
+  const title=document.getElementById('npTitle').value.trim();
+  if(!title){toast('请输入项目名称');document.getElementById('npTitle').focus();return;}
+  if(!npSelectedType){toast('请选择项目类型');return;}
+  const desc=document.getElementById('npDesc').value.trim();
+  const status=document.getElementById('npStatus').value;
+  const progress=parseInt(document.getElementById('npProgress').value)||0;
+  const hasRetro=document.getElementById('npHasRetro').checked;
+  const retro=hasRetro?document.getElementById('npRetro').value.trim():'';
+  const btn=document.getElementById('npSaveBtn');
+  btn.textContent='创建中…';btn.disabled=true;
+  const proj={
+    id:'P-'+Date.now(),
+    title:title,
+    type:npSelectedType,
+    status:status,
+    progress:progress,
+    color:npSelectedColor,
+    desc:desc||'暂无描述',
+    retro:retro,
+    ts:Date.now()
+  };
+  projData.unshift(proj);
+  saveProjData();
+  // 如果包含复盘内容，同时加入待整理箱
+  if(retro){
+    try{
+      inboxData.unshift({
+        id:Date.now()+1,
+        category:'pending',
+        type:'项目复盘',
+        source:'项目复盘',
+        trigger:proj.title+' · 想法/复盘',
+        detail:retro,
+        meta:'来自项目：'+proj.title+' · '+proj.type,
+        ts:Date.now(),
+        recordType:'复盘'
+      });
+      saveInboxData();
+      updateInboxStats();
+    }catch(e){console.warn('添加到待整理箱失败',e);}
+  }
+  btn.textContent='创建项目';btn.disabled=false;
+  closeModal('newProjectModal');
+  renderProjectList();
+  toast(retro?'项目已创建 · 复盘内容已同步到待整理箱':'项目已创建');
+}
+
+/* ====== 删除项目 ====== */
+function delProject(id){
+  if(!confirm('确定删除这个项目吗？删除后不可恢复。'))return;
+  projData=projData.filter(p=>p.id!==id);
+  saveProjData();
+  renderProjectList();
+  toast('项目已删除');
+}
+
+/* ====== 查看项目详情 ====== */
+function openProjDetail(id){
+  const p=projData.find(x=>x.id===id);
+  if(!p)return;
+  const hasRetro=p.retro&&p.retro.trim();
+  const retroText=hasRetro?p.retro.replace(/\n/g,' ').slice(0,100)+(p.retro.length>100?'…':''):'暂无复盘内容';
+  toast(p.title+' · '+p.progress+'% · '+(hasRetro?'含复盘':'无复盘'));
+}
+
 /* ====== Init ====== */
 initKcData();
 updateKcCounts();
@@ -2930,6 +3353,7 @@ loadInboxData();
 updateInboxStats();
 renderInboxTabs();
 renderInboxList();
+initProjectData();
 initAuth();
 </script>
 </body>
