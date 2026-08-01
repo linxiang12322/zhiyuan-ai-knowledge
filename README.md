@@ -20,16 +20,23 @@
 
 - 纯前端 HTML/CSS/JavaScript（单文件应用）
 - Supabase（云数据库 + 用户认证 + 行级安全）
-- IGA Pages（部署托管）
+- GitHub Pages（部署托管）
 - localStorage（单机模式降级方案）
 
 ## 快速开始
 
-### 1. 本地运行
+### 本地运行
 
-直接用浏览器打开 `个人AI知识体系-产品原型.html` 即可，默认为单机模式。
+直接用浏览器打开 `index.html` 即可，默认为单机模式。
 
-### 2. 开启云同步
+### 在线使用
+
+部署于 GitHub Pages：
+```
+https://linxiang12322.github.io/zhiyuan-ai-knowledge/
+```
+
+### 开启云同步
 
 详见 [Supabase云同步配置指南.md](./Supabase云同步配置指南.md)
 
@@ -37,14 +44,13 @@
 1. 注册 [Supabase](https://supabase.com) 免费账号，创建项目
 2. 在 SQL Editor 执行建表脚本（含行级安全策略）
 3. 在 Authentication → Providers → Email 中启用邮箱登录
-4. 将 Project URL 和 anon key 填入 HTML 中的 `SUPABASE_URL` 和 `SUPABASE_KEY`
-5. 部署到 IGA Pages 或其他静态托管平台
+4. 将 Project URL 和 anon key 填入 `index.html` 中的 `SUPABASE_URL` 和 `SUPABASE_KEY`
+5. 推送代码，GitHub Pages 自动部署
 
 ## 项目结构
 
 ```
-├── 个人AI知识体系-产品原型.html   # 主应用（单文件）
-├── index.html                     # 部署入口（同主应用副本）
+├── index.html                     # 主应用（单文件）
 ├── Supabase云同步配置指南.md       # 云同步配置教程
 ├── .gitignore
 └── README.md
@@ -56,14 +62,6 @@
 - PostgreSQL 行级安全（RLS）确保用户只能访问自己的数据
 - 未登录用户无法查看任何内容
 - 单机模式密码经 SHA-256 加密后存储于本地
-
-## 部署
-
-```bash
-npm i -g @iga-pages/cli
-iga login
-iga pages deploy --name zhiyuan-knowledge
-```
 
 ## License
 

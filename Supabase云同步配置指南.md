@@ -86,7 +86,7 @@ ALTER TABLE records ALTER COLUMN user_id SET DEFAULT auth.uid();
 
 ### 第 5 步：填入配置到代码
 
-打开 `个人AI知识体系-产品原型.html`，找到以下两行（在文件底部 `<script>` 标签内开头附近）：
+打开 `index.html`，找到以下两行（在文件底部 `<script>` 标签内开头附近）：
 
 ```javascript
 const SUPABASE_URL = '';  // ← 填入你的 Project URL
@@ -102,7 +102,7 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6...你的完整key';
 
 ### 第 6 步：重新部署
 
-配置完成后，重新部署到 IGA Pages 即可。
+配置完成后，推送到 GitHub，GitHub Pages 会自动重新部署。
 
 ---
 
