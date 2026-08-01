@@ -275,7 +275,38 @@ body::after{
 .kc-tab.active{background:var(--bg-hover);color:var(--gold-bright)}
 .kc-tab .n{font-family:var(--mono);font-size:11px;color:var(--text-faint)}
 .kc-layout{display:grid;grid-template-columns:380px 1fr;gap:20px}
-.ku-list{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 220px);overflow-y:auto;padding-right:6px}
+.ku-list{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 280px);overflow-y:auto;padding-right:6px}
+/* 知识中心筛选栏 */
+.kc-filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;padding:14px 18px;background:var(--bg-elevated);border:1px solid var(--border-soft);border-radius:var(--radius)}
+.kc-filter-label{font-size:12px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.kc-sub-tabs{display:flex;gap:7px;flex-wrap:wrap}
+.kc-sub-tab{font-size:12.5px;padding:6px 14px;border-radius:8px;border:1px solid var(--border-soft);background:var(--bg-inset);color:var(--text-dim);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
+.kc-sub-tab:hover{color:var(--text);border-color:var(--border)}
+.kc-sub-tab.active{color:var(--gold-bright);border-color:var(--gold-dim);background:rgba(212,165,116,.08)}
+.kc-sub-tab .tab-count{font-size:10px;font-family:var(--mono);background:var(--bg-hover);padding:1px 6px;border-radius:5px;color:var(--text-faint)}
+.kc-sub-tab.active .tab-count{background:rgba(212,165,116,.15);color:var(--gold-bright)}
+.kc-sort{margin-left:auto;display:flex;gap:6px;align-items:center}
+.kc-sort select{font-size:12px;padding:5px 10px;border-radius:7px;background:var(--bg-inset);border:1px solid var(--border-soft);color:var(--text-dim);cursor:pointer;outline:none}
+.kc-list-title{font-size:14px;font-weight:500;margin-bottom:14px;color:var(--text-dim);display:flex;align-items:center;gap:10px}
+.kc-list-title .count{font-family:var(--mono);font-size:12px;color:var(--gold-bright);background:rgba(212,165,116,.1);padding:2px 8px;border-radius:6px}
+.kc-empty{padding:40px;text-align:center;color:var(--text-faint);font-size:13px}
+.kc-empty svg{width:40px;height:40px;margin-bottom:12px;opacity:.4}
+/* 原始资料卡片 */
+.src-card{padding:14px 16px;border-radius:11px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s;margin-bottom:8px}
+.src-card:hover{border-color:var(--border)}
+.src-card.sel{border-color:var(--gold-dim);background:linear-gradient(160deg,rgba(212,165,116,.06),var(--bg-elevated))}
+.src-card-top{display:flex;align-items:center;gap:7px;margin-bottom:6px;flex-wrap:wrap}
+.src-card h5{font-size:13.5px;font-weight:500;line-height:1.5;margin-bottom:4px}
+.src-card p{font-size:12px;color:var(--text-faint);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.src-card-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:11px;color:var(--text-muted)}
+/* 成果层卡片 */
+.out-card{padding:16px;border-radius:12px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s;margin-bottom:8px}
+.out-card:hover{border-color:var(--border)}
+.out-card.sel{border-color:var(--gold-dim);background:linear-gradient(160deg,rgba(212,165,116,.06),var(--bg-elevated))}
+.out-card-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;flex-wrap:wrap}
+.out-card h5{font-size:13.5px;font-weight:500;line-height:1.5;margin-bottom:5px}
+.out-card p{font-size:12px;color:var(--text-faint);line-height:1.55}
+.out-card-foot{display:flex;align-items:center;gap:10px;margin-top:9px;font-size:11px;color:var(--text-muted)}
 .ku{padding:16px;border-radius:12px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s}
 .ku:hover{border-color:var(--border)}
 .ku.sel{border-color:var(--gold-dim);background:linear-gradient(160deg,rgba(212,165,116,.06),var(--bg-elevated))}
@@ -306,10 +337,43 @@ body::after{
 
 /* ====== Inbox ====== */
 .inbox-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:22px}
-.stat{padding:18px;border-radius:var(--radius);border:1px solid var(--border-soft);background:var(--bg-elevated)}
+.stat{padding:18px;border-radius:var(--radius);border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.25s;position:relative;overflow:hidden}
+.stat:hover{border-color:var(--gold-dim);transform:translateY(-2px);box-shadow:var(--shadow)}
+.stat.active{border-color:var(--gold-dim);background:rgba(212,165,116,.06)}
+.stat.active::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-dim))}
 .stat .v{font-family:var(--serif);font-size:30px;font-weight:700;line-height:1}
 .stat .l{font-size:11.5px;color:var(--text-faint);margin-top:6px;letter-spacing:.04em}
 .stat.gold .v{color:var(--gold-bright)}
+.stat .stat-arrow{position:absolute;bottom:14px;right:14px;width:16px;height:16px;color:var(--text-faint);opacity:0;transition:.2s}
+.stat:hover .stat-arrow{opacity:.7}
+.inbox-filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;padding:14px 18px;background:var(--bg-elevated);border:1px solid var(--border-soft);border-radius:var(--radius)}
+.inbox-filter-label{font-size:12px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+.inbox-tabs{display:flex;gap:7px;flex-wrap:wrap}
+.inbox-tab{font-size:12.5px;padding:6px 14px;border-radius:8px;border:1px solid var(--border-soft);background:var(--bg-inset);color:var(--text-dim);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
+.inbox-tab:hover{color:var(--text);border-color:var(--border)}
+.inbox-tab.active{color:var(--gold-bright);border-color:var(--gold-dim);background:rgba(212,165,116,.08)}
+.inbox-tab .tab-count{font-size:10px;font-family:var(--mono);background:var(--bg-hover);padding:1px 6px;border-radius:5px;color:var(--text-faint)}
+.inbox-tab.active .tab-count{background:rgba(212,165,116,.15);color:var(--gold-bright)}
+.inbox-sort{margin-left:auto;display:flex;gap:6px;align-items:center}
+.inbox-sort select{font-size:12px;padding:5px 10px;border-radius:7px;background:var(--bg-inset);border:1px solid var(--border-soft);color:var(--text-dim);cursor:pointer;outline:none}
+.inbox-list-title{font-size:14px;font-weight:500;margin-bottom:14px;color:var(--text-dim);display:flex;align-items:center;gap:10px}
+.inbox-list-title .count{font-family:var(--mono);font-size:12px;color:var(--gold-bright);background:rgba(212,165,116,.1);padding:2px 8px;border-radius:6px}
+.inbox-empty{padding:40px;text-align:center;color:var(--text-faint);font-size:13px}
+.inbox-empty svg{width:40px;height:40px;margin-bottom:12px;opacity:.4}
+.cand-time{font-size:11px;color:var(--text-faint);font-family:var(--mono);margin-left:8px}
+.cand-type-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:2px 7px;border-radius:5px;margin-right:6px}
+.gap-detail{padding:16px;background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:11px;margin-bottom:12px;border-left:3px solid var(--warn)}
+.gap-detail h5{font-size:14px;font-weight:500;margin-bottom:6px;color:var(--warn)}
+.gap-detail .gap-meta{font-size:11px;color:var(--text-faint);margin-bottom:8px}
+.gap-detail p{font-size:12.5px;color:var(--text-dim);line-height:1.65}
+.conflict-detail{padding:16px;background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:11px;margin-bottom:12px;border-left:3px solid var(--danger)}
+.conflict-detail h5{font-size:14px;font-weight:500;margin-bottom:6px;color:var(--danger)}
+.conflict-detail .conf-sides{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.conflict-side{padding:10px 12px;border-radius:8px;background:var(--bg-elevated);border:1px solid var(--border-soft)}
+.conflict-side .side-label{font-size:10px;color:var(--text-faint);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.conflict-side .side-content{font-size:12px;color:var(--text-dim);line-height:1.6}
+.conflict-side.a{border-left:2px solid var(--personal)}
+.conflict-side.b{border-left:2px solid var(--web)}
 .cand{padding:18px;border-radius:var(--radius);border:1px solid var(--border-soft);background:var(--bg-elevated);margin-bottom:12px;transition:.2s}
 .cand:hover{border-color:var(--border)}
 .cand-top{display:flex;align-items:flex-start;gap:14px}
@@ -407,6 +471,95 @@ body::after{
 .menu-btn{display:none;width:38px;height:38px;border-radius:10px;background:var(--bg-elevated);border:1px solid var(--border-soft);place-items:center;cursor:pointer;color:var(--text-dim)}
 .menu-btn svg{width:20px;height:20px}
 
+/* ====== Modal (Settings / Video / SOP) ====== */
+.modal-overlay{position:fixed;inset:0;z-index:150;display:none;place-items:center;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);animation:fadeUp .3s ease}
+.modal-overlay.show{display:grid}
+.modal{width:520px;max-width:calc(100vw - 40px);max-height:85vh;overflow-y:auto;background:var(--bg-elevated);border:1px solid var(--border);border-radius:20px;box-shadow:var(--shadow-lg);position:relative}
+.modal::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--gold),var(--gold-dim),transparent);border-radius:20px 20px 0 0}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:24px 28px 0}
+.modal-head h2{font-family:var(--serif);font-size:20px;font-weight:600}
+.modal-close{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;cursor:pointer;color:var(--text-faint);background:var(--bg-inset);border:1px solid var(--border-soft);transition:.2s}
+.modal-close:hover{color:var(--danger);border-color:var(--danger)}
+.modal-body{padding:20px 28px 28px}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;padding:0 28px 24px;border-top:1px solid var(--border-soft);padding-top:18px;margin-top:8px}
+
+/* Settings form */
+.set-section{margin-bottom:22px}
+.set-section h4{font-size:13px;font-weight:500;margin-bottom:12px;color:var(--gold-bright);display:flex;align-items:center;gap:8px}
+.set-section h4::before{content:"";width:3px;height:14px;background:var(--gold-dim);border-radius:2px}
+.set-field{margin-bottom:14px}
+.set-field label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);display:block;margin-bottom:6px}
+.set-field input,.set-field select,.set-field textarea{width:100%;background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:10px;padding:11px 14px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:.2s}
+.set-field input:focus,.set-field select:focus,.set-field textarea:focus{border-color:var(--gold-dim);box-shadow:0 0 0 3px rgba(212,165,116,.1)}
+.set-field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239AA3AF' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.set-hint{font-size:11px;color:var(--text-faint);margin-top:5px;line-height:1.5}
+.set-provider-tabs{display:flex;gap:8px;margin-bottom:16px}
+.set-ptab{flex:1;padding:12px;border-radius:10px;border:1px solid var(--border-soft);background:var(--bg-inset);cursor:pointer;text-align:center;transition:.2s}
+.set-ptab b{font-size:13px;font-weight:500;display:block}
+.set-ptab small{font-size:10px;color:var(--text-faint)}
+.set-ptab.active{border-color:var(--gold-dim);background:rgba(212,165,116,.08)}
+.set-ptab.active b{color:var(--gold-bright)}
+.set-status{display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;font-size:12px;margin-top:10px}
+.set-status.ok{background:rgba(111,184,154,.1);color:var(--personal);border:1px solid rgba(111,184,154,.3)}
+.set-status.warn{background:rgba(212,162,78,.1);color:var(--warn);border:1px solid rgba(212,162,78,.3)}
+.set-status .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.set-status.ok .dot{background:var(--personal)}
+.set-status.warn .dot{background:var(--warn)}
+
+/* Auto-classify badge */
+.auto-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:9px;font-size:12.5px;font-weight:500;cursor:pointer;transition:.2s;border:1px solid var(--border-soft);background:var(--bg-inset);color:var(--text-dim)}
+.auto-badge:hover{border-color:var(--border)}
+.auto-badge .ab-dot{width:7px;height:7px;border-radius:50%;transition:.2s}
+.auto-badge.detecting{color:var(--ai);border-color:rgba(107,138,232,.3)}
+.auto-badge.detecting .ab-dot{background:var(--ai);animation:pulse 1.2s infinite}
+.auto-badge.detected{color:var(--gold-bright);border-color:var(--gold-dim);background:rgba(212,165,116,.08)}
+.auto-badge.detected .ab-dot{background:var(--gold-bright)}
+.auto-badge-menu{position:absolute;top:100%;left:0;margin-top:6px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:6px;z-index:20;display:none;box-shadow:var(--shadow)}
+.auto-badge-menu.show{display:block}
+.auto-badge-menu div{padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12.5px;color:var(--text-dim);transition:.15s}
+.auto-badge-menu div:hover{background:var(--bg-hover);color:var(--text)}
+.auto-badge-menu div.active{color:var(--gold-bright);background:rgba(212,165,116,.08)}
+.j-type-wrap{position:relative}
+
+/* Video tool */
+.video-input-row{display:flex;gap:10px;margin-bottom:14px}
+.video-input-row input{flex:1}
+.video-result{background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:12px;padding:18px;margin-bottom:14px;max-height:300px;overflow-y:auto}
+.video-result h5{font-size:14px;font-weight:500;margin-bottom:10px;color:var(--gold-bright)}
+.video-meta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.video-meta-cell{background:var(--bg-elevated);border:1px solid var(--border-soft);border-radius:9px;padding:10px;text-align:center}
+.video-meta-cell .v{font-size:17px;font-weight:700;font-family:var(--mono);color:var(--gold-bright)}
+.video-meta-cell .l{font-size:10px;color:var(--text-faint);margin-top:3px}
+.video-text{font-size:13px;line-height:1.8;color:var(--text-dim);white-space:pre-wrap}
+.video-loading{display:flex;flex-direction:column;align-items:center;gap:14px;padding:30px}
+.video-loading .spinner{width:36px;height:36px;border:3px solid var(--border-soft);border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.video-loading p{font-size:12.5px;color:var(--text-faint)}
+.video-platform-tag{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;border-radius:6px;margin-bottom:10px}
+
+/* Chat typing indicator */
+.chat-typing{display:flex;gap:4px;padding:8px 0}
+.chat-typing span{width:7px;height:7px;border-radius:50%;background:var(--text-faint);animation:typingBounce 1.2s infinite}
+.chat-typing span:nth-child(2){animation-delay:.2s}
+.chat-typing span:nth-child(3){animation-delay:.4s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-6px);opacity:1}}
+
+/* SOP review modal */
+.sop-draft{background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:12px;padding:20px;margin-bottom:16px}
+.sop-draft h5{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--gold-bright)}
+.sop-draft .sop-meta{font-size:11px;color:var(--text-faint);margin-bottom:12px;display:flex;gap:10px;flex-wrap:wrap}
+.sop-draft .sop-body{font-size:13px;line-height:1.85;color:var(--text-dim);white-space:pre-wrap;min-height:120px}
+.sop-draft textarea{width:100%;min-height:200px;background:var(--bg);border:1px solid var(--border-soft);border-radius:10px;padding:14px;color:var(--text);font-size:13px;font-family:var(--sans);line-height:1.8;outline:none;resize:vertical}
+.sop-draft textarea:focus{border-color:var(--gold-dim)}
+.sop-trigger-info{display:flex;gap:10px;padding:12px 14px;background:rgba(107,138,232,.08);border:1px solid rgba(107,138,232,.2);border-radius:10px;margin-bottom:14px;font-size:12px;color:var(--ai);line-height:1.6}
+
+/* API key indicator in topbar */
+.api-status{display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:9px;background:var(--bg-elevated);border:1px solid var(--border-soft);cursor:pointer;transition:.2s;font-size:11.5px;color:var(--text-faint)}
+.api-status:hover{border-color:var(--border);color:var(--text-dim)}
+.api-status .as-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.api-status.on .as-dot{background:var(--personal);box-shadow:0 0 6px var(--personal)}
+.api-status.off .as-dot{background:var(--danger)}
+
 /* ====== Auth Gate ====== */
 .auth-gate{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:radial-gradient(ellipse at center,#12161E,#0B0F15);animation:fadeUp .6s ease both}
 .auth-gate.hidden{display:none}
@@ -474,7 +627,7 @@ body::after{
     </div>
 
     <!-- Cloud mode: Register -->
-    <div id="authRegister">
+    <div id="authRegister" style="display:none">
       <h2>创建账号 · 开启云同步</h2>
       <p class="auth-sub">注册后，你的数据将保存在云端。手机、电脑登录同一账号，数据自动同步。</p>
       <div class="auth-field">
@@ -536,7 +689,7 @@ body::after{
     </div>
 
     <!-- Loading -->
-    <div id="authLoading" style="display:none;text-align:center;padding:20px 0">
+    <div id="authLoading" style="text-align:center;padding:20px 0">
       <div style="font-size:13px;color:var(--text-dim)">正在连接云端…</div>
     </div>
   </div>
@@ -583,6 +736,10 @@ body::after{
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
         <input placeholder="检索个人知识…">
       </div>
+      <div class="api-status off" id="apiStatus" onclick="openSettings()" title="点击配置 AI API">
+        <span class="as-dot"></span>
+        <span id="apiStatusText">AI 未配置</span>
+      </div>
       <div class="sync-badge" id="syncBadge" onclick="toast('云同步已开启 · 多设备数据实时共享')" title="点击查看同步状态">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 10h-1.3A8 8 0 109 20"/><path d="M8 6h4l4 4-4 4H8z"/></svg>
         <span id="syncText">云同步</span>
@@ -601,18 +758,26 @@ body::after{
           <p class="greet-sub">这里是你的私人记录空间。先写下今天的灵感、观察与经验——它们会进入待整理箱，经你确认后沉淀为正式知识。需要检索或联网分析时，再召唤 AI。</p>
           <div class="journal">
             <div class="journal-head">
-              <div class="j-types">
-                <button class="j-type active" onclick="jType(this)">灵感</button>
-                <button class="j-type" onclick="jType(this)">观察</button>
-                <button class="j-type" onclick="jType(this)">复盘</button>
-                <button class="j-type" onclick="jType(this)">经验</button>
-                <button class="j-type" onclick="jType(this)">待验证</button>
+              <div class="j-type-wrap">
+                <div class="auto-badge detected" id="autoBadge" onclick="toggleTypeMenu()">
+                  <span class="ab-dot" style="background:#E8B86D"></span>
+                  <span id="autoBadgeText">灵感</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:13px;height:13px;opacity:.6"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="auto-badge-menu" id="typeMenu">
+                  <div class="active" onclick="setJType('灵感',this)">灵感</div>
+                  <div onclick="setJType('观察',this)">观察</div>
+                  <div onclick="setJType('复盘',this)">复盘</div>
+                  <div onclick="setJType('经验',this)">经验</div>
+                  <div onclick="setJType('待验证',this)">待验证</div>
+                </div>
               </div>
               <span class="j-date">已连记 12 天</span>
             </div>
-            <textarea class="journal-input" id="journalInput" placeholder="写下今天的一个想法、一次观察或一条经验……&#10;例如：今天发现评论区用"投票式提问"比直接提问，评论数高了近 3 倍。"></textarea>
+            <textarea class="journal-input" id="journalInput" oninput="onJournalInput()" placeholder="直接写下你想记录的内容，系统会自动识别分类……&#10;例如：我最近有个灵感，评论区用"投票式提问"比直接提问，评论数高了近 3 倍。&#10;例如：我观察到一个现象，发布后2小时内的互动数据决定了推不推流。&#10;粘贴抖音/小红书视频链接也可自动提取文案。"></textarea>
             <div class="journal-foot">
               <div class="j-tools">
+                <span class="j-tool" onclick="openVideoModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>视频转文字</span>
                 <span class="j-tool" onclick="toast('已附加网页链接')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M10 13a5 5 0 007 0l3-3a5 5 0 00-7-7l-1 1"/><path d="M14 11a5 5 0 00-7 0l-3 3a5 5 0 007 7l1-1"/></svg>链接</span>
                 <span class="j-tool" onclick="toast('已附加文件')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 12l-9 9a5 5 0 01-7-7l9-9a3 3 0 014 4l-9 9a1 1 0 01-2-2l8-8"/></svg>文件</span>
                 <span class="j-tool" onclick="toast('已标记知识领域')">领域</span>
@@ -760,8 +925,8 @@ body::after{
           </div>
           <div class="ctx-card">
             <h6><span class="tag tag-ai" style="padding:1px 6px">模型路由</span></h6>
-            <div class="line"><span>主分析模型</span><b>DeepSeek</b></div>
-            <div class="line"><span>向量模型</span><b>豆包 Emb.</b></div>
+            <div class="line"><span>主分析模型</span><b id="modelMain">DeepSeek</b></div>
+            <div class="line"><span>向量模型</span><b id="modelVec">豆包 Emb.</b></div>
             <div class="line"><span>联网插件</span><b>火山方舟</b></div>
           </div>
         </aside>
@@ -777,48 +942,26 @@ body::after{
           <p>原始资料必须保留，知识单元必须记录来源。每条引用都能回溯到原始资料或已确认单元。每次认知更新创建新版本，旧版本不可覆盖。</p>
         </div>
         <div class="kc-tabs">
-          <div class="kc-tab active" onclick="kcTab(this,0)">原始资料 <span class="n">312</span></div>
-          <div class="kc-tab" onclick="kcTab(this,1)">知识单元 <span class="n">349</span></div>
-          <div class="kc-tab" onclick="kcTab(this,2)">成果层 <span class="n">34</span></div>
+          <div class="kc-tab active" onclick="kcTab(this,'raw')">原始资料 <span class="n" id="kcCountRaw">0</span></div>
+          <div class="kc-tab" onclick="kcTab(this,'unit')">知识单元 <span class="n" id="kcCountUnit">0</span></div>
+          <div class="kc-tab" onclick="kcTab(this,'output')">成果层 <span class="n" id="kcCountOutput">0</span></div>
         </div>
-        <div class="kc-layout">
-          <div class="ku-list" id="kuList">
-            <div class="ku sel" onclick="selKu(this)"><div class="ku-top"><span class="tag tag-gold">核心知识</span><span class="tag tag-soft">AI应用</span></div><h5>用 AI 生成脚本要先喂"反面样本"</h5><p>让模型先看 5-10 条同质化爆款，明确要回避的套路，再生成。产出差异化提升明显。</p><div class="ku-foot"><span class="cite-c">KU-0023</span><span>·</span><span>引用 15 次</span><span>·</span><span>7天前复习</span></div></div>
-            <div class="ku" onclick="selKu(this)"><div class="ku-top"><span class="tag tag-personal">个人观点</span><span class="tag tag-soft">短视频</span></div><h5>前 3 秒"否定+承诺"钩子优于纯悬念</h5><p>验证完播率比纯悬念高 22%，已在 3 个号复现。</p><div class="ku-foot"><span class="cite-c">KU-0142</span><span>·</span><span>引用 7 次</span><span>·</span><span>14天前</span></div></div>
-            <div class="ku" onclick="selKu(this)"><div class="ku-top"><span class="tag tag-personal">实践经验</span><span class="tag tag-soft">变现</span></div><h5>起号期不要发布后立即加热 Dou+</h5><p>会压制自然流，5000 元试错得出。建议自然流跑 24h 再决定。</p><div class="ku-foot"><span class="cite-c">KU-0071</span><span>·</span><span>引用 5 次</span><span>·</span><span>30天前</span></div></div>
-            <div class="ku" onclick="selKu(this)"><div class="ku-top"><span class="tag tag-soft">待验证问题</span><span class="tag tag-soft">短视频</span></div><h5>日更超过 2 条会触发账号质量降权？</h5><p>未充分验证，待 A/B 测试。与最新平台规则可能存在冲突。</p><div class="ku-foot"><span class="cite-c">KU-0089</span><span>·</span><span>引用 3 次</span><span>·</span><span>需重新验证</span></div></div>
-            <div class="ku" onclick="selKu(this)"><div class="ku-top"><span class="tag tag-web">外部事实</span><span class="tag tag-soft">AI应用</span></div><h5>2026 Q2 冷启动权重偏向互动深度</h5><p>来自巨量算数报告，完播率权重下降，评论+收藏权重上升。</p><div class="ku-foot"><span class="cite-c">KU-0311</span><span>·</span><span>引用 2 次</span><span>·</span><span>今日</span></div></div>
-            <div class="ku" onclick="selKu(this)"><div class="ku-top"><span class="tag tag-personal">方法/原则</span><span class="tag tag-soft">成长</span></div><h5>知识只在"用过后"才真正沉淀</h5><p>未经实践的内容停留在待整理箱，实践验证后才升为已确认。</p><div class="ku-foot"><span class="cite-c">KU-0008</span><span>·</span><span>引用 9 次</span><span>·</span><span>核心</span></div></div>
-            <div class="ku" onclick="selKu(this)"><div class="ku-top"><span class="tag tag-personal">案例</span><span class="tag tag-soft">项目管理</span></div><h5>知识号矩阵二号 30 天破万粉复盘</h5><p>关键动作：固定发布时间 + 评论区埋钩 + 第 7 天 Dou+ 加热首条。</p><div class="ku-foot"><span class="cite-c">KU-0205</span><span>·</span><span>引用 4 次</span><span>·</span><span>21天前</span></div></div>
+        <div class="kc-filter-bar" id="kcFilterBar">
+          <span class="kc-filter-label">领域</span>
+          <div class="kc-sub-tabs" id="kcSubTabs"></div>
+          <div class="kc-sort">
+            <select id="kcSort" onchange="renderKcList()">
+              <option value="time-desc">时间 ↓ 新到旧</option>
+              <option value="time-asc">时间 ↑ 旧到新</option>
+              <option value="cite">引用次数</option>
+            </select>
           </div>
-          <div class="ku-detail">
-            <div class="d-tags"><span class="tag tag-gold">核心知识</span><span class="tag tag-personal">方法/原则</span><span class="tag tag-soft">AI 应用</span><span class="tag tag-soft">短视频运营</span></div>
-            <h2>用 AI 生成脚本要先喂"反面样本"</h2>
-            <div class="d-body">
-              <p>直接让 AI"写一条短视频脚本"，产出大概率落进当前爆款套路的均值——开头留悬念、中段堆卖点、结尾call to action，同质化严重。</p>
-              <p>更有效的做法：先收集 5-10 条<em style="color:var(--gold-bright);font-style:normal">你最不想做成</em>的同领域爆款，把它们作为"反面样本"喂给模型，明确标注"回避这些结构"，再给出你的差异化主张。模型的产出会主动绕开高频套路，差异化显著提升。</p>
-              <p>这条经验已在 3 个账号、超过 40 条脚本上验证，平均完播率比直接生成高 18%。</p>
-            </div>
-            <div class="d-meta">
-              <div class="d-meta-cell"><label>来源</label><span>原始资料：脚本工作流实验记录.docx</span></div>
-              <div class="d-meta-cell"><label>状态</label><span>核心知识 · 不可自动改写</span></div>
-              <div class="d-meta-cell"><label>引用次数</label><span>15 次（自动元数据）</span></div>
-              <div class="d-meta-cell"><label>验证强度</label><span>3 账号 / 40+ 脚本复现</span></div>
-            </div>
-            <div class="side-title" style="margin-bottom:12px">知识关系</div>
-            <div class="rel-grid">
-              <div class="rel" onclick="toast('跳转：KU-0142')"><span class="r-type">来源于</span><b>KU-0142 前 3 秒钩子结构（个人观点）</b></div>
-              <div class="rel" onclick="toast('跳转：KU-0089')"><span class="r-type">支持</span><b>KU-0089 AI 生成内容的同质化风险</b></div>
-              <div class="rel" onclick="toast('跳转：SOP-003')"><span class="r-type">转化为SOP</span><b>SOP-003 AI 辅助脚本生成流程 v3</b></div>
-              <div class="rel" onclick="toast('跳转：项目')"><span class="r-type">项目中验证</span><b>AI 辅助脚本工作流（进行中）</b></div>
-              <div class="rel" onclick="toast('跳转：KU-0311')"><span class="r-type">更新自</span><b>KU-0311 2026 Q2 平台权重变化（外部事实）</b></div>
-            </div>
-            <div class="versions">
-              <div class="side-title" style="margin-bottom:12px">认知版本（不可覆盖）</div>
-              <div class="ver"><span class="v-no">v3 当前</span><span class="v-why">补充 40+ 脚本验证数据，升为核心知识</span><span class="v-time">2026-07-18</span></div>
-              <div class="ver"><span class="v-no">v2</span><span class="v-why">从"喂案例"细化为"喂反面样本"，措辞更准</span><span class="v-time">2026-06-02</span></div>
-              <div class="ver"><span class="v-no">v1</span><span class="v-why">用户首次确认保存（来自 AI 问答标记）</span><span class="v-time">2026-05-11</span></div>
-            </div>
+        </div>
+        <div class="kc-list-title" id="kcListTitle"></div>
+        <div class="kc-layout">
+          <div id="kcList"></div>
+          <div class="ku-detail" id="kcDetail">
+            <div class="kc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><div>选择左侧条目查看详情</div></div>
           </div>
         </div>
       </div>
@@ -830,122 +973,43 @@ body::after{
         <div class="page-head">
           <div class="eyebrow">自动化默认停在这里</div>
           <h1>待整理箱</h1>
-          <p>所有 AI 摘要、问答候选、项目结果、知识缺口都先进入这里。未经你确认、编辑或"保存为个人知识"，内容<b style="color:var(--gold-bright)">不会</b>写入正式知识。</p>
+          <p>所有 AI 摘要、问答候选、项目结果、知识缺口都先进入这里。未经你确认、编辑或"保存为个人知识"，内容<b style="color:var(--gold-bright)">不会</b>写入正式知识。点击下方统计卡片可筛选查看。</p>
         </div>
         <div class="inbox-stats stagger">
-          <div class="stat gold"><div class="v">6</div><div class="l">待确认候选</div></div>
-          <div class="stat"><div class="v">23</div><div class="l">本周已沉淀</div></div>
-          <div class="stat"><div class="v">4</div><div class="l">知识缺口</div></div>
-          <div class="stat"><div class="v">2</div><div class="l">冲突待裁决</div></div>
-        </div>
-        <div class="stagger">
-          <div class="cand">
-            <div class="cand-top">
-              <div class="cand-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
-              <div class="cand-body">
-                <h5>AI 推断：起号期应控"低互动内容连续出现"而非"日更数量"</h5>
-                <p>综合你 3 月 Dou+ 经验与 2026 Q2 平台权重变化，推测日更降权的真因可能是低互动内容堆叠。建议设计互动钩子模板优先拉升评论率，再验证日更上限。此推断未经实践。</p>
-                <div class="cand-foot">
-                  <span class="src"><span class="tag tag-ai" style="padding:1px 6px">AI问答</span>触发：刚刚的对话 · 关联 KU-0089 · DeepSeek</span>
-                  <div class="cand-actions">
-                    <button class="mini-btn primary" onclick="confirmCand(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg>确认保存</button>
-                    <button class="mini-btn" onclick="toast('已进入编辑')">编辑</button>
-                    <button class="mini-btn" onclick="toast('已暂缓 7 天')">暂缓</button>
-                    <button class="mini-btn danger" onclick="delCand(this)">删除</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="stat gold active" id="stat-pending" onclick="filterInbox('pending')">
+            <div class="v" id="statPending">6</div>
+            <div class="l">待确认候选</div>
+            <svg class="stat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </div>
-          <div class="cand">
-            <div class="cand-top">
-              <div class="cand-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 11l3 3 8-8M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11"/></svg></div>
-              <div class="cand-body">
-                <h5>项目复盘经验：Dou+ 投放方案 B（自然流跑 24h 后加热首条）胜出</h5>
-                <p>A/B 测试结论：方案 B ROI 1:3.2，方案 A（立即加热）ROI 1:1.4。建议沉淀为已确认经验，并转化为 SOP。</p>
-                <div class="cand-foot">
-                  <span class="src"><span class="tag tag-gold" style="padding:1px 6px">项目复盘</span>触发：Dou+ A/B 测试项目 · 关联 KU-0071</span>
-                  <div class="cand-actions">
-                    <button class="mini-btn primary" onclick="confirmCand(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg>确认保存</button>
-                    <button class="mini-btn" onclick="toast('已转 SOP 草案')">转 SOP</button>
-                    <button class="mini-btn" onclick="toast('已暂缓')">暂缓</button>
-                    <button class="mini-btn danger" onclick="delCand(this)">删除</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="stat" id="stat-settled" onclick="filterInbox('settled')">
+            <div class="v" id="statSettled">23</div>
+            <div class="l">本周已沉淀</div>
+            <svg class="stat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </div>
-          <div class="cand">
-            <div class="cand-top">
-              <div class="cand-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 9v4M12 17h.01M10.3 3.9L1.8 18a2 2 0 001.7 3h17a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z"/></svg></div>
-              <div class="cand-body">
-                <h5>知识冲突：你的"日更降权"与最新平台规则可能矛盾</h5>
-                <p>检测到 KU-0089（待验证：日更超 2 条降权）与 KU-0311（外部事实：Q2 权重转向互动深度）存在冲突。系统已同时保留两个版本与来源，<b>未自动改写任何一方</b>，请你裁决。</p>
-                <div class="cand-foot">
-                  <span class="src"><span class="tag tag-web" style="padding:1px 6px">知识冲突</span>触发：联网检索发现矛盾 · KU-0089 ↔ KU-0311</span>
-                  <div class="cand-actions">
-                    <button class="mini-btn" onclick="toast('已标记 KU-0089 为待重新验证')">标记待验证</button>
-                    <button class="mini-btn" onclick="toast('已合并适用条件：仅低互动内容')">合并条件</button>
-                    <button class="mini-btn danger" onclick="delCand(this)">忽略</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="stat" id="stat-gap" onclick="filterInbox('gap')">
+            <div class="v" id="statGap">4</div>
+            <div class="l">知识缺口</div>
+            <svg class="stat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </div>
-          <div class="cand">
-            <div class="cand-top">
-              <div class="cand-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>
-              <div class="cand-body">
-                <h5>知识缺口：商业变现领域缺少"私域转化"相关已确认知识</h5>
-                <p>近 5 次提问涉及私域转化，但个人知识中无可靠答案。系统标记为知识缺口，建议收集资料后补充。</p>
-                <div class="cand-foot">
-                  <span class="src"><span class="tag tag-soft" style="padding:1px 6px">知识缺口</span>触发：5 次无可靠答案的提问 · 商业变现</span>
-                  <div class="cand-actions">
-                    <button class="mini-btn" onclick="toast('已创建收集任务')">去收集</button>
-                    <button class="mini-btn" onclick="toast('已暂缓')">暂缓</button>
-                    <button class="mini-btn danger" onclick="delCand(this)">忽略</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="cand">
-            <div class="cand-top">
-              <div class="cand-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v16l-8-3-8 3V5z"/></svg></div>
-              <div class="cand-body">
-                <h5>AI 摘要：网页《2026 短视频创作者变现白皮书》要点 4 条</h5>
-                <p>① 中腰部创作者广告收入占比下降，知识付费上升；② 私域转化成主流；③ 平台对导流管控收紧；④ AI 工具使用率超 70%。原文已存原始资料层。</p>
-                <div class="cand-foot">
-                  <span class="src"><span class="tag tag-web" style="padding:1px 6px">资料加工</span>触发：网页收集 · 保留原文 · 豆包摘要</span>
-                  <div class="cand-actions">
-                    <button class="mini-btn primary" onclick="confirmCand(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg>拆分保存</button>
-                    <button class="mini-btn" onclick="toast('已编辑摘要')">编辑</button>
-                    <button class="mini-btn" onclick="toast('已暂缓')">暂缓</button>
-                    <button class="mini-btn danger" onclick="delCand(this)">删除</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="cand">
-            <div class="cand-top">
-              <div class="cand-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 4v4h4M12 7v5l3 2"/></svg></div>
-              <div class="cand-body">
-                <h5>回溯补充：复习 KU-0023 时新增观点——反面样本需每两周更新</h5>
-                <p>你在今日回溯中补充：爆款套路会变化，反面样本库需要每两周刷新一次，否则模型又会绕进新套路。</p>
-                <div class="cand-foot">
-                  <span class="src"><span class="tag tag-gold" style="padding:1px 6px">回溯补充</span>触发：今日知识回溯 · 关联 KU-0023</span>
-                  <div class="cand-actions">
-                    <button class="mini-btn primary" onclick="confirmCand(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg>并入新版本</button>
-                    <button class="mini-btn" onclick="toast('已编辑')">编辑</button>
-                    <button class="mini-btn" onclick="toast('已暂缓')">暂缓</button>
-                    <button class="mini-btn danger" onclick="delCand(this)">删除</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div class="stat" id="stat-conflict" onclick="filterInbox('conflict')">
+            <div class="v" id="statConflict">2</div>
+            <div class="l">冲突待裁决</div>
+            <svg class="stat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </div>
         </div>
+        <div class="inbox-filter-bar" id="inboxFilterBar">
+          <span class="inbox-filter-label">筛选</span>
+          <div class="inbox-tabs" id="inboxTabs"></div>
+          <div class="inbox-sort">
+            <select id="inboxSort" onchange="renderInboxList()">
+              <option value="time-desc">时间 ↓ 新到旧</option>
+              <option value="time-asc">时间 ↑ 旧到新</option>
+              <option value="type">按类型分组</option>
+            </select>
+          </div>
+        </div>
+        <div class="inbox-list-title" id="inboxListTitle"></div>
+        <div id="inboxList"></div>
       </div>
     </section>
 
@@ -1099,6 +1163,130 @@ body::after{
   <div class="mb-item" onclick="go('knowledge')" data-m="knowledge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v16l-8-3-8 3V5z"/></svg>知识</div>
   <div class="mb-item" onclick="go('inbox')" data-m="inbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 3H5a2 2 0 00-2 2v14l4-4h12a2 2 0 002-2V5a2 2 0 00-2-2z"/></svg>待整理</div>
   <div class="mb-item" onclick="go('recall')" data-m="recall"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 4v4h4"/></svg>回溯</div>
+</div>
+
+<!-- ====== Settings Modal ====== -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2>AI API 设置</h2>
+      <div class="modal-close" onclick="closeModal('settingsModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body">
+      <div class="set-section">
+        <h4>选择 AI 服务商</h4>
+        <div class="set-provider-tabs">
+          <div class="set-ptab active" id="ptab-deepseek" onclick="switchProvider('deepseek')">
+            <b>DeepSeek</b><small>深度求索 · 推理能力强</small>
+          </div>
+          <div class="set-ptab" id="ptab-doubao" onclick="switchProvider('doubao')">
+            <b>豆包 (火山方舟)</b><small>字节跳动 · 多模态</small>
+          </div>
+        </div>
+      </div>
+      <div class="set-section" id="deepseekSettings">
+        <div class="set-field">
+          <label>DeepSeek API Key</label>
+          <input type="password" id="dsApiKey" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxx" oninput="saveSettingsDraft()">
+          <div class="set-hint">在 <a href="https://platform.deepseek.com/api_keys" target="_blank" style="color:var(--gold-dim)">platform.deepseek.com</a> 获取 API Key</div>
+        </div>
+        <div class="set-field">
+          <label>模型</label>
+          <select id="dsModel">
+            <option value="deepseek-chat">deepseek-chat（通用对话 · 推荐）</option>
+            <option value="deepseek-reasoner">deepseek-reasoner（深度推理）</option>
+          </select>
+        </div>
+      </div>
+      <div class="set-section" id="doubaoSettings" style="display:none">
+        <div class="set-field">
+          <label>火山方舟 API Key</label>
+          <input type="password" id="dbApiKey" placeholder="xxxxxxxx-xxxx-xxxx-xxxx" oninput="saveSettingsDraft()">
+          <div class="set-hint">在 <a href="https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey" target="_blank" style="color:var(--gold-dim)">火山方舟控制台</a> 创建 API Key</div>
+        </div>
+        <div class="set-field">
+          <label>模型 ID (Endpoint ID)</label>
+          <input type="text" id="dbModel" placeholder="ep-20260xxxxx-xxxxx" oninput="saveSettingsDraft()">
+          <div class="set-hint">在火山方舟「在线推理」页面创建推理接入点，复制 Endpoint ID</div>
+        </div>
+      </div>
+      <div class="set-section">
+        <h4>功能选项</h4>
+        <div class="set-field">
+          <label>自动分类敏感度</label>
+          <select id="classifyMode">
+            <option value="ai">AI 智能识别（需配置 API）</option>
+            <option value="keyword">关键词识别（离线可用）</option>
+          </select>
+          <div class="set-hint">录入内容时自动判断类型（灵感/观察/复盘/经验/待验证）</div>
+        </div>
+        <div class="set-field">
+          <label>SOP 自动生成阈值</label>
+          <select id="sopThreshold">
+            <option value="3">3 条同领域知识时提示</option>
+            <option value="5" selected>5 条同领域知识时提示</option>
+            <option value="8">8 条同领域知识时提示</option>
+            <option value="0">关闭自动生成</option>
+          </select>
+          <div class="set-hint">同领域已确认知识达到阈值时，自动生成 SOP 草稿供你审阅</div>
+        </div>
+      </div>
+      <div class="set-status warn" id="settingsStatus">
+        <span class="dot"></span>
+        <span id="settingsStatusText">尚未配置 API，AI 功能将以演示模式运行</span>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('settingsModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveSettings()">保存设置</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== Video Modal ====== -->
+<div class="modal-overlay" id="videoModal">
+  <div class="modal" style="width:600px">
+    <div class="modal-head">
+      <h2>视频链接转文字</h2>
+      <div class="modal-close" onclick="closeModal('videoModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body">
+      <div class="video-input-row">
+        <input type="text" id="videoUrlInput" placeholder="粘贴抖音或小红书视频链接…" onkeydown="if(event.key==='Enter')processVideo()">
+        <button class="btn btn-primary" onclick="processVideo()">提取</button>
+      </div>
+      <div class="set-hint" style="margin-bottom:14px">支持抖音分享链接、小红书笔记链接。系统会尽量提取文案文字及互动数据（点赞/收藏/评论/转发），受平台反爬限制部分数据可能无法获取。</div>
+      <div id="videoContent"></div>
+    </div>
+    <div class="modal-foot" id="videoFoot" style="display:none">
+      <button class="btn btn-ghost" onclick="closeModal('videoModal')">关闭</button>
+      <button class="btn btn-primary" onclick="saveVideoResult()">保存为记录</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== SOP Review Modal ====== -->
+<div class="modal-overlay" id="sopModal">
+  <div class="modal" style="width:640px">
+    <div class="modal-head">
+      <h2>SOP 草稿审阅</h2>
+      <div class="modal-close" onclick="closeModal('sopModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body">
+      <div class="sop-trigger-info" id="sopTriggerInfo"></div>
+      <div class="sop-draft">
+        <h5 id="sopTitle"></h5>
+        <div class="sop-meta" id="sopMeta"></div>
+        <textarea id="sopEditor" placeholder="SOP 内容（可编辑修改）…"></textarea>
+      </div>
+      <div class="set-hint">这是基于你已确认知识自动生成的 SOP 草稿。请审阅修改后确认入库，或暂缓稍后处理。</div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('sopModal')">暂缓</button>
+      <button class="btn btn-ghost" onclick="regenerateSop()">重新生成</button>
+      <button class="btn btn-primary" onclick="confirmSop()">确认入库</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="toastTxt">操作完成</span></div>
@@ -1267,6 +1455,8 @@ async function doLogout(){
 async function enterApp(){
   document.getElementById('authGate').classList.add('hidden');
   updateSyncBadge();
+  loadSettings();
+  updateApiStatus();
   await renderRecords();
 }
 
@@ -1353,11 +1543,9 @@ async function renderRecords(){
   }).join('');
 }
 
-/* ====== 当前记录类型 ====== */
-function getActiveJType(){
-  const el=document.querySelector('.j-type.active');
-  return el?el.textContent:'灵感';
-}
+/* ====== 当前记录类型（自动分类后的当前类型）====== */
+let currentJType='灵感';
+function getActiveJType(){return currentJType;}
 
 /* ====== 初始化认证 ====== */
 async function initAuth(){
@@ -1408,11 +1596,13 @@ function go(v){
   document.getElementById('crumbName').textContent=crumbMap[v]||'';
   document.getElementById('nav').classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
-  if(v==='ai')setTimeout(()=>{const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;},100);
+  if(v==='ai'){setTimeout(()=>{const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;updateModelDisplay();},100);}
+  if(v==='inbox'){setTimeout(()=>{updateInboxStats();renderInboxTabs();renderInboxList();},50);}
+  if(v==='knowledge'){setTimeout(()=>{if(kcData.raw.length===0)initKcData();updateKcCounts();renderKcSubTabs();renderKcList();renderKcDetail();},50);}
 }
 document.querySelectorAll('.nav-item[data-view]').forEach(n=>n.addEventListener('click',()=>go(n.dataset.view)));
-function askFromHome(){const v=document.getElementById('homeAsk').value.trim()||'短视频起号阶段，我之前踩过哪些坑？';go('ai');const ci=document.getElementById('chatInput');if(ci)ci.value=v;}
-function quickAsk(q){go('ai');const ci=document.getElementById('chatInput');if(ci)ci.value=q;}
+function askFromHome(){const v=document.getElementById('homeAsk').value.trim()||'短视频起号阶段，我之前踩过哪些坑？';document.getElementById('homeAsk').value='';go('ai');const ci=document.getElementById('chatInput');if(ci){ci.value=v;setTimeout(()=>sendChat({preventDefault:()=>{}}),300);}}
+function quickAsk(q){go('ai');const ci=document.getElementById('chatInput');if(ci){ci.value=q;setTimeout(()=>sendChat({preventDefault:()=>{}}),300);}}
 function jType(el){el.parentNode.querySelectorAll('.j-type').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
 async function saveJournal(){
   const t=document.getElementById('journalInput');
@@ -1422,25 +1612,1324 @@ async function saveJournal(){
   if(btn){btn.textContent='保存中…';btn.disabled=true;}
   await addRecord(getActiveJType(),v);
   t.value='';
+  resetAutoBadge();
   if(btn){btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>保存到待整理箱';btn.disabled=false;}
   toast(cloudMode?'已保存 · 已同步到云端 · 多设备可查看':'已保存 · 数据已持久化，次日不会丢失');
+  checkSopTrigger();
 }
-function sendChat(e){e.preventDefault();const i=document.getElementById('chatInput');const v=i.value.trim();if(!v)return;const c=document.getElementById('chatScroll');
-  const um=document.createElement('div');um.className='msg user';um.innerHTML='<div class="bubble">'+v.replace(/</g,'&lt;')+'</div>';c.insertBefore(um,c.querySelector('.chat-input'));
-  i.value='';c.scrollTop=c.scrollHeight;
-  setTimeout(()=>{toast('已收到。AI 正在检索你的个人知识并联网…（原型演示）');},400);
+async function sendChat(e){
+  e.preventDefault();
+  const i=document.getElementById('chatInput');
+  const v=i.value.trim();
+  if(!v)return;
+  const c=document.getElementById('chatScroll');
+  const um=document.createElement('div');
+  um.className='msg user';
+  um.innerHTML='<div class="bubble">'+v.replace(/</g,'&lt;')+'</div>';
+  c.insertBefore(um,c.querySelector('.chat-input'));
+  i.value='';
+  c.scrollTop=c.scrollHeight;
+  await streamAIResponse(v,c);
 }
-function kcTab(el,idx){el.parentNode.querySelectorAll('.kc-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');toast(['原始资料层：保留原文与快照','知识单元层：可检索可关联可复习','成果层：手册、SOP、复盘'][idx]);}
-function selKu(el){document.querySelectorAll('#kuList .ku').forEach(k=>k.classList.remove('sel'));el.classList.add('sel');}
-function saveCandidate(t){toast('已加入待整理箱 · 待你确认后才写入正式知识');}
-function confirmCand(b){const c=b.closest('.cand');c.style.transition='.4s';c.style.opacity='0';c.style.transform='translateX(20px)';setTimeout(()=>{c.remove();toast('已确认保存为正式知识 · 创建新版本');},400);}
-function delCand(b){const c=b.closest('.cand');c.style.transition='.4s';c.style.opacity='0';setTimeout(()=>{c.remove();toast('已删除（候选知识，未影响正式知识）');},400);}
+/* ============================================================
+ *  知识中心：三层内容 × 五领域 · 数据 + 筛选 + 排序 + 渲染
+ * ============================================================ */
+const KC_DOMAINS=['AI应用','短视频运营','商业变现','个人成长','项目管理'];
+const KC_DOMAIN_COLORS={'AI应用':'#6B8AE8','短视频运营':'#E8B86D','商业变现':'#6FB89A','个人成长':'#D4925E','项目管理':'#C97064'};
+let kcLayer='raw';           // raw | unit | output
+let kcDomainFilter='all';    // all | AI应用 | 短视频运营 | ...
+let kcSelectedId=null;
+
+/* ====== 知识中心数据 ====== */
+let kcData={raw:[],unit:[],output:[]};
+
+function initKcData(){
+  const now=Date.now();
+  const day=86400000;
+  // 原始资料层
+  kcData.raw=[
+    {id:'RAW-001',domain:'短视频运营',title:'《2026 短视频创作者变现白皮书》要点摘录',summary:'① 中腰部创作者广告收入占比下降，知识付费上升；② 私域转化成主流；③ 平台对导流管控收紧；④ AI 工具使用率超 70%。',sourceType:'网页收集',sourceUrl:'douyin.com/...',ts:now-day,citeCount:8,tag:'外部事实'},
+    {id:'RAW-002',domain:'AI应用',title:'AI 辅助脚本工作流实验记录',summary:'记录了 3 个账号、40+ 条脚本使用"反面样本"方法的完整实验过程和数据对比。',sourceType:'本地文档',sourceUrl:'脚本工作流实验记录.docx',ts:now-3*day,citeCount:15,tag:'实验记录'},
+    {id:'RAW-003',domain:'短视频运营',title:'巨量算数 2026 Q2 冷启动权重报告',summary:'完播率权重下降，评论+收藏权重上升。互动深度成为核心指标。',sourceType:'网页收集',sourceUrl:'oceanengine.com/...',ts:now-6*day,citeCount:2,tag:'外部事实'},
+    {id:'RAW-004',domain:'商业变现',title:'私域转化 A/B 测试原始数据',summary:'5000 元预算的 Dou+ 投放 A/B 测试完整数据，包含方案 A（立即加热）和方案 B（自然流跑 24h 后加热）的 ROI 对比。',sourceType:'项目数据',sourceUrl:'项目附件',ts:now-2*day,citeCount:5,tag:'实验数据'},
+    {id:'RAW-005',domain:'个人成长',title:'每日复盘记录 · 7 月第 4 周',summary:'本周 7 天的每日复盘：时间分配、产出效率、认知更新点的原始记录。',sourceType:'手动记录',sourceUrl:'日志',ts:now-4*day,citeCount:3,tag:'个人记录'},
+    {id:'RAW-006',domain:'AI应用',title:'多模态内容生产工具对比评测',summary:'对比了 5 款图文+视频混合生产工具的功能、价格和产出质量。',sourceType:'网页收集',sourceUrl:'工具评测文章',ts:now-5*day,citeCount:2,tag:'外部事实'},
+    {id:'RAW-007',domain:'项目管理',title:'知识号矩阵二号 30 天运营日志',summary:'从 0 到万粉的完整运营日志，包含每日发布时间、内容类型、互动数据和 Dou+ 投放记录。',sourceType:'项目数据',sourceUrl:'项目附件',ts:now-7*day,citeCount:4,tag:'项目记录'},
+    {id:'RAW-008',domain:'短视频运营',title:'评论区互动数据采样 · 5 条视频',summary:'5 条视频的评论区数据采样，包含投票式提问 vs 直接提问的评论数对比。',sourceType:'手动记录',sourceUrl:'数据表格',ts:now-day-3600000,citeCount:3,tag:'采样数据'}
+  ];
+  // 知识单元层
+  kcData.unit=[
+    {id:'KU-0023',domain:'AI应用',title:'用 AI 生成脚本要先喂"反面样本"',summary:'让模型先看 5-10 条同质化爆款，明确要回避的套路，再生成。产出差异化提升明显。',sourceType:'核心知识',sourceRef:'RAW-002',ts:now-14*day,citeCount:15,tag:'核心知识',status:'核心 · v3',body:'<p>直接让 AI"写一条短视频脚本"，产出大概率落进当前爆款套路的均值——开头留悬念、中段堆卖点、结尾 call to action，同质化严重。</p><p>更有效的做法：先收集 5-10 条<em style="color:var(--gold-bright);font-style:normal">你最不想做成</em>的同领域爆款，把它们作为"反面样本"喂给模型，明确标注"回避这些结构"，再给出你的差异化主张。模型的产出会主动绕开高频套路，差异化显著提升。</p><p>这条经验已在 3 个账号、超过 40 条脚本上验证，平均完播率比直接生成高 18%。</p>',meta:{来源:'RAW-002 脚本工作流实验记录.docx',状态:'核心知识 · 不可自动改写',引用次数:'15 次',验证强度:'3 账号 / 40+ 脚本复现'},versions:[{v:'v3 当前',why:'补充 40+ 脚本验证数据，升为核心知识',time:'2026-07-18'},{v:'v2',why:'从"喂案例"细化为"喂反面样本"，措辞更准',time:'2026-06-02'},{v:'v1',why:'用户首次确认保存（来自 AI 问答标记）',time:'2026-05-11'}]},
+    {id:'KU-0142',domain:'短视频运营',title:'前 3 秒"否定+承诺"钩子优于纯悬念',summary:'验证完播率比纯悬念高 22%，已在 3 个号复现。',sourceType:'个人观点',sourceRef:'RAW-008',ts:now-14*day,citeCount:7,tag:'个人观点',status:'已确认 · v2',body:'<p>"否定+承诺"式开场（如"你以为日更重要？错，关键是互动深度"）比纯悬念式开场（"这个方法你绝对想不到"）的完播率高出 22%。</p><p>原因分析：否定+承诺直接给出信息增量承诺，用户知道"会得到什么"；纯悬念只制造好奇，但信息密度低，用户容易划走。</p><p>已在 3 个账号、30+ 条视频上复现此结论。</p>',meta:{来源:'RAW-008 评论区互动数据采样',状态:'已确认',引用次数:'7 次',验证强度:'3 账号 / 30+ 视频复现'},versions:[{v:'v2 当前',why:'补充 3 账号复现数据',time:'2026-07-10'},{v:'v1',why:'首次观察记录',time:'2026-06-20'}]},
+    {id:'KU-0071',domain:'商业变现',title:'起号期不要发布后立即加热 Dou+',summary:'会压制自然流，5000 元试错得出。建议自然流跑 24h 再决定。',sourceType:'实践经验',sourceRef:'RAW-004',ts:now-30*day,citeCount:5,tag:'实践经验',status:'已确认 · v2',body:'<p>A/B 测试结论：方案 B（自然流跑 24h 后加热首条）ROI 1:3.2，方案 A（立即加热）ROI 1:1.4。</p><p>原因：立即加热会向平台传递"内容需要推流才有曝光"的信号，压制自然流量分发。先让自然流跑 24h，让平台算法充分评估内容的互动质量，再加热效果更好。</p><p>补充条件（KU-0071 v2）：如果 24h 内互动率低于 3%，即使加热效果也差。</p>',meta:{来源:'RAW-004 私域转化 A/B 测试',状态:'已确认',引用次数:'5 次',验证强度:'5000 元 A/B 测试'},versions:[{v:'v2 当前',why:'补充互动率低于 3% 的限制条件',time:'2026-07-15'},{v:'v1',why:'首次确认',time:'2026-06-25'}]},
+    {id:'KU-0089',domain:'短视频运营',title:'日更超过 2 条会触发账号质量降权？',summary:'未充分验证，待 A/B 测试。与最新平台规则可能存在冲突。',sourceType:'待验证',sourceRef:'RAW-003',ts:now-20*day,citeCount:3,tag:'待验证',status:'待验证 · v1',body:'<p>个人观察：日更超过 2 条后，后续视频的平均播放量下降约 30%。</p><p>但此结论未经过严格控制变量的 A/B 测试，且与 KU-0311（Q2 权重转向互动深度）可能存在冲突——如果互动深度高，日更数量可能不再是降权因素。</p><p>需要设计 A/B 测试：同一账号在互动率相当的情况下，对比日更 1 条 vs 3 条的播放量差异。</p>',meta:{来源:'RAW-003 巨量算数报告',状态:'待验证',引用次数:'3 次',验证强度:'仅观察，未控制变量'},versions:[{v:'v1 当前',why:'首次记录，待验证',time:'2026-07-12'}]},
+    {id:'KU-0311',domain:'短视频运营',title:'2026 Q2 冷启动权重偏向互动深度',summary:'来自巨量算数报告，完播率权重下降，评论+收藏权重上升。',sourceType:'外部事实',sourceRef:'RAW-003',ts:now-day,citeCount:2,tag:'外部事实',status:'已确认 · v1',body:'<p>巨量算数 2026 Q2 报告显示，冷启动阶段的权重分配发生了显著变化：</p><p>完播率权重从 35% 下降至 22%，评论权重从 18% 上升至 28%，收藏权重从 12% 上升至 20%。</p><p>这意味着：即使完播率不高，如果评论和收藏数据好，内容仍然有机会获得推荐。这对内容创作策略有直接影响——应优先设计能引发评论和收藏的内容结构。</p>',meta:{来源:'RAW-003 巨量算数报告',状态:'已确认 · 外部事实',引用次数:'2 次',验证强度:'官方报告'},versions:[{v:'v1 当前',why:'从外部报告确认',time:'2026-07-28'}]},
+    {id:'KU-0008',domain:'个人成长',title:'知识只在"用过后"才真正沉淀',summary:'未经实践的内容停留在待整理箱，实践验证后才升为已确认。',sourceType:'方法/原则',sourceRef:'RAW-005',ts:now-7*day,citeCount:9,tag:'方法/原则',status:'核心 · v1',body:'<p>知识管理的核心原则：未经实践验证的内容只能停留在"待整理箱"或标注为"待验证"，只有经过实际使用并确认有效后，才能升为"已确认知识"。</p><p>这条原则确保了知识库的质量——每条已确认知识都有实践支撑，而非仅仅来自 AI 推断或外部资料。</p><p>实践方式包括：在项目中应用、A/B 测试、多账号复现、持续观察等。</p>',meta:{来源:'RAW-005 每日复盘记录',状态:'核心知识',引用次数:'9 次',验证强度:'长期实践验证'},versions:[{v:'v1 当前',why:'提炼为核心原则',time:'2026-07-01'}]},
+    {id:'KU-0205',domain:'项目管理',title:'知识号矩阵二号 30 天破万粉复盘',summary:'关键动作：固定发布时间 + 评论区埋钩 + 第 7 天 Dou+ 加热首条。',sourceType:'案例',sourceRef:'RAW-007',ts:now-21*day,citeCount:4,tag:'案例',status:'已确认 · v1',body:'<p>知识号矩阵二号从 0 到万粉的 30 天复盘：</p><p>第 1 周：固定每天 18:00 发布 1 条，建立账号活跃度信号。日均涨粉 120。</p><p>第 2 周：开始在评论区"埋钩"——用小号提问引出深度讨论，拉升评论率。日均涨粉 280。</p><p>第 3 周：第 7 天对首条爆款视频投放 Dou+ 500 元（自然流跑 24h 后），ROI 1:3.2。日均涨粉 450。</p><p>第 4 周：稳定输出 + 每周 1 次 Dou+ 加热。日均涨粉 380，30 天总粉丝 10,200。</p>',meta:{来源:'RAW-007 运营日志',状态:'已确认 · 复盘',引用次数:'4 次',验证强度:'完整 30 天数据'},versions:[{v:'v1 当前',why:'项目复盘确认',time:'2026-07-10'}]}
+  ];
+  // 成果层
+  kcData.output=[
+    {id:'SOP-003',domain:'AI应用',title:'AI 辅助脚本生成流程 v3',summary:'收集反面样本 → 喂模型标注回避 → 给出差异化主张 → 生成 → 人工微调。11 步完整 SOP。',sourceType:'SOP',sourceRef:'KU-0023',ts:now-14*day,citeCount:8,tag:'SOP',status:'v3 · 11 步',steps:11,version:'v3'},
+    {id:'SOP-014',domain:'个人成长',title:'每日知识收集与整理流程',summary:'灵感速记 → 待整理箱 → 每周日专题确认 → 沉淀正式知识。闭环已跑通。',sourceType:'SOP',sourceRef:'KU-0008',ts:now-7*day,citeCount:6,tag:'SOP',status:'v4 · 核心',steps:8,version:'v4'},
+    {id:'SOP-007',domain:'短视频运营',title:'Dou+ 投放决策 SOP v2',summary:'自然流跑 24h → 检查互动率（>3%才加热）→ 加热首条 → 监控 ROI。',sourceType:'SOP',sourceRef:'KU-0071',ts:now-20*day,citeCount:5,tag:'SOP',status:'v2',steps:9,version:'v2'},
+    {id:'SOP-021',domain:'短视频运营',title:'评论区互动钩子设计模板',summary:'投票式提问 / 分支选择 / 争议观点 / 反常识开头——4 种钩子模板 + 使用场景。',sourceType:'SOP',sourceRef:'KU-0142',ts:now-10*day,citeCount:4,tag:'SOP',status:'v1',steps:6,version:'v1'},
+    {id:'RPT-002',domain:'商业变现',title:'Dou+ 投放策略 A/B 测试报告',summary:'5000 元预算 · 方案 B 胜出 · ROI 1:3.2 · 完整数据和分析结论。',sourceType:'复盘报告',sourceRef:'RAW-004',ts:now-2*day,citeCount:3,tag:'复盘',status:'已完成',steps:0,version:'final'},
+    {id:'RPT-005',domain:'项目管理',title:'知识号矩阵二号 30 天复盘报告',summary:'从 0 到万粉 · 3 阶段策略 · 关键动作拆解 · 可复用经验提炼。',sourceType:'复盘报告',sourceRef:'KU-0205',ts:now-21*day,citeCount:4,tag:'复盘',status:'已完成',steps:0,version:'final'}
+  ];
+}
+
+/* ====== 知识中心：统计计数 ====== */
+function updateKcCounts(){
+  document.getElementById('kcCountRaw').textContent=kcData.raw.length;
+  document.getElementById('kcCountUnit').textContent=kcData.unit.length;
+  document.getElementById('kcCountOutput').textContent=kcData.output.length;
+}
+
+/* ====== 知识中心：Tab 切换 ====== */
+function kcTab(el,layer){
+  kcLayer=layer;
+  kcDomainFilter='all';
+  kcSelectedId=null;
+  el.parentNode.querySelectorAll('.kc-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderKcSubTabs();
+  renderKcList();
+  renderKcDetail();
+}
+
+/* ====== 知识中心：领域子筛选标签 ====== */
+function renderKcSubTabs(){
+  const container=document.getElementById('kcSubTabs');
+  const items=kcData[kcLayer];
+  const total=items.length;
+  let html='<div class="kc-sub-tab '+(kcDomainFilter==='all'?'active':'')+'" onclick="setKcDomain(\'all\')">全部<span class="tab-count">'+total+'</span></div>';
+  KC_DOMAINS.forEach(d=>{
+    const cnt=items.filter(i=>i.domain===d).length;
+    if(cnt>0){
+      html+='<div class="kc-sub-tab '+(kcDomainFilter===d?'active':'')+'" onclick="setKcDomain(\''+d+'\')">'+d+'<span class="tab-count">'+cnt+'</span></div>';
+    }
+  });
+  container.innerHTML=html;
+}
+
+function setKcDomain(d){
+  kcDomainFilter=d;
+  kcSelectedId=null;
+  renderKcSubTabs();
+  renderKcList();
+  renderKcDetail();
+}
+
+/* ====== 知识中心：排序 + 渲染列表 ====== */
+function renderKcList(){
+  const list=document.getElementById('kcList');
+  const titleEl=document.getElementById('kcListTitle');
+  const sortVal=document.getElementById('kcSort').value;
+  let items=kcData[kcLayer].slice();
+  if(kcDomainFilter!=='all'){
+    items=items.filter(i=>i.domain===kcDomainFilter);
+  }
+  // 排序
+  if(sortVal==='time-desc'){items.sort((a,b)=>b.ts-a.ts);}
+  else if(sortVal==='time-asc'){items.sort((a,b)=>a.ts-b.ts);}
+  else if(sortVal==='cite'){items.sort((a,b)=>b.citeCount-a.citeCount);}
+  // 标题
+  const titleMap={raw:'原始资料',unit:'知识单元',output:'成果层'};
+  const layerDesc={raw:'保留原文与快照 · 可追溯',unit:'可检索 · 可关联 · 可复习',output:'手册 · SOP · 复盘报告'};
+  titleEl.innerHTML=titleMap[kcLayer]+' <span class="count">'+items.length+' 条</span> <span style="font-size:12px;color:var(--text-faint);font-weight:400">'+layerDesc[kcLayer]+'</span>';
+  // 空状态
+  if(items.length===0){
+    list.innerHTML='<div class="ku-list"><div class="kc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v16l-8-3-8 3V5z"/></svg><div>当前筛选下暂无内容</div></div></div>';
+    return;
+  }
+  // 渲染
+  list.innerHTML='<div class="ku-list">'+items.map(i=>renderKcItem(i)).join('')+'</div>';
+}
+
+function renderKcItem(i){
+  const dt=new Date(i.ts);
+  const ds=dt.toLocaleString('zh-CN',{month:'2-digit',day:'2-digit'});
+  const color=KC_DOMAIN_COLORS[i.domain]||'#9AA3AF';
+  const sel=kcSelectedId===i.id?'sel':'';
+  if(kcLayer==='raw'){
+    const srcTag=i.sourceType==='网页收集'?'tag-web':i.sourceType==='本地文档'?'tag-gold':i.sourceType==='项目数据'?'tag-personal':'tag-soft';
+    return '<div class="src-card '+sel+'" onclick="selKcItem(\''+i.id+'\')">'+
+      '<div class="src-card-top"><span class="tag '+srcTag+'" style="padding:1px 6px">'+i.sourceType+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+i.domain+'</span></div>'+
+      '<h5>'+escHtml(i.title)+'</h5>'+
+      '<p>'+escHtml(i.summary)+'</p>'+
+      '<div class="src-card-foot"><span class="cite-c" style="font-family:var(--mono)">'+i.id+'</span><span>·</span><span>引用 '+i.citeCount+' 次</span><span>·</span><span>'+ds+'</span></div>'+
+    '</div>';
+  }else if(kcLayer==='output'){
+    const oTag=i.sourceType==='SOP'?'tag-gold':'tag-personal';
+    return '<div class="out-card '+sel+'" onclick="selKcItem(\''+i.id+'\')">'+
+      '<div class="out-card-top"><span class="tag '+oTag+'" style="padding:1px 6px">'+i.sourceType+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+i.domain+'</span>'+(i.steps>0?'<span class="tag tag-soft" style="padding:1px 6px">'+i.steps+' 步</span>':'')+'</div>'+
+      '<h5>'+escHtml(i.title)+'</h5>'+
+      '<p>'+escHtml(i.summary)+'</p>'+
+      '<div class="out-card-foot"><span class="cite-c" style="font-family:var(--mono)">'+i.id+'</span><span>·</span><span>'+i.status+'</span><span>·</span><span>'+ds+'</span></div>'+
+    '</div>';
+  }else{
+    const tagClass=i.tag==='核心知识'?'tag-gold':i.tag==='个人观点'||i.tag==='实践经验'||i.tag==='方法/原则'||i.tag==='案例'?'tag-personal':i.tag==='外部事实'?'tag-web':'tag-soft';
+    return '<div class="ku '+sel+'" onclick="selKcItem(\''+i.id+'\')">'+
+      '<div class="ku-top"><span class="tag '+tagClass+'" style="padding:1px 6px">'+i.tag+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+i.domain+'</span></div>'+
+      '<h5>'+escHtml(i.title)+'</h5>'+
+      '<p>'+escHtml(i.summary)+'</p>'+
+      '<div class="ku-foot"><span class="cite-c">'+i.id+'</span><span>·</span><span>引用 '+i.citeCount+' 次</span><span>·</span><span>'+(i.status||'')+'</span><span>·</span><span>'+ds+'</span></div>'+
+    '</div>';
+  }
+}
+
+function escHtml(s){return (s||'').replace(/</g,'&lt;');}
+
+/* ====== 知识中心：选中条目 → 渲染详情 ====== */
+function selKcItem(id){
+  kcSelectedId=id;
+  // 更新选中高亮
+  document.querySelectorAll('#kcList .ku, #kcList .src-card, #kcList .out-card').forEach(k=>k.classList.remove('sel'));
+  const el=document.querySelector('#kcList [onclick*="'+id+'"]');
+  if(el)el.classList.add('sel');
+  renderKcDetail();
+}
+
+function renderKcDetail(){
+  const panel=document.getElementById('kcDetail');
+  if(!kcSelectedId){
+    panel.innerHTML='<div class="kc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><div>选择左侧条目查看详情</div></div>';
+    return;
+  }
+  const item=kcData[kcLayer].find(i=>i.id===kcSelectedId);
+  if(!item)return;
+  const color=KC_DOMAIN_COLORS[item.domain]||'#9AA3AF';
+  if(kcLayer==='unit'){
+    // 知识单元：完整详情
+    let metaHtml='';
+    if(item.meta){
+      metaHtml='<div class="d-meta">';
+      for(const k in item.meta){metaHtml+='<div class="d-meta-cell"><label>'+k+'</label><span>'+escHtml(item.meta[k])+'</span></div>';}
+      metaHtml+='</div>';
+    }
+    let verHtml='';
+    if(item.versions&&item.versions.length){
+      verHtml='<div class="versions"><div class="side-title" style="margin-bottom:12px">认知版本（不可覆盖）</div>';
+      item.versions.forEach(v=>{verHtml+='<div class="ver"><span class="v-no">'+v.v+'</span><span class="v-why">'+escHtml(v.why)+'</span><span class="v-time">'+v.time+'</span></div>';});
+      verHtml+='</div>';
+    }
+    const tagClass=item.tag==='核心知识'?'tag-gold':item.tag==='外部事实'?'tag-web':'tag-personal';
+    panel.innerHTML='<div class="d-tags"><span class="tag '+tagClass+'">'+item.tag+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+';font-size:11px;padding:3px 8px;border-radius:5px">'+item.domain+'</span><span class="tag tag-soft">'+item.status+'</span></div>'+
+      '<h2>'+escHtml(item.title)+'</h2>'+
+      '<div class="d-body">'+(item.body||'')+'</div>'+
+      metaHtml+
+      '<div class="side-title" style="margin-bottom:12px">知识关系</div>'+
+      '<div class="rel-grid">'+
+        '<div class="rel" onclick="toast(\'查看原始资料：'+item.sourceRef+'\')"><span class="r-type">来源</span><b>'+item.sourceRef+' '+escHtml(item.sourceType)+'</b></div>'+
+        (item.id==='KU-0023'?'<div class="rel" onclick="toast(\'跳转：KU-0142\')"><span class="r-type">关联</span><b>KU-0142 前 3 秒钩子结构</b></div><div class="rel" onclick="toast(\'跳转：SOP-003\')"><span class="r-type">转化为SOP</span><b>SOP-003 AI 辅助脚本生成流程 v3</b></div>':'')+
+        (item.id==='KU-0071'?'<div class="rel" onclick="toast(\'跳转：SOP-007\')"><span class="r-type">转化为SOP</span><b>SOP-007 Dou+ 投放决策 SOP v2</b></div>':'')+
+        (item.id==='KU-0089'?'<div class="rel" onclick="toast(\'跳转：KU-0311\')"><span class="r-type">冲突</span><b>KU-0311 2026 Q2 平台权重变化</b></div>':'')+
+      '</div>'+
+      verHtml;
+  }else if(kcLayer==='raw'){
+    // 原始资料：来源信息
+    const srcTag=item.sourceType==='网页收集'?'tag-web':item.sourceType==='本地文档'?'tag-gold':item.sourceType==='项目数据'?'tag-personal':'tag-soft';
+    panel.innerHTML='<div class="d-tags"><span class="tag '+srcTag+'">'+item.sourceType+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+';font-size:11px;padding:3px 8px;border-radius:5px">'+item.domain+'</span></div>'+
+      '<h2>'+escHtml(item.title)+'</h2>'+
+      '<div class="d-body"><p>'+escHtml(item.summary)+'</p></div>'+
+      '<div class="d-meta">'+
+        '<div class="d-meta-cell"><label>编号</label><span>'+item.id+'</span></div>'+
+        '<div class="d-meta-cell"><label>来源类型</label><span>'+escHtml(item.sourceType)+'</span></div>'+
+        '<div class="d-meta-cell"><label>来源地址</label><span>'+escHtml(item.sourceUrl||'—')+'</span></div>'+
+        '<div class="d-meta-cell"><label>引用次数</label><span>'+item.citeCount+' 次</span></div>'+
+      '</div>'+
+      '<div class="side-title" style="margin-bottom:12px">关联知识单元</div>'+
+      '<div class="rel-grid">'+
+        kcData.unit.filter(u=>u.sourceRef===item.id).map(u=>{
+          const uc=KC_DOMAIN_COLORS[u.domain]||'#9AA3AF';
+          return '<div class="rel" onclick="kcTab(document.querySelectorAll(\'.kc-tab\')[1],\'unit\');setTimeout(()=>selKcItem(\''+u.id+'\'),100)"><span class="r-type">'+u.id+'</span><b>'+escHtml(u.title)+'</b></div>';
+        }).join('')||'<div style="font-size:12px;color:var(--text-faint);padding:8px 0">暂无关联知识单元</div>'+
+      '</div>';
+  }else{
+    // 成果层：SOP/报告信息
+    const oTag=item.sourceType==='SOP'?'tag-gold':'tag-personal';
+    panel.innerHTML='<div class="d-tags"><span class="tag '+oTag+'">'+item.sourceType+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+';font-size:11px;padding:3px 8px;border-radius:5px">'+item.domain+'</span><span class="tag tag-soft">'+item.status+'</span></div>'+
+      '<h2>'+escHtml(item.title)+'</h2>'+
+      '<div class="d-body"><p>'+escHtml(item.summary)+'</p></div>'+
+      '<div class="d-meta">'+
+        '<div class="d-meta-cell"><label>编号</label><span>'+item.id+'</span></div>'+
+        '<div class="d-meta-cell"><label>类型</label><span>'+escHtml(item.sourceType)+'</span></div>'+
+        '<div class="d-meta-cell"><label>来源知识</label><span>'+item.sourceRef+'</span></div>'+
+        '<div class="d-meta-cell"><label>引用次数</label><span>'+item.citeCount+' 次</span></div>'+
+      '</div>'+
+      '<div class="side-title" style="margin-bottom:12px">关联知识单元</div>'+
+      '<div class="rel-grid">'+
+        '<div class="rel" onclick="kcTab(document.querySelectorAll(\'.kc-tab\')[1],\'unit\');setTimeout(()=>selKcItem(\''+item.sourceRef+'\'),100)"><span class="r-type">'+item.sourceRef+'</span><b>'+escHtml(kcData.unit.find(u=>u.id===item.sourceRef)?.title||item.sourceRef)+'</b></div>'+
+      '</div>';
+  }
+}
+function saveCandidate(t){toast('已加入待整理箱 · 待你确认后才写入正式知识');addInboxItem({category:'pending',source:'AI问答',trigger:t,detail:'',ts:Date.now()});}
+function confirmCand(b){
+  const id=b.closest('.cand').dataset.id;
+  const item=inboxData.find(i=>i.id==id);
+  if(item){
+    item.category='settled';
+    item.settledTs=Date.now();
+    saveInboxData();
+  }
+  const c=b.closest('.cand');c.style.transition='.4s';c.style.opacity='0';c.style.transform='translateX(20px)';
+  setTimeout(()=>{renderInboxList();updateInboxStats();toast('已确认保存为正式知识 · 创建新版本');},400);
+}
+function delCand(b){
+  const id=b.closest('.cand').dataset.id;
+  inboxData=inboxData.filter(i=>i.id!=id);
+  saveInboxData();
+  const c=b.closest('.cand');c.style.transition='.4s';c.style.opacity='0';
+  setTimeout(()=>{renderInboxList();updateInboxStats();toast('已删除（候选知识，未影响正式知识）');},400);
+}
 function recallAct(b,act){b.style.background='rgba(212,165,116,.14)';b.style.color='var(--gold-bright)';b.style.borderColor='var(--gold-dim)';toast('已记录：'+act+' · 元数据已更新，正文未改');}
 let toastT;
 function toast(msg){const t=document.getElementById('toast');document.getElementById('toastTxt').textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
 document.getElementById('homeAsk').addEventListener('keydown',e=>{if(e.key==='Enter')askFromHome();});
 
+/* ============================================================
+ *  功能1：AI API 设置管理 + DeepSeek/豆包 API 调用
+ * ============================================================ */
+const SETTINGS_KEY='zhiyuan_ai_settings_v1';
+let aiSettings={provider:'deepseek',dsApiKey:'',dsModel:'deepseek-chat',dbApiKey:'',dbModel:'',classifyMode:'ai',sopThreshold:5};
+
+function loadSettings(){
+  try{
+    const s=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'null');
+    if(s)aiSettings=Object.assign(aiSettings,s);
+  }catch(e){}
+  // 填充 UI
+  const dsKey=document.getElementById('dsApiKey');
+  const dsModel=document.getElementById('dsModel');
+  const dbKey=document.getElementById('dbApiKey');
+  const dbModel=document.getElementById('dbModel');
+  const cm=document.getElementById('classifyMode');
+  const st=document.getElementById('sopThreshold');
+  if(dsKey)dsKey.value=aiSettings.dsApiKey||'';
+  if(dsModel)dsModel.value=aiSettings.dsModel||'deepseek-chat';
+  if(dbKey)dbKey.value=aiSettings.dbApiKey||'';
+  if(dbModel)dbModel.value=aiSettings.dbModel||'';
+  if(cm)cm.value=aiSettings.classifyMode||'ai';
+  if(st)st.value=String(aiSettings.sopThreshold||5);
+  if(aiSettings.provider==='doubao')switchProvider('doubao');
+}
+
+function saveSettingsDraft(){
+  // 实时保存草稿到变量（不写入 localStorage，点保存才写）
+  aiSettings.dsApiKey=document.getElementById('dsApiKey').value.trim();
+  aiSettings.dsModel=document.getElementById('dsModel').value;
+  aiSettings.dbApiKey=document.getElementById('dbApiKey').value.trim();
+  aiSettings.dbModel=document.getElementById('dbModel').value.trim();
+  aiSettings.classifyMode=document.getElementById('classifyMode').value;
+  aiSettings.sopThreshold=parseInt(document.getElementById('sopThreshold').value);
+  updateSettingsStatus();
+}
+
+function saveSettings(){
+  saveSettingsDraft();
+  localStorage.setItem(SETTINGS_KEY,JSON.stringify(aiSettings));
+  updateApiStatus();
+  updateSettingsStatus();
+  updateModelDisplay();
+  toast('设置已保存');
+  closeModal('settingsModal');
+}
+
+function updateSettingsStatus(){
+  const status=document.getElementById('settingsStatus');
+  const text=document.getElementById('settingsStatusText');
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(hasKey){
+    status.className='set-status ok';
+    text.textContent='API 已配置 · '+aiSettings.provider.toUpperCase()+' · AI 功能可用';
+  }else{
+    status.className='set-status warn';
+    text.textContent='尚未配置 API Key，AI 功能将以演示模式运行';
+  }
+}
+
+function updateApiStatus(){
+  const el=document.getElementById('apiStatus');
+  const text=document.getElementById('apiStatusText');
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(hasKey){
+    el.className='api-status on';
+    text.textContent=aiSettings.provider==='deepseek'?'DeepSeek 已连接':'豆包 已连接';
+  }else{
+    el.className='api-status off';
+    text.textContent='AI 未配置';
+  }
+}
+
+function updateModelDisplay(){
+  const main=document.getElementById('modelMain');
+  const vec=document.getElementById('modelVec');
+  if(!main)return;
+  if(aiSettings.provider==='deepseek'){
+    main.textContent=aiSettings.dsModel||'deepseek-chat';
+    if(vec)vec.textContent='—';
+  }else{
+    main.textContent='豆包 '+(aiSettings.dbModel||'').substring(0,12);
+    if(vec)vec.textContent='豆包 Emb.';
+  }
+}
+
+function openSettings(){
+  loadSettings();
+  updateSettingsStatus();
+  document.getElementById('settingsModal').classList.add('show');
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove('show');
+}
+
+function switchProvider(p){
+  aiSettings.provider=p;
+  document.getElementById('ptab-deepseek').classList.toggle('active',p==='deepseek');
+  document.getElementById('ptab-doubao').classList.toggle('active',p==='doubao');
+  document.getElementById('deepseekSettings').style.display=p==='deepseek'?'block':'none';
+  document.getElementById('doubaoSettings').style.display=p==='doubao'?'block':'none';
+  saveSettingsDraft();
+}
+
+/* ====== 统一 AI 调用接口 ====== */
+async function callAI(messages,opts){
+  opts=opts||{};
+  if(aiSettings.provider==='deepseek'){
+    return await callDeepSeek(messages,opts);
+  }else{
+    return await callDoubao(messages,opts);
+  }
+}
+
+async function callDeepSeek(messages,opts){
+  if(!aiSettings.dsApiKey){
+    return {error:'未配置 DeepSeek API Key，请点击右上角设置按钮配置'};
+  }
+  try{
+    const body={
+      model:aiSettings.dsModel||'deepseek-chat',
+      messages:messages,
+      stream:opts.stream||false,
+      temperature:opts.temperature??0.7,
+      max_tokens:opts.max_tokens||2048
+    };
+    const res=await fetch('https://api.deepseek.com/v1/chat/completions',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+aiSettings.dsApiKey
+      },
+      body:JSON.stringify(body)
+    });
+    if(!res.ok){
+      const err=await res.text();
+      return {error:'API 错误 ('+res.status+')：'+err.substring(0,200)};
+    }
+    if(opts.stream){
+      return res;
+    }
+    const data=await res.json();
+    return {content:data.choices[0].message.content,usage:data.usage};
+  }catch(e){
+    return {error:'请求失败：'+e.message};
+  }
+}
+
+async function callDoubao(messages,opts){
+  if(!aiSettings.dbApiKey||!aiSettings.dbModel){
+    return {error:'未配置豆包 API Key 或模型 ID，请点击右上角设置按钮配置'};
+  }
+  try{
+    const body={
+      model:aiSettings.dbModel,
+      messages:messages,
+      stream:opts.stream||false,
+      temperature:opts.temperature??0.7,
+      max_tokens:opts.max_tokens||2048
+    };
+    const res=await fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+aiSettings.dbApiKey
+      },
+      body:JSON.stringify(body)
+    });
+    if(!res.ok){
+      const err=await res.text();
+      return {error:'API 错误 ('+res.status+')：'+err.substring(0,200)};
+    }
+    if(opts.stream){
+      return res;
+    }
+    const data=await res.json();
+    return {content:data.choices[0].message.content,usage:data.usage};
+  }catch(e){
+    return {error:'请求失败：'+e.message};
+  }
+}
+
+/* ====== 构建上下文（简单 RAG）====== */
+async function buildContext(query){
+  const recs=await getRecords();
+  if(recs.length===0)return '';
+  // 简单关键词匹配召回
+  const keywords=query.split(/\s+/).filter(w=>w.length>1);
+  const scored=recs.map(r=>{
+    let score=0;
+    const text=(r.content||'').toLowerCase();
+    keywords.forEach(k=>{
+      if(text.includes(k.toLowerCase()))score+=2;
+    });
+    return {r,score};
+  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5);
+  if(scored.length===0)return '';
+  let ctx='\n\n【用户个人知识参考】\n';
+  scored.forEach(x=>{
+    ctx+='['+x.r.type+'] '+x.r.content+'\n';
+  });
+  return ctx;
+}
+
+/* ====== AI 聊天流式响应 ====== */
+async function streamAIResponse(query,chatContainer){
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  // 创建 AI 消息占位
+  const am=document.createElement('div');
+  am.className='msg ai';
+  am.innerHTML='<div class="bubble"><div class="avatar-mini"><div class="a">渊</div><b>知渊 AI</b><small>正在思考…</small></div><div id="aiResponseArea"><div class="chat-typing"><span></span><span></span><span></span></div></div></div>';
+  chatContainer.insertBefore(am,chatContainer.querySelector('.chat-input'));
+  chatContainer.scrollTop=chatContainer.scrollHeight;
+
+  if(!hasKey){
+    document.getElementById('aiResponseArea').innerHTML='<p style="color:var(--text-faint);font-size:13px">AI 功能尚未配置 API Key。请点击右上角 <b style="color:var(--gold-bright)">AI 未配置</b> 按钮设置 DeepSeek 或豆包 API。</p><div class="msg-actions"><span class="ma" onclick="openSettings()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>配置 API</span></div>';
+    chatContainer.scrollTop=chatContainer.scrollHeight;
+    return;
+  }
+
+  // 构建上下文
+  const ctx=await buildContext(query);
+  const systemPrompt='你是「知渊」，用户的个人 AI 知识顾问。你的回答要区分三类来源：个人知识（用户已确认的经验）、网络资料（外部信息）、AI 推断（你的分析，非事实）。回答简洁有力，用中文。'+ctx;
+  const messages=[
+    {role:'system',content:systemPrompt},
+    {role:'user',content:query}
+  ];
+
+  try{
+    if(aiSettings.provider==='deepseek'&&!aiSettings.dsApiKey){
+      throw new Error('未配置 DeepSeek API Key');
+    }
+    if(aiSettings.provider==='doubao'&&(!aiSettings.dbApiKey||!aiSettings.dbModel)){
+      throw new Error('未配置豆包 API Key 或模型 ID');
+    }
+
+    // 尝试流式
+    const res=await callAI(messages,{stream:true});
+    if(res.error)throw new Error(res.error);
+
+    const reader=res.body.getReader();
+    const decoder=new TextDecoder();
+    let fullText='';
+    const area=document.getElementById('aiResponseArea');
+    area.innerHTML='';
+    const para=document.createElement('div');
+    para.style.cssText='font-size:14px;line-height:1.7;white-space:pre-wrap';
+    area.appendChild(para);
+
+    while(true){
+      const {done,value}=await reader.read();
+      if(done)break;
+      const chunk=decoder.decode(value);
+      const lines=chunk.split('\n').filter(l=>l.trim());
+      for(const line of lines){
+        if(line.startsWith('data: ')){
+          const dataStr=line.slice(6).trim();
+          if(dataStr==='[DONE]')continue;
+          try{
+            const parsed=JSON.parse(dataStr);
+            const delta=parsed.choices?.[0]?.delta?.content||'';
+            fullText+=delta;
+            para.textContent=fullText;
+            chatContainer.scrollTop=chatContainer.scrollHeight;
+          }catch(e){}
+        }
+      }
+    }
+
+    if(!fullText){
+      para.textContent='（AI 返回为空，请检查 API 配置）';
+    }
+
+    // 添加操作按钮
+    const actions=document.createElement('div');
+    actions.className='msg-actions';
+    actions.innerHTML='<span class="ma" onclick="saveCandidate(\''+fullText.substring(0,50).replace(/'/g,'')+'…\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>值得保存</span>';
+    area.appendChild(actions);
+  }catch(e){
+    document.getElementById('aiResponseArea').innerHTML='<p style="color:var(--danger);font-size:13px">'+e.message+'</p><div class="msg-actions"><span class="ma" onclick="openSettings()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>配置 API</span></div>';
+  }
+  chatContainer.scrollTop=chatContainer.scrollHeight;
+}
+
+/* ============================================================
+ *  功能4：自动分类（AI 优先 + 关键词降级）
+ * ============================================================ */
+let classifyTimer=null;
+
+function onJournalInput(){
+  const text=document.getElementById('journalInput').value.trim();
+  if(text.length<4)return;
+  // 防抖
+  clearTimeout(classifyTimer);
+  const badge=document.getElementById('autoBadge');
+  badge.className='auto-badge detecting';
+  document.getElementById('autoBadgeText').textContent='识别中…';
+  classifyTimer=setTimeout(async()=>{
+    const mode=document.getElementById('classifyMode')?.value||aiSettings.classifyMode||'ai';
+    const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+    if(mode==='ai'&&hasKey){
+      await aiClassify(text);
+    }else{
+      keywordClassify(text);
+    }
+  },600);
+}
+
+async function aiClassify(text){
+  const messages=[
+    {role:'system',content:'你是分类助手。判断用户输入属于以下哪种类型，只返回类型名称，不要其他文字：灵感、观察、复盘、经验、待验证。灵感=突然的想法创意；观察=注意到的现象规律；复盘=事后总结回顾；经验=实践得出的方法结论；待验证=假设猜想需验证。'},
+    {role:'user',content:text.substring(0,500)}
+  ];
+  const res=await callAI(messages,{temperature:0.1,max_tokens:20});
+  if(res.error||!res.content){
+    keywordClassify(text);
+    return;
+  }
+  const result=res.content.trim();
+  const types=['灵感','观察','复盘','经验','待验证'];
+  const matched=types.find(t=>result.includes(t));
+  if(matched){
+    setAutoBadge(matched);
+  }else{
+    keywordClassify(text);
+  }
+}
+
+function keywordClassify(text){
+  const rules=[
+    {type:'灵感',keywords:['灵感','想法','创意','突然想到','要不','可以试试','如果']},
+    {type:'观察',keywords:['观察','发现','注意到','现象','规律','好像','似乎','看起来']},
+    {type:'复盘',keywords:['复盘','回顾','总结','事后','结果','这次','上周','上周']},
+    {type:'经验',keywords:['经验','教训','学会了','得出','验证了','证明','确认','方法']},
+    {type:'待验证',keywords:['假设','猜测','待验证','需要验证','不确定','可能','或许']}
+  ];
+  let best={type:'灵感',score:0};
+  for(const r of rules){
+    let score=0;
+    r.keywords.forEach(k=>{if(text.includes(k))score++;});
+    if(score>best.score)best={type:r.type,score};
+  }
+  setAutoBadge(best.type);
+}
+
+function setAutoBadge(type){
+  currentJType=type;
+  const badge=document.getElementById('autoBadge');
+  const text=document.getElementById('autoBadgeText');
+  const dot=badge.querySelector('.ab-dot');
+  const colors=jTypeMap[type]||'#E8B86D';
+  badge.className='auto-badge detected';
+  dot.style.background=colors;
+  text.textContent=type;
+  // 更新下拉菜单选中状态
+  document.querySelectorAll('#typeMenu div').forEach(d=>{
+    d.classList.toggle('active',d.textContent===type);
+  });
+}
+
+function resetAutoBadge(){
+  setAutoBadge('灵感');
+  document.getElementById('journalInput').value='';
+}
+
+function setJType(type,el){
+  setAutoBadge(type);
+  document.getElementById('typeMenu').classList.remove('show');
+}
+
+function toggleTypeMenu(){
+  document.getElementById('typeMenu').classList.toggle('show');
+}
+
+// 点击外部关闭下拉菜单
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.j-type-wrap')){
+    const m=document.getElementById('typeMenu');
+    if(m)m.classList.remove('show');
+  }
+});
+
+/* ============================================================
+ *  功能2：视频链接转文字（抖音/小红书）
+ * ============================================================ */
+let videoResultData=null;
+
+function openVideoModal(){
+  document.getElementById('videoModal').classList.add('show');
+  document.getElementById('videoUrlInput').focus();
+  // 如果录入区有视频链接，自动填入
+  const ji=document.getElementById('journalInput');
+  if(ji&&ji.value.trim()){
+    const url=extractVideoUrl(ji.value.trim());
+    if(url)document.getElementById('videoUrlInput').value=url;
+  }
+}
+
+function extractVideoUrl(text){
+  const patterns=[
+    /https?:\/\/v\.douyin\.com\/[^\s]+/,
+    /https?:\/\/www\.douyin\.com\/video\/[^\s]+/,
+    /https?:\/\/www\.xiaohongshu\.com\/[^\s]+/,
+    /https?:\/\/xhslink\.com\/[^\s]+/
+  ];
+  for(const p of patterns){
+    const m=text.match(p);
+    if(m)return m[0];
+  }
+  return null;
+}
+
+function detectVideoPlatform(url){
+  if(url.includes('douyin.com'))return 'douyin';
+  if(url.includes('xiaohongshu.com')||url.includes('xhslink.com'))return 'xhs';
+  return 'unknown';
+}
+
+async function processVideo(){
+  const url=document.getElementById('videoUrlInput').value.trim();
+  if(!url){toast('请粘贴视频链接');return;}
+  const platform=detectVideoPlatform(url);
+  if(platform==='unknown'){toast('仅支持抖音或小红书链接');return;}
+
+  const content=document.getElementById('videoContent');
+  const foot=document.getElementById('videoFoot');
+  foot.style.display='none';
+  videoResultData=null;
+
+  content.innerHTML='<div class="video-loading"><div class="spinner"></div><p>正在获取视频信息…</p></div>';
+
+  // 步骤1：通过 CORS 代理抓取页面
+  let pageHtml='';
+  let fetchError='';
+  const proxies=[
+    'https://api.allorigins.win/raw?url=',
+    'https://corsproxy.io/?url='
+  ];
+  for(const proxy of proxies){
+    try{
+      const proxyUrl=proxy+encodeURIComponent(url);
+      const res=await fetch(proxyUrl,{method:'GET'});
+      if(res.ok){
+        pageHtml=await res.text();
+        if(pageHtml&&pageHtml.length>200)break;
+      }
+    }catch(e){
+      fetchError=e.message;
+    }
+  }
+
+  if(!pageHtml||pageHtml.length<200){
+    content.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-faint);font-size:13px"><p>页面获取失败（可能是平台反爬限制）</p><p style="margin-top:8px;font-size:11px">'+(fetchError||'网络错误')+'</p><p style="margin-top:12px">你可以直接粘贴视频描述文字，AI 会帮你整理</p><textarea id="manualVideoText" style="width:100%;min-height:120px;margin-top:10px;background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:10px;padding:12px;color:var(--text);font-size:13px;outline:none" placeholder="在此粘贴视频文案、字幕或描述文字…"></textarea><button class="btn btn-primary" style="margin-top:10px" onclick="processManualVideoText()">AI 整理</button></div>';
+    return;
+  }
+
+  // 步骤2：解析页面数据
+  content.innerHTML='<div class="video-loading"><div class="spinner"></div><p>正在解析视频数据…</p></div>';
+  const rawData=extractVideoData(pageHtml,platform,url);
+
+  // 步骤3：AI 整理
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(hasKey){
+    content.innerHTML='<div class="video-loading"><div class="spinner"></div><p>AI 正在整理文案…</p></div>';
+    const aiResult=await aiOrganizeVideo(rawData);
+    if(aiResult&&!aiResult.error){
+      videoResultData={...rawData,aiText:aiResult.content,platform,url};
+      renderVideoResult(videoResultData);
+    }else{
+      // AI 失败，显示原始数据
+      videoResultData={...rawData,aiText:rawData.description||rawData.title||'（AI 整理失败，显示原始数据）',platform,url};
+      renderVideoResult(videoResultData);
+      toast(aiResult?.error||'AI 整理失败，已显示原始数据');
+    }
+  }else{
+    // 无 API，直接显示原始数据
+    videoResultData={...rawData,aiText:rawData.description||rawData.title||'（未配置 AI，无法整理文案）',platform,url};
+    renderVideoResult(videoResultData);
+    toast('未配置 AI API，显示原始抓取数据');
+  }
+}
+
+function extractVideoData(html,platform,url){
+  const data={title:'',description:'',author:'',likes:'',comments:'',shares:'',favorites:'',tags:[],url:url};
+  try{
+    // 通用 meta 标签提取
+    const getMeta=(prop)=>{
+      const m=html.match(new RegExp('<meta[^>]*(?:property|name)=["\']'+prop+'["\'][^>]*content=["\']([^"\']*)["\']','i'));
+      return m?m[1]:'';
+    };
+    data.title=getMeta('og:title')||getMeta('twitter:title');
+    data.description=getMeta('og:description')||getMeta('description');
+    data.author=getMeta('og:video:actor')||getMeta('author');
+
+    if(platform==='douyin'){
+      // 抖音：尝试从 RENDER_DATA 或 _ROUTER_DATA 提取
+      const renderMatch=html.match(/window\._ROUTER_DATA\s*=\s*({[\s\S]*?})\s*;?\s*<\/script>/);
+      if(renderMatch){
+        try{
+          const json=JSON.parse(renderMatch[1]);
+          const str=JSON.stringify(json);
+          // 尝试提取互动数据
+          const diggMatch=str.match(/"digg_count"\s*:\s*(\d+)/);
+          const commentMatch=str.match(/"comment_count"\s*:\s*(\d+)/);
+          const shareMatch=str.match(/"share_count"\s*:\s*(\d+)/);
+          const collectMatch=str.match(/"collect_count"\s*:\s*(\d+)/);
+          if(diggMatch)data.likes=parseInt(diggMatch[1]).toLocaleString();
+          if(commentMatch)data.comments=parseInt(commentMatch[1]).toLocaleString();
+          if(shareMatch)data.shares=parseInt(shareMatch[1]).toLocaleString();
+          if(collectMatch)data.favorites=parseInt(collectMatch[1]).toLocaleString();
+          // 提取描述
+          const descMatch=str.match(/"desc"\s*:\s*"([^"]*)"/);
+          if(descMatch)data.description=descMatch[1];
+          // 提取作者
+          const authorMatch=str.match(/"nickname"\s*:\s*"([^"]*)"/);
+          if(authorMatch)data.author=authorMatch[1];
+        }catch(e){}
+      }
+    }else if(platform==='xhs'){
+      // 小红书：尝试从 __INITIAL_STATE__ 提取
+      const stateMatch=html.match(/window\.__INITIAL_STATE__\s*=\s*({[\s\S]*?})\s*<\/script>/);
+      if(stateMatch){
+        try{
+          const json=JSON.parse(stateMatch[1]);
+          const str=JSON.stringify(json);
+          const likeMatch=str.match(/"liked_count"\s*:\s*"?(\d+)/);
+          const commentMatch=str.match(/"comment_count"\s*:\s*"?(\d+)/);
+          const shareMatch=str.match(/"share_count"\s*:\s*"?(\d+)/);
+          const collectMatch=str.match(/"collected_count"\s*:\s*"?(\d+)/);
+          if(likeMatch)data.likes=parseInt(likeMatch[1]).toLocaleString();
+          if(commentMatch)data.comments=parseInt(commentMatch[1]).toLocaleString();
+          if(shareMatch)data.shares=parseInt(shareMatch[1]).toLocaleString();
+          if(collectMatch)data.favorites=parseInt(collectMatch[1]).toLocaleString();
+          const descMatch=str.match(/"desc"\s*:\s*"([^"]*)"/);
+          if(descMatch)data.description=descMatch[1];
+          const authorMatch=str.match(/"nickname"\s*:\s*"([^"]*)"/);
+          if(authorMatch)data.author=authorMatch[1];
+        }catch(e){}
+      }
+    }
+
+    // 提取话题标签
+    const tagMatches=data.description.match(/#[^\s#]+/g);
+    if(tagMatches)data.tags=tagMatches.slice(0,10);
+
+  }catch(e){console.warn('Parse error',e);}
+  return data;
+}
+
+async function aiOrganizeVideo(rawData){
+  const prompt='请将以下视频信息整理成结构化文案。要求：\n1. 提取核心文案内容（去掉无意义的水印/广告语）\n2. 保持原意，整理成流畅的文字\n3. 在末尾附上互动数据摘要\n\n视频标题：'+rawData.title+'\n描述：'+rawData.description+'\n作者：'+rawData.author+'\n点赞：'+rawData.likes+'\n收藏：'+rawData.favorites+'\n评论：'+rawData.comments+'\n转发：'+rawData.shares+'\n标签：'+(rawData.tags||[]).join(' ');
+  const messages=[
+    {role:'system',content:'你是文案整理助手。将视频信息整理成清晰的文字文案，保留原始信息，不添加虚构内容。'},
+    {role:'user',content:prompt}
+  ];
+  return await callAI(messages,{temperature:0.3,max_tokens:1500});
+}
+
+function processManualVideoText(){
+  const text=document.getElementById('manualVideoText').value.trim();
+  if(!text){toast('请粘贴文字内容');return;}
+  const content=document.getElementById('videoContent');
+  content.innerHTML='<div class="video-loading"><div class="spinner"></div><p>AI 正在整理文案…</p></div>';
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(!hasKey){
+    videoResultData={title:'手动输入',description:text,aiText:text,platform:'manual',url:''};
+    renderVideoResult(videoResultData);
+    toast('未配置 AI，直接显示原文');
+    return;
+  }
+  aiOrganizeVideo({title:'手动输入',description:text,author:'',likes:'',favorites:'',comments:'',shares:'',tags:[]}).then(res=>{
+    if(res&&!res.error){
+      videoResultData={title:'手动输入',description:text,aiText:res.content,platform:'manual',url:''};
+      renderVideoResult(videoResultData);
+    }else{
+      videoResultData={title:'手动输入',description:text,aiText:text,platform:'manual',url:''};
+      renderVideoResult(videoResultData);
+      toast(res?.error||'AI 整理失败');
+    }
+  });
+}
+
+function renderVideoResult(data){
+  const content=document.getElementById('videoContent');
+  const foot=document.getElementById('videoFoot');
+  const platformName=data.platform==='douyin'?'抖音':data.platform==='xhs'?'小红书':'手动输入';
+  const platformColor=data.platform==='douyin'?'#C97064':data.platform==='xhs'?'#D4A574':'#626B78';
+
+  let metaHtml='';
+  if(data.likes||data.comments||data.shares||data.favorites){
+    metaHtml='<div class="video-meta-grid">';
+    metaHtml+='<div class="video-meta-cell"><div class="v">'+(data.likes||'-')+'</div><div class="l">点赞</div></div>';
+    metaHtml+='<div class="video-meta-cell"><div class="v">'+(data.favorites||'-')+'</div><div class="l">收藏</div></div>';
+    metaHtml+='<div class="video-meta-cell"><div class="v">'+(data.comments||'-')+'</div><div class="l">评论</div></div>';
+    metaHtml+='<div class="video-meta-cell"><div class="v">'+(data.shares||'-')+'</div><div class="l">转发</div></div>';
+    metaHtml+='</div>';
+  }else{
+    metaHtml='<div class="set-hint" style="margin-bottom:14px">互动数据未能获取（平台反爬限制），已尽力提取文案内容</div>';
+  }
+
+  content.innerHTML='<div class="video-result">'+
+    '<span class="video-platform-tag" style="background:'+platformColor+'22;color:'+platformColor+'">'+platformName+'</span>'+
+    (data.title?'<h5>'+data.title.replace(/</g,'&lt;')+'</h5>':'')+
+    (data.author?'<div style="font-size:12px;color:var(--text-faint);margin-bottom:10px">作者：'+data.author.replace(/</g,'&lt;')+'</div>':'')+
+    metaHtml+
+    '<div class="video-text">'+(data.aiText||'').replace(/</g,'&lt;')+'</div>'+
+    (data.tags&&data.tags.length?'<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">'+data.tags.map(t=>'<span class="tag tag-soft">'+t.replace(/</g,'&lt;')+'</span>').join('')+'</div>':'')+
+    '</div>';
+  foot.style.display='flex';
+}
+
+async function saveVideoResult(){
+  if(!videoResultData){toast('没有可保存的内容');return;}
+  const text='【视频文案】'+(videoResultData.title||'')+'\n\n'+(videoResultData.aiText||videoResultData.description||'')+
+    (videoResultData.likes?'\n\n互动数据：点赞'+videoResultData.likes+' · 收藏'+videoResultData.favorites+' · 评论'+videoResultData.comments+' · 转发'+videoResultData.shares:'')+
+    (videoResultData.url?'\n\n来源：'+videoResultData.url:'');
+  await addRecord('观察',text);
+  toast('视频文案已保存到待整理箱');
+  closeModal('videoModal');
+  document.getElementById('videoContent').innerHTML='';
+  document.getElementById('videoUrlInput').value='';
+  videoResultData=null;
+}
+
+/* ============================================================
+ *  功能3：SOP 混合模式（自动检测 + 草稿生成 + 审阅确认）
+ * ============================================================ */
+let sopDraftContext=null;
+
+async function checkSopTrigger(){
+  const threshold=aiSettings.sopThreshold||5;
+  if(threshold===0)return;
+  const recs=await getRecords();
+  if(recs.length<threshold)return;
+
+  // 按领域统计（简单关键词匹配领域）
+  const domains={
+    'AI应用':['ai','AI','人工智能','模型','gpt','脚本','生成','prompt','提示词'],
+    '短视频运营':['短视频','抖音','视频','起号','完播','钩子','dou+','Dou+','流量'],
+    '商业变现':['变现','赚钱','收入','私域','转化','付费','变现','roi','ROI'],
+    '个人成长':['成长','学习','习惯','复盘','总结','提升','认知'],
+    '项目管理':['项目','管理','进度','团队','计划','执行']
+  };
+  const domainCounts={};
+  for(const d in domains)domainCounts[d]=0;
+  recs.forEach(r=>{
+    const text=(r.content||'').toLowerCase();
+    for(const d in domains){
+      if(domains[d].some(k=>text.includes(k.toLowerCase())))domainCounts[d]++;
+    }
+  });
+
+  // 找到达到阈值的领域
+  for(const d in domainCounts){
+    if(domainCounts[d]>=threshold){
+      // 检查是否已经提示过（避免重复）
+      const sopKey='zhiyuan_sop_prompted_'+d;
+      if(localStorage.getItem(sopKey))continue;
+      const domainRecords=recs.filter(r=>{
+        const text=(r.content||'').toLowerCase();
+        return domains[d].some(k=>text.includes(k.toLowerCase()));
+      });
+      generateSopDraft(d,domainRecords);
+      return;
+    }
+  }
+}
+
+async function generateSopDraft(domain,records){
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(!hasKey){
+    toast('检测到「'+domain+'」领域已积累 '+records.length+' 条知识，配置 AI 后可自动生成 SOP 草稿');
+    return;
+  }
+
+  toast('检测到「'+domain+'」领域知识积累达 '+records.length+' 条，正在生成 SOP 草稿…');
+  const knowledgeText=records.slice(0,15).map(r=>'['+r.type+'] '+(r.content||'').substring(0,200)).join('\n');
+  const messages=[
+    {role:'system',content:'你是知识整理专家。基于用户的多条个人知识记录，生成一份可复用的 SOP（标准操作流程）草稿。要求：\n1. 提炼共性步骤，形成清晰的流程\n2. 每个步骤包含具体操作和注意事项\n3. 标注哪些步骤来自已验证经验，哪些来自待验证假设\n4. 格式：标题 + 适用场景 + 步骤列表 + 注意事项\n5. 用中文输出'},
+    {role:'user',content:'领域：'+domain+'\n\n用户知识记录：\n'+knowledgeText}
+  ];
+  const res=await callAI(messages,{temperature:0.5,max_tokens:2000});
+  if(res.error){
+    toast('SOP 生成失败：'+res.error);
+    return;
+  }
+  sopDraftContext={domain,records,content:res.content};
+  showSopModal(res.content,domain,records.length);
+}
+
+function showSopModal(content,domain,recordCount){
+  document.getElementById('sopTitle').textContent=domain+' · SOP 草稿';
+  document.getElementById('sopMeta').innerHTML=
+    '<span class="tag tag-ai" style="padding:1px 6px">AI 生成</span>'+
+    '<span>基于 '+recordCount+' 条个人知识</span>'+
+    '<span>'+new Date().toLocaleDateString('zh-CN')+'</span>'+
+    '<span>待审阅</span>';
+  document.getElementById('sopTriggerInfo').innerHTML=
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" style="width:16px;height:16px;flex-shrink:0"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>'+
+    '系统检测到「'+domain+'」领域已积累 '+recordCount+' 条知识，自动生成了 SOP 草稿。请审阅修改后确认入库。';
+  document.getElementById('sopEditor').value=content;
+  document.getElementById('sopModal').classList.add('show');
+}
+
+async function regenerateSop(){
+  if(!sopDraftContext){toast('无草稿数据');return;}
+  toast('正在重新生成…');
+  await generateSopDraft(sopDraftContext.domain,sopDraftContext.records);
+}
+
+async function confirmSop(){
+  if(!sopDraftContext){toast('无草稿数据');return;}
+  const content=document.getElementById('sopEditor').value.trim();
+  if(!content){toast('SOP 内容不能为空');return;}
+  // 保存为记录
+  const sopText='【SOP · '+sopDraftContext.domain+'】\n\n'+content;
+  await addRecord('经验',sopText);
+  // 标记已提示
+  localStorage.setItem('zhiyuan_sop_prompted_'+sopDraftContext.domain,'1');
+  toast('SOP 已确认入库 · 已保存到待整理箱');
+  closeModal('sopModal');
+  sopDraftContext=null;
+}
+
+/* ============================================================
+ *  待整理箱：数据管理 + 筛选 + 排序 + 渲染
+ * ============================================================ */
+const INBOX_KEY='zhiyuan_inbox_v1';
+let inboxData=[];
+let inboxFilter='pending';     // pending | settled | gap | conflict
+let inboxSubFilter='all';      // all | 灵感 | 观察 | 复盘 | 经验 | 待验证
+
+function loadInboxData(){
+  try{
+    const s=localStorage.getItem(INBOX_KEY);
+    if(s){inboxData=JSON.parse(s);return;}
+  }catch(e){}
+  // 首次加载：初始化演示数据
+  const now=Date.now();
+  const day=86400000;
+  inboxData=[
+    {id:1,category:'pending',type:'AI问答',source:'AI问答',trigger:'起号期应控"低互动内容连续出现"而非"日更数量"',detail:'综合你 3 月 Dou+ 经验与 2026 Q2 平台权重变化，推测日更降权的真因可能是低互动内容堆叠。建议设计互动钩子模板优先拉升评论率，再验证日更上限。此推断未经实践。',meta:'触发：AI对话 · 关联 KU-0089 · DeepSeek',ts:now-3600000,recordType:'待验证'},
+    {id:2,category:'pending',type:'项目复盘',source:'项目复盘',trigger:'Dou+ 投放方案 B（自然流跑 24h 后加热首条）胜出',detail:'A/B 测试结论：方案 B ROI 1:3.2，方案 A（立即加热）ROI 1:1.4。建议沉淀为已确认经验，并转化为 SOP。',meta:'触发：Dou+ A/B 测试项目 · 关联 KU-0071',ts:now-7200000,recordType:'经验'},
+    {id:3,category:'pending',type:'回溯补充',source:'回溯补充',trigger:'复习 KU-0023 时新增观点——反面样本需每两周更新',detail:'你在今日回溯中补充：爆款套路会变化，反面样本库需要每两周刷新一次，否则模型又会绕进新套路。',meta:'触发：今日知识回溯 · 关联 KU-0023',ts:now-10800000,recordType:'经验'},
+    {id:4,category:'pending',type:'资料加工',source:'资料加工',trigger:'网页《2026 短视频创作者变现白皮书》要点 4 条',detail:'① 中腰部创作者广告收入占比下降，知识付费上升；② 私域转化成主流；③ 平台对导流管控收紧；④ AI 工具使用率超 70%。原文已存原始资料层。',meta:'触发：网页收集 · 保留原文 · 豆包摘要',ts:now-day,recordType:'观察'},
+    {id:5,category:'pending',type:'AI问答',source:'AI问答',trigger:'评论区"投票式提问"比直接提问评论数高 3 倍',detail:'分析你近期 5 条视频数据发现，使用投票式提问的开场，平均评论数为 127 条，而直接提问仅为 41 条。可能原因是投票降低了参与门槛。',meta:'触发：AI对话 · 分析 5 条视频数据',ts:now-day-3600000,recordType:'灵感'},
+    {id:6,category:'pending',type:'回溯补充',source:'回溯补充',trigger:'KU-0071 补充：Dou+ 加热时机还需看互动率',detail:'原结论"自然流跑 24h 再加热"需要补充条件：如果 24h 内互动率低于 3%，即使加热效果也差。',meta:'触发：知识回溯 · 关联 KU-0071',ts:now-2*day,recordType:'经验'},
+    // 已沉淀
+    {id:7,category:'settled',type:'AI问答',source:'AI问答',trigger:'前 3 秒"否定+承诺"钩子优于纯悬念',detail:'验证完播率比纯悬念高 22%，已在 3 个号复现。',meta:'已确认 · KU-0142',ts:now-2*day,settledTs:now-day,recordType:'经验'},
+    {id:8,category:'settled',type:'项目复盘',source:'项目复盘',trigger:'知识号矩阵二号 30 天破万粉复盘',detail:'关键动作：固定发布时间 + 评论区埋钩 + 第 7 天 Dou+ 加热首条。',meta:'已确认 · KU-0205',ts:now-3*day,settledTs:now-2*day,recordType:'经验'},
+    {id:9,category:'settled',type:'AI问答',source:'AI问答',trigger:'用 AI 生成脚本要先喂"反面样本"',detail:'让模型先看 5-10 条同质化爆款，明确要回避的套路，再生成。',meta:'已确认 · KU-0023 · 核心',ts:now-5*day,settledTs:now-3*day,recordType:'灵感'},
+    {id:10,category:'settled',type:'资料加工',source:'资料加工',trigger:'2026 Q2 冷启动权重偏向互动深度',detail:'来自巨量算数报告，完播率权重下降，评论+收藏权重上升。',meta:'已确认 · KU-0311',ts:now-6*day,settledTs:now-4*day,recordType:'观察'},
+    {id:11,category:'settled',type:'回溯补充',source:'回溯补充',trigger:'知识只在"用过后"才真正沉淀',detail:'未经实践的内容停留在待整理箱，实践验证后才升为已确认。',meta:'已确认 · KU-0008 · 核心',ts:now-7*day,settledTs:now-5*day,recordType:'经验'},
+    // 知识缺口
+    {id:12,category:'gap',type:'知识缺口',source:'知识缺口',trigger:'商业变现领域缺少"私域转化"相关已确认知识',detail:'近 5 次提问涉及私域转化，但个人知识中无可靠答案。系统标记为知识缺口，建议收集资料后补充。',meta:'触发：5 次无可靠答案的提问 · 商业变现',ts:now-day,gapDomain:'商业变现',gapCount:5},
+    {id:13,category:'gap',type:'知识缺口',source:'知识缺口',trigger:'短视频运营缺少"直播切片"方法论',detail:'你近 3 次提到直播切片，但知识库中无相关已确认方法。',meta:'触发：3 次无可靠答案的提问 · 短视频运营',ts:now-3*day,gapDomain:'短视频运营',gapCount:3},
+    {id:14,category:'gap',type:'知识缺口',source:'知识缺口',trigger:'个人成长缺少"时间管理"系统方法',detail:'多次提问涉及时间管理，但无已确认知识。',meta:'触发：4 次无可靠答案的提问 · 个人成长',ts:now-4*day,gapDomain:'个人成长',gapCount:4},
+    {id:15,category:'gap',type:'知识缺口',source:'知识缺口',trigger:'AI 应用缺少"多模态内容生产"经验',detail:'2 次提问涉及图文+视频混合生产，知识库无覆盖。',meta:'触发：2 次无可靠答案的提问 · AI应用',ts:now-5*day,gapDomain:'AI应用',gapCount:2},
+    // 冲突
+    {id:16,category:'conflict',type:'知识冲突',source:'知识冲突',trigger:'"日更降权"与最新平台规则可能矛盾',detail:'检测到 KU-0089（待验证：日更超 2 条降权）与 KU-0311（外部事实：Q2 权重转向互动深度）存在冲突。',meta:'触发：联网检索发现矛盾 · KU-0089 ↔ KU-0311',ts:now-2*day,
+      conflictA:{label:'KU-0089 个人观点',content:'日更超过 2 条会触发账号质量降权（待验证假设）'},
+      conflictB:{label:'KU-0311 外部事实',content:'2026 Q2 冷启动权重从完播率偏向互动深度（评论+收藏）'}
+    },
+    {id:17,category:'conflict',type:'知识冲突',source:'知识冲突',trigger:'"立即加热 Dou+"与"自然流跑24h"结论冲突',detail:'KU-0071（经验：不要立即加热）与某 AI 推断（建议立即加热抢冷启动流量）冲突。',meta:'触发：AI 问答推断与已确认经验矛盾',ts:now-4*day,
+      conflictA:{label:'KU-0071 已确认经验',content:'起号期不要发布后立即加热 Dou+，会压制自然流'},
+      conflictB:{label:'AI 推断（未验证）',content:'冷启动期应抢流量，建议发布后 2h 内加热'}
+    }
+  ];
+  saveInboxData();
+}
+
+function saveInboxData(){
+  try{localStorage.setItem(INBOX_KEY,JSON.stringify(inboxData));}catch(e){}
+}
+
+function addInboxItem(item){
+  if(!item.id)item.id=Date.now();
+  if(!item.ts)item.ts=Date.now();
+  if(!item.category)item.category='pending';
+  if(!item.recordType)item.recordType='灵感';
+  inboxData.unshift(item);
+  saveInboxData();
+  updateInboxStats();
+}
+
+function updateInboxStats(){
+  const counts={pending:0,settled:0,gap:0,conflict:0};
+  inboxData.forEach(i=>{
+    if(counts[i.category]!==undefined)counts[i.category]++;
+  });
+  // 本周已沉淀：只算7天内的
+  const weekAgo=Date.now()-7*86400000;
+  counts.settled=inboxData.filter(i=>i.category==='settled'&&(!i.settledTs||i.settledTs>weekAgo)).length;
+  document.getElementById('statPending').textContent=counts.pending;
+  document.getElementById('statSettled').textContent=counts.settled;
+  document.getElementById('statGap').textContent=counts.gap;
+  document.getElementById('statConflict').textContent=counts.conflict;
+  // 更新侧栏 badge
+  const badge=document.querySelector('.nav-item[data-view="inbox"] .badge');
+  if(badge)badge.textContent=counts.pending;
+}
+
+function filterInbox(category){
+  inboxFilter=category;
+  inboxSubFilter='all';
+  // 更新卡片高亮
+  document.querySelectorAll('.inbox-stats .stat').forEach(s=>s.classList.remove('active'));
+  const map={pending:'stat-pending',settled:'stat-settled',gap:'stat-gap',conflict:'stat-conflict'};
+  document.getElementById(map[category]).classList.add('active');
+  // 渲染筛选标签
+  renderInboxTabs();
+  renderInboxList();
+}
+
+function renderInboxTabs(){
+  const tabs=document.getElementById('inboxTabs');
+  let html='';
+  if(inboxFilter==='settled'){
+    // 已沉淀：按记录类型筛选
+    const types=['all','灵感','观察','复盘','经验','待验证'];
+    const typeCounts={};
+    types.forEach(t=>typeCounts[t]=0);
+    inboxData.filter(i=>i.category==='settled').forEach(i=>{
+      const rt=i.recordType||'灵感';
+      typeCounts[rt]=(typeCounts[rt]||0)+1;
+      typeCounts.all++;
+    });
+    types.forEach(t=>{
+      const label=t==='all'?'全部':t;
+      html+='<div class="inbox-tab '+(inboxSubFilter===t?'active':'')+'" onclick="setInboxSubFilter(\''+t+'\')">'+label+'<span class="tab-count">'+(typeCounts[t]||0)+'</span></div>';
+    });
+  }else if(inboxFilter==='pending'){
+    // 待确认：按来源筛选
+    const sources={};
+    inboxData.filter(i=>i.category==='pending').forEach(i=>{
+      const s=i.source||'其他';
+      sources[s]=(sources[s]||0)+1;
+    });
+    const total=inboxData.filter(i=>i.category==='pending').length;
+    html+='<div class="inbox-tab '+(inboxSubFilter==='all'?'active':'')+'" onclick="setInboxSubFilter(\'all\')">全部<span class="tab-count">'+total+'</span></div>';
+    for(const s in sources){
+      html+='<div class="inbox-tab '+(inboxSubFilter===s?'active':'')+'" onclick="setInboxSubFilter(\''+s+'\')">'+s+'<span class="tab-count">'+sources[s]+'</span></div>';
+    }
+  }else if(inboxFilter==='gap'){
+    // 知识缺口：按领域筛选
+    const domains={};
+    inboxData.filter(i=>i.category==='gap').forEach(i=>{
+      const d=i.gapDomain||'其他';
+      domains[d]=(domains[d]||0)+1;
+    });
+    const total=inboxData.filter(i=>i.category==='gap').length;
+    html+='<div class="inbox-tab '+(inboxSubFilter==='all'?'active':'')+'" onclick="setInboxSubFilter(\'all\')">全部<span class="tab-count">'+total+'</span></div>';
+    for(const d in domains){
+      html+='<div class="inbox-tab '+(inboxSubFilter===d?'active':'')+'" onclick="setInboxSubFilter(\''+d+'\')">'+d+'<span class="tab-count">'+domains[d]+'</span></div>';
+    }
+  }else if(inboxFilter==='conflict'){
+    // 冲突：全部展示
+    const total=inboxData.filter(i=>i.category==='conflict').length;
+    html+='<div class="inbox-tab active" onclick="setInboxSubFilter(\'all\')">全部冲突<span class="tab-count">'+total+'</span></div>';
+  }
+  tabs.innerHTML=html;
+}
+
+function setInboxSubFilter(f){
+  inboxSubFilter=f;
+  renderInboxTabs();
+  renderInboxList();
+}
+
+function renderInboxList(){
+  const list=document.getElementById('inboxList');
+  const titleEl=document.getElementById('inboxListTitle');
+  const sortVal=document.getElementById('inboxSort').value;
+
+  // 筛选数据
+  let items=inboxData.filter(i=>i.category===inboxFilter);
+
+  // 子筛选
+  if(inboxSubFilter!=='all'){
+    if(inboxFilter==='settled'){
+      items=items.filter(i=>(i.recordType||'灵感')===inboxSubFilter);
+    }else if(inboxFilter==='pending'){
+      items=items.filter(i=>(i.source||'其他')===inboxSubFilter);
+    }else if(inboxFilter==='gap'){
+      items=items.filter(i=>(i.gapDomain||'其他')===inboxSubFilter);
+    }
+  }
+
+  // 排序
+  if(sortVal==='time-desc'){
+    items.sort((a,b)=>b.ts-a.ts);
+  }else if(sortVal==='time-asc'){
+    items.sort((a,b)=>a.ts-b.ts);
+  }else if(sortVal==='type'){
+    items.sort((a,b)=>{
+      const ta=(a.recordType||a.source||'').localeCompare(b.recordType||b.source||'');
+      if(ta!==0)return ta;
+      return b.ts-a.ts;
+    });
+  }
+
+  // 标题
+  const titleMap={pending:'待确认候选',settled:'已沉淀知识',gap:'知识缺口',conflict:'冲突待裁决'};
+  titleEl.innerHTML=titleMap[inboxFilter]+' <span class="count">'+items.length+' 条</span>';
+
+  // 空状态
+  if(items.length===0){
+    list.innerHTML='<div class="inbox-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v16l-8-3-8 3V5z"/></svg><div>当前筛选下暂无内容</div></div>';
+    return;
+  }
+
+  // 渲染
+  if(inboxFilter==='gap'){
+    list.innerHTML=items.map(i=>renderGapItem(i)).join('');
+  }else if(inboxFilter==='conflict'){
+    list.innerHTML=items.map(i=>renderConflictItem(i)).join('');
+  }else{
+    let html='';
+    if(sortVal==='type'){
+      // 按类型分组渲染
+      const groups={};
+      items.forEach(i=>{
+        const key=i.recordType||i.source||'其他';
+        if(!groups[key])groups[key]=[];
+        groups[key].push(i);
+      });
+      for(const g in groups){
+        html+='<div style="margin-bottom:20px"><div style="font-size:12px;color:var(--gold-dim);letter-spacing:.08em;margin-bottom:10px;text-transform:uppercase">'+g+' · '+groups[g].length+' 条</div>';
+        html+=groups[g].map(i=>renderCandItem(i)).join('');
+        html+='</div>';
+      }
+    }else{
+      html=items.map(i=>renderCandItem(i)).join('');
+    }
+    list.innerHTML=html;
+  }
+}
+
+function renderCandItem(i){
+  const dt=new Date(i.ts);
+  const ds=dt.toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'});
+  const settledDs=i.settledTs?new Date(i.settledTs).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit'}):'';
+  const tagClass=i.source==='AI问答'?'tag-ai':i.source==='项目复盘'?'tag-gold':i.source==='回溯补充'?'tag-gold':i.source==='资料加工'?'tag-web':'tag-soft';
+  const typeColor=jTypeMap[i.recordType]||'#9AA3AF';
+
+  let actions='';
+  if(i.category==='pending'){
+    actions='<div class="cand-actions">'+
+      '<button class="mini-btn primary" onclick="confirmCand(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg>确认保存</button>'+
+      '<button class="mini-btn" onclick="toast(\'已进入编辑\')">编辑</button>'+
+      '<button class="mini-btn" onclick="toast(\'已暂缓\')">暂缓</button>'+
+      '<button class="mini-btn danger" onclick="delCand(this)">删除</button>'+
+      '</div>';
+  }else if(i.category==='settled'){
+    actions='<div class="cand-actions">'+
+      '<button class="mini-btn" onclick="toast(\'已查看详情\')">查看详情</button>'+
+      '<button class="mini-btn" onclick="toast(\'已创建新版本\')">更新版本</button>'+
+      '</div>';
+  }
+
+  return '<div class="cand" data-id="'+i.id+'">'+
+    '<div class="cand-top">'+
+      '<div class="cand-trigger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>'+
+      '<div class="cand-body">'+
+        '<h5>'+(i.trigger||'').replace(/</g,'&lt;')+'</h5>'+
+        '<p>'+(i.detail||'').replace(/</g,'&lt;')+'</p>'+
+        '<div class="cand-foot">'+
+          '<span class="src">'+
+            '<span class="tag '+tagClass+'" style="padding:1px 6px">'+(i.source||'')+'</span>'+
+            '<span class="cand-type-badge" style="background:'+typeColor+'22;color:'+typeColor+'">'+(i.recordType||'灵感')+'</span>'+
+            (i.meta||'').replace(/</g,'&lt;')+
+            '<span class="cand-time">'+ds+(settledDs?' · 沉淀于 '+settledDs:'')+'</span>'+
+          '</span>'+
+          actions+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function renderGapItem(i){
+  const dt=new Date(i.ts);
+  const ds=dt.toLocaleString('zh-CN',{month:'2-digit',day:'2-digit'});
+  return '<div class="gap-detail">'+
+    '<h5>'+(i.trigger||'').replace(/</g,'&lt;')+'</h5>'+
+    '<div class="gap-meta">领域：'+(i.gapDomain||'未分类')+' · '+i.gapCount+' 次无可靠答案的提问 · 标记于 '+ds+'</div>'+
+    '<p>'+(i.detail||'').replace(/</g,'&lt;')+'</p>'+
+    '<div class="cand-foot" style="margin-top:12px">'+
+      '<span class="src"><span class="tag tag-soft" style="padding:1px 6px">知识缺口</span>'+(i.meta||'').replace(/</g,'&lt;')+'</span>'+
+      '<div class="cand-actions">'+
+        '<button class="mini-btn primary" onclick="toast(\'已创建收集任务\')">去收集</button>'+
+        '<button class="mini-btn" onclick="toast(\'已暂缓\')">暂缓</button>'+
+        '<button class="mini-btn danger" onclick="delGap('+i.id+')">忽略</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function renderConflictItem(i){
+  const dt=new Date(i.ts);
+  const ds=dt.toLocaleString('zh-CN',{month:'2-digit',day:'2-digit'});
+  let sidesHtml='';
+  if(i.conflictA&&i.conflictB){
+    sidesHtml='<div class="conf-sides">'+
+      '<div class="conflict-side a"><div class="side-label">'+i.conflictA.label+'</div><div class="side-content">'+i.conflictA.content.replace(/</g,'&lt;')+'</div></div>'+
+      '<div class="conflict-side b"><div class="side-label">'+i.conflictB.label+'</div><div class="side-content">'+i.conflictB.content.replace(/</g,'&lt;')+'</div></div>'+
+    '</div>';
+  }
+  return '<div class="conflict-detail">'+
+    '<h5>'+(i.trigger||'').replace(/</g,'&lt;')+'</h5>'+
+    '<div class="gap-meta" style="color:var(--text-faint)">'+'冲突类型：'+(i.conflictA?.label||'')+' ↔ '+(i.conflictB?.label||'')+' · 标记于 '+ds+'</div>'+
+    '<p>'+(i.detail||'').replace(/</g,'&lt;')+'</p>'+
+    sidesHtml+
+    '<div class="cand-foot" style="margin-top:12px">'+
+      '<span class="src"><span class="tag tag-web" style="padding:1px 6px">知识冲突</span>'+(i.meta||'').replace(/</g,'&lt;')+'</span>'+
+      '<div class="cand-actions">'+
+        '<button class="mini-btn" onclick="toast(\'已标记待重新验证\')">标记待验证</button>'+
+        '<button class="mini-btn" onclick="toast(\'已合并适用条件\')">合并条件</button>'+
+        '<button class="mini-btn danger" onclick="delGap('+i.id+')">忽略</button>'+
+      '</div>'+
+    '</div>'+
+  '</div>';
+}
+
+function delGap(id){
+  inboxData=inboxData.filter(i=>i.id!=id);
+  saveInboxData();
+  renderInboxList();
+  updateInboxStats();
+  toast('已忽略');
+}
+
 /* ====== Init ====== */
+initKcData();
+updateKcCounts();
+renderKcSubTabs();
+renderKcList();
+loadInboxData();
+updateInboxStats();
+renderInboxTabs();
+renderInboxList();
 initAuth();
 </script>
 </body>
