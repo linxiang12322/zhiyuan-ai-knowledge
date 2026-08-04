@@ -34,46 +34,30 @@ Supabase 是一个免费的开源后端服务，提供数据库 + 用户认证�
 
 ### 第 3 步：创建数据库表
 
-1. 左侧菜单点击 **SQL Editor**
-2. 点击「New query」
-3. 粘贴以下 SQL 并点击「Run」执行：
+1. 左侧菜单点击 **SQL Editor** → 点击「New query」
+2. 打开本仓库根目录的 **`supabase-schema.sql`**，整段复制粘贴到编辑器
+3. 点击「Run」执行，成功后显示「Success. No rows returned」
 
-```sql
--- 创建记录表
-CREATE TABLE IF NOT EXISTS records (
-  id BIGINT PRIMARY KEY DEFAULT (EXTRACT(EPOCH FROM NOW()) * 1000)::BIGINT,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  type TEXT NOT NULL DEFAULT '灵感',
-  content TEXT NOT NULL,
-  ts TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
+该脚本会创建两张表（脚本是**幂等**的，可以重复执行，不会破坏已有数据）：
 
--- 启用行级安全（RLS）—— 确保用户只能访问自己的数据
-ALTER TABLE records ENABLE ROW LEVEL SECURITY;
+| 表 | 用途 | 对应功能 |
+|---|---|---|
+| `records` | 速记记录 | 首页「快速收集」 |
+| `user_state` | 用户状态快照（jsonb） | 知识中心 / 待整理箱 / 项目 / 回溯日志 |
 
--- 策略：用户只能增删查改自己的记录
-CREATE POLICY "用户查看自己的记录" ON records
-  FOR SELECT USING (auth.uid() = user_id);
+`user_state` 按 `key` 区分四类数据：
 
-CREATE POLICY "用户添加自己的记录" ON records
-  FOR INSERT WITH CHECK (auth.uid() = user_id);
+| key | 内容 |
+|---|---|
+| `kc` | 知识中心（原始资料层 / 知识单元层 / 成果层） |
+| `inbox` | 待整理箱（待确认 / 已沉淀 / 知识缺口 / 知识冲突） |
+| `proj` | 项目列表（含复盘内容） |
+| `recall` | 每日知识回溯日志 |
 
-CREATE POLICY "用户修改自己的记录" ON records
-  FOR UPDATE USING (auth.uid() = user_id);
+两张表都已启用**行级安全（RLS）**，每个用户只能读写自己的数据。
 
-CREATE POLICY "用户删除自己的记录" ON records
-  FOR DELETE USING (auth.uid() = user_id);
-
--- 创建索引加速查询
-CREATE INDEX IF NOT EXISTS idx_records_user_id ON records(user_id);
-CREATE INDEX IF NOT EXISTS idx_records_ts ON records(ts DESC);
-
--- 允许自动填充 user_id（如未传入）
-ALTER TABLE records ALTER COLUMN user_id SET DEFAULT auth.uid();
-```
-
-4. 执行成功后会显示「Success. No rows returned」
+> ⚠️ **如果你之前只建过 `records` 表**，请务必重新执行一次本脚本补建 `user_state`，
+> 否则登录后同步会提示「云同步表 user_state 不存在」，知识中心和项目数据仍只存在本机。
 
 ### 第 4 步：关闭邮箱确认（可选，方便测试）
 
@@ -109,10 +93,19 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6...你的完整key';
 ## 配置完成后的效果
 
 - 首次打开 → 显示「注册」页面（邮箱 + 密码）
-- 注册/登录后 → 顶栏显示绿色「云同步」标志
-- 在电脑上写记录 → 手机上登录同账号即可看到
-- 在手机上写记录 → 电脑上也能看到
+- 注册/登录后 → 顶栏显示绿色「云同步」标志，并在后台自动拉取云端数据
+- 在电脑上写记录 / 沉淀知识 / 建项目 → 手机上登录同账号即可看到，反之亦然
 - 每条记录旁显示「☁ 已同步」标记
+
+### 同步是怎么工作的
+
+- **本地优先**：所有数据仍会写入浏览器 localStorage，断网也能正常使用
+- **自动同步**：任何修改在 1.2 秒防抖后自动上传云端；登录时自动拉取合并
+- **冲突处理**：按「域 + 时间戳」比较，**后修改的一方胜出**（不会互相覆盖整库）
+- **手动控制**：设置面板 →「数据同步」区块，可点「立即上传到云端」或「从云端恢复」
+- **状态可见**：顶栏徽标显示 `云同步 / 同步中 / 同步异常 / 单机`，点击可查看详情
+
+> 注意：「从云端恢复」会用云端数据**覆盖本机**，本机未上传的修改会丢失，操作前会二次确认。
 
 ---
 

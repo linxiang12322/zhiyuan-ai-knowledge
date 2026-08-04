@@ -1340,6 +1340,25 @@ body::after{
           <div class="set-hint">同领域已确认知识达到阈值时，自动生成 SOP 草稿供你审阅</div>
         </div>
       </div>
+      <div class="set-section">
+        <h4>数据同步</h4>
+        <div class="set-hint" id="syncScopeHint" style="margin-bottom:10px;line-height:1.7">
+          同步范围：知识中心、待整理箱、项目、回溯日志（速记记录单独存 records 表）。<br>
+          登录云端账号后自动双向同步；未登录时数据仅保存在本机浏览器。
+        </div>
+        <div class="set-status" id="syncSettingStatus" style="margin-bottom:12px">
+          <span class="dot"></span>
+          <span id="syncSettingText">未登录 · 当前为单机模式</span>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-ghost" onclick="syncPushAll()">立即上传到云端</button>
+          <button class="btn btn-ghost" onclick="syncPullForce()">从云端恢复</button>
+        </div>
+        <div class="set-hint" style="margin-top:10px">
+          首次使用云同步需在 Supabase SQL Editor 执行仓库根目录的
+          <b style="color:var(--gold-bright)">supabase-schema.sql</b> 建表（含行级安全策略），否则同步会提示表不存在。
+        </div>
+      </div>
       <div class="set-status warn" id="settingsStatus">
         <span class="dot"></span>
         <span id="settingsStatusText">尚未配置 API Key，AI 暂不可用（请先在上方填写 DeepSeek / 豆包 Key）</span>
@@ -1630,6 +1649,9 @@ function setupLocalLoginMode(){
 
 function resetConfirm(){
   if(confirm('重置将清空所有本地数据和密码，无法恢复。确定继续吗？')){
+    // 清空全部本地数据域（此前只清了密码与速记，知识/待整理箱/项目会残留）
+    ['zhiyuan_kc_v1','zhiyuan_inbox_v1','zhiyuan_projects_v1','zhiyuan_recall_v1',SYNC_META_KEY]
+      .forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
     localStorage.removeItem(STORE_KEY);
     localStorage.removeItem(DATA_KEY);
     sessionStorage.removeItem(SESSION_KEY);
@@ -1640,6 +1662,13 @@ function resetConfirm(){
 /* ====== 登出 ====== */
 async function doLogout(){
   if(cloudMode && sb){
+    // 退出前清理同步状态：避免切换账号后，把上个账号残留的本地数据推给新账号
+    try{
+      Object.keys(_pushTimers).forEach(k=>clearTimeout(_pushTimers[k]));
+      _pushTimers={};
+      localStorage.removeItem(SYNC_META_KEY);
+      syncState='local';
+    }catch(e){}
     await sb.auth.signOut();
     localStorage.removeItem(SB_SESSION_KEY);
     currentUser=null;
@@ -1659,19 +1688,236 @@ async function enterApp(){
   loadSettings();
   updateApiStatus();
   await renderRecords();
+  // 云端模式：后台拉取并合并云端数据（不阻塞进入应用）
+  if(cloudMode&&sb&&currentUser){
+    setTimeout(()=>{cloudPullAll();},300);
+  }
 }
 
 function updateSyncBadge(){
   const badge=document.getElementById('syncBadge');
   const text=document.getElementById('syncText');
-  if(cloudMode){
-    badge.classList.remove('off');
-    text.textContent='云同步';
-    badge.title='云同步已开启 · 手机电脑数据实时共享';
-  }else{
+  if(!badge||!text)return;
+  if(!cloudMode){
     badge.classList.add('off');
     text.textContent='单机';
-    badge.title='单机模式 · 数据仅存本机浏览器';
+    badge.title='单机模式 · 数据仅存本机浏览器，登录云端账号后可多设备同步';
+    return;
+  }
+  badge.classList.remove('off');
+  if(syncState==='syncing'){
+    text.textContent='同步中';
+    badge.title='正在与云端同步…';
+  }else if(syncState==='error'){
+    badge.classList.add('off');
+    text.textContent='同步异常';
+    badge.title='云端同步失败：'+(window._syncErr||'请检查网络，或确认已在 Supabase 执行建表 SQL');
+  }else{
+    text.textContent='云同步';
+    badge.title='云同步已开启 · 知识中心/待整理箱/项目/回溯日志已同步到云端';
+  }
+}
+
+/* ============================================================
+ *  云端数据同步层
+ *  同步范围：知识中心(kc) / 待整理箱(inbox) / 项目(proj) / 回溯日志(recall)
+ *  策略：localStorage 为主存储（离线可用），登录云端后与 Supabase
+ *        user_state 表按「域 + 时间戳」双向同步，后写胜出。
+ *  依赖表：public.user_state(user_id uuid, key text, data jsonb, updated_at)
+ *        建表 SQL 见仓库根目录 supabase-schema.sql
+ * ============================================================ */
+const CLOUD_TABLE='user_state';
+const SYNC_META_KEY='zhiyuan_sync_meta_v1';
+let syncState='local';            // local | syncing | synced | error
+let _pushTimers={};
+// 启动初始化期（写入演示种子数据 / 标签迁移）不算用户变更，
+// 否则新设备首次打开会用演示数据的「最新时间戳」反向覆盖云端真实数据。
+let _seedingDemo=true;
+
+/* 同步域配置（用函数惰性求值，避免常量 TDZ） */
+function getSyncDomains(){
+  return {
+    kc:{ls:'zhiyuan_kc_v1',label:'知识中心',
+      read:()=>kcData,
+      write:v=>{if(v&&typeof v==='object'&&!Array.isArray(v)){kcData.raw=v.raw||[];kcData.unit=v.unit||[];kcData.output=v.output||[];return true;}return false;}},
+    inbox:{ls:'zhiyuan_inbox_v1',label:'待整理箱',
+      read:()=>inboxData,
+      write:v=>{if(Array.isArray(v)){inboxData=v;return true;}return false;}},
+    proj:{ls:'zhiyuan_projects_v1',label:'项目',
+      read:()=>projData,
+      write:v=>{if(Array.isArray(v)){projData=v;return true;}return false;}},
+    recall:{ls:'zhiyuan_recall_v1',label:'回溯日志',
+      read:()=>recallLog,
+      write:v=>{if(v&&typeof v==='object'){recallLog=v;return true;}return false;}}
+  };
+}
+
+function loadSyncMeta(){try{return JSON.parse(localStorage.getItem(SYNC_META_KEY)||'{}');}catch(e){return{};}}
+function saveSyncMeta(m){try{localStorage.setItem(SYNC_META_KEY,JSON.stringify(m));}catch(e){}}
+
+/* 本地数据变更 → 打时间戳 + 排队推送云端 */
+function markLocalChange(domain){
+  if(_seedingDemo)return;   // 启动期的演示数据/标签迁移不计入变更
+  const m=loadSyncMeta();m[domain]=Date.now();saveSyncMeta(m);
+  if(cloudMode&&sb&&currentUser)schedulePush(domain);
+}
+
+function schedulePush(domain){
+  clearTimeout(_pushTimers[domain]);
+  setSyncState('syncing');
+  _pushTimers[domain]=setTimeout(()=>{pushDomain(domain);},1200);
+}
+
+async function pushDomain(domain){
+  if(!(cloudMode&&sb&&currentUser))return false;
+  const d=getSyncDomains()[domain];
+  if(!d)return false;
+  try{
+    const payload=d.read();
+    const {error}=await sb.from(CLOUD_TABLE).upsert(
+      {user_id:currentUser.id,key:domain,data:{payload},updated_at:new Date().toISOString()},
+      {onConflict:'user_id,key'}
+    );
+    if(error)throw error;
+    setSyncState('synced');
+    return true;
+  }catch(e){
+    console.warn('[同步] 上传失败',domain,e);
+    setSyncState('error',e.message||'');
+    if(e&&(e.code==='42P01'||String(e.message||'').indexOf('user_state')>=0)){
+      toast('云同步表 user_state 不存在 · 请先在 Supabase 执行 supabase-schema.sql');
+    }
+    return false;
+  }
+}
+
+/* 登录后自动执行：拉取云端并与本地按时间戳合并 */
+async function cloudPullAll(){
+  if(!(cloudMode&&sb&&currentUser))return;
+  setSyncState('syncing');
+  const domains=getSyncDomains();
+  const meta=loadSyncMeta();
+  let pulled=0;
+  try{
+    const {data,error}=await sb.from(CLOUD_TABLE).select('key,data,updated_at');
+    if(error)throw error;
+    const rows={};
+    (data||[]).forEach(r=>{rows[r.key]=r;});
+    for(const k of Object.keys(domains)){
+      const d=domains[k];
+      const row=rows[k];
+      const localTs=meta[k]||0;
+      if(!row){
+        // 云端尚无该域数据 → 首次把本地推上去
+        if(await pushDomain(k))meta[k]=Date.now();
+        continue;
+      }
+      const cloudTs=new Date(row.updated_at).getTime()||0;
+      const payload=row.data&&row.data.payload;
+      if(cloudTs>localTs){
+        if(d.write(payload)){
+          try{localStorage.setItem(d.ls,JSON.stringify(payload));}catch(e){}
+          meta[k]=cloudTs;pulled++;
+        }
+      }else if(localTs>cloudTs){
+        await pushDomain(k);
+      }
+    }
+    saveSyncMeta(meta);
+    setSyncState('synced');
+    if(pulled>0){
+      refreshAllViews();
+      toast('已从云端恢复 '+pulled+' 项数据');
+    }
+  }catch(e){
+    console.warn('[同步] 拉取失败',e);
+    setSyncState('error',e.message||'');
+    if(e&&(e.code==='42P01'||String(e.message||'').indexOf('user_state')>=0)){
+      toast('云同步表 user_state 不存在 · 请先在 Supabase 执行 supabase-schema.sql');
+    }
+  }
+}
+
+/* 云端数据回填后：重新渲染各视图（函数不存在则跳过） */
+function refreshAllViews(){
+  const fns=['migrateKcTags','updateKcCounts','renderKcSubTabs','renderKcTagTabs','renderKcList','renderKcDetail',
+             'renderInboxTabs','renderInboxList','renderProjectList','renderRecords',
+             'renderRecallCards','renderHomeRecall','renderWeeklyTopics'];
+  fns.forEach(n=>{try{if(typeof window[n]==='function')window[n]();}catch(e){}});
+}
+
+function setSyncState(s,msg){
+  syncState=s;
+  if(msg)window._syncErr=msg;
+  updateSyncBadge();
+  try{updateSyncSettingStatus();}catch(e){}
+}
+
+/* 设置面板内的同步状态行 */
+function updateSyncSettingStatus(){
+  const box=document.getElementById('syncSettingStatus');
+  const txt=document.getElementById('syncSettingText');
+  if(!box||!txt)return;
+  if(!cloudMode||!currentUser){
+    box.className='set-status warn';
+    txt.textContent='未登录云端 · 单机模式，数据仅保存在本机浏览器';
+    return;
+  }
+  if(syncState==='error'){
+    box.className='set-status warn';
+    txt.textContent='同步失败：'+(window._syncErr||'请检查网络，或确认已执行建表 SQL');
+    return;
+  }
+  if(syncState==='syncing'){
+    box.className='set-status warn';
+    txt.textContent='正在与云端同步…';
+    return;
+  }
+  const meta=loadSyncMeta();
+  const vals=Object.values(meta).map(v=>+v||0);
+  const last=vals.length?Math.max.apply(null,vals):0;
+  box.className='set-status ok';
+  txt.textContent='云同步已开启'+(last?(' · 最近变更 '+new Date(last).toLocaleString('zh-CN',{hour12:false})):' · 暂无变更记录');
+}
+
+/* 手动：立即上传全部到云端 */
+async function syncPushAll(){
+  if(!(cloudMode&&sb&&currentUser)){toast('请先登录云端账号后再同步');return;}
+  setSyncState('syncing');
+  const meta=loadSyncMeta();let ok=0;
+  for(const k of Object.keys(getSyncDomains())){
+    if(await pushDomain(k)){meta[k]=Date.now();ok++;}
+  }
+  saveSyncMeta(meta);
+  setSyncState(ok?'synced':'error');
+  toast(ok?('已上传 '+ok+' 项数据到云端'):'上传失败 · 请检查网络或是否已执行建表 SQL');
+}
+
+/* 手动：用云端数据强制覆盖本机 */
+async function syncPullForce(){
+  if(!(cloudMode&&sb&&currentUser)){toast('请先登录云端账号后再同步');return;}
+  if(!confirm('将用云端数据覆盖本机数据，本机尚未上传的修改会丢失。确定继续？'))return;
+  setSyncState('syncing');
+  const domains=getSyncDomains();const meta=loadSyncMeta();let n=0;
+  try{
+    const {data,error}=await sb.from(CLOUD_TABLE).select('key,data,updated_at');
+    if(error)throw error;
+    (data||[]).forEach(r=>{
+      const d=domains[r.key];
+      if(!d)return;
+      const payload=r.data&&r.data.payload;
+      if(d.write(payload)){
+        try{localStorage.setItem(d.ls,JSON.stringify(payload));}catch(e){}
+        meta[r.key]=new Date(r.updated_at).getTime()||Date.now();n++;
+      }
+    });
+    saveSyncMeta(meta);
+    setSyncState('synced');
+    refreshAllViews();
+    toast(n?('已从云端恢复 '+n+' 项数据'):'云端暂无数据');
+  }catch(e){
+    setSyncState('error',e.message||'');
+    toast('恢复失败：'+(e.message||'未知错误'));
   }
 }
 
@@ -1901,6 +2147,7 @@ const KC_KEY='zhiyuan_kc_v1';
 
 function saveKcData(){
   try{localStorage.setItem(KC_KEY,JSON.stringify(kcData));}catch(e){}
+  try{markLocalChange('kc');}catch(e){}
 }
 
 function loadKcData(){
@@ -2417,6 +2664,7 @@ function loadRecallLog(){
 
 function saveRecallLog(){
   try{localStorage.setItem(RECALL_KEY,JSON.stringify(recallLog));}catch(e){}
+  try{markLocalChange('recall');}catch(e){}
 }
 
 /* 获取今日待回溯的知识单元（从 kcData.unit 中选取） */
@@ -2653,6 +2901,7 @@ function updateModelDisplay(){
 function openSettings(){
   loadSettings();
   updateSettingsStatus();
+  try{updateSyncSettingStatus();}catch(e){}
   document.getElementById('settingsModal').classList.add('show');
 }
 
@@ -2827,8 +3076,20 @@ async function onTopSearch(q){
   pop.classList.add('show');
 }
 function onSyncBadge(){
-  if(cloudMode){toast('云同步已开启 · 多设备登录同一账号数据实时共享');}
-  else{toast('当前为单机模式 · 数据仅保存在本机浏览器，登录云端后可多设备同步');}
+  if(!cloudMode){
+    toast('当前为单机模式 · 数据仅保存在本机浏览器，登录云端账号后可多设备同步');
+    return;
+  }
+  if(syncState==='error'){
+    toast('云端同步失败：'+(window._syncErr||'请检查网络或建表 SQL')+' · 点击设置可手动重试');
+    return;
+  }
+  if(syncState==='syncing'){toast('正在同步中…');return;}
+  const meta=loadSyncMeta();
+  const last=Math.max(0,...Object.values(meta).map(v=>+v||0));
+  const when=last?new Date(last).toLocaleString('zh-CN',{hour12:false}):'尚未同步';
+  toast('云同步已开启 · 知识/待整理箱/项目/回溯均已上云 · 最近变更：'+when);
+  cloudPullAll();
 }
 
 /* ====== AI 聊天流式响应 ====== */
@@ -3444,6 +3705,7 @@ function loadInboxData(){
 
 function saveInboxData(){
   try{localStorage.setItem(INBOX_KEY,JSON.stringify(inboxData));}catch(e){}
+  try{markLocalChange('inbox');}catch(e){}
 }
 
 function addInboxItem(item){
@@ -3756,6 +4018,7 @@ function initProjectData(){
 /* ====== 保存项目数据 ====== */
 function saveProjData(){
   localStorage.setItem(PROJ_KEY,JSON.stringify(projData));
+  try{markLocalChange('proj');}catch(e){}
 }
 
 /* ====== 渲染项目列表 ====== */
@@ -3993,6 +4256,8 @@ renderHomeRecall(); // 渲染首页回溯条目
 renderRecallCards(); // 渲染回溯页面
 renderWeeklyTopics(); // 渲染本周专题
 initProjectData();
+// 启动初始化结束：之后的保存才算「用户真实变更」，才会打时间戳并同步云端
+_seedingDemo=false;
 initAuth();
 </script>
 </body>
