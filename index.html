@@ -723,6 +723,37 @@ body::after{
 .rec-del svg{width:15px;height:15px}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/* ===== 新增：顶部搜索下拉 / 演示横幅 / 联网开关 / 网络结果 ===== */
+.topbar-search{position:relative}
+.search-pop{position:absolute;top:46px;left:0;right:0;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(40,30,15,.14);max-height:360px;overflow:auto;z-index:60;display:none}
+.search-pop.show{display:block}
+.search-pop .sp-head{padding:8px 14px;font-size:12px;color:var(--text-faint);border-bottom:1px solid var(--line)}
+.search-pop .sp-item{padding:10px 14px;border-bottom:1px solid #f3eee4;cursor:pointer}
+.search-pop .sp-item:hover{background:#fbf7ef}
+.search-pop .sp-item h6{font-size:13.5px;margin:0 0 3px;font-weight:600}
+.search-pop .sp-item p{font-size:12.5px;color:var(--text-faint);margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.search-pop .sp-item .sp-tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:10px;background:#f0e6d6;color:#9a6b2e;margin-right:6px}
+.search-pop .sp-empty{padding:16px 14px;color:var(--text-faint);font-size:13px}
+
+.demo-banner{display:flex;align-items:center;gap:10px;background:linear-gradient(90deg,#fff8ec,#fdf3e3);border:1px solid #f0dcb8;border-radius:12px;padding:10px 14px;margin:0 0 18px;font-size:13px;color:#7a5a2e;line-height:1.6}
+.demo-banner b{color:#b5791f}
+.demo-banner .db-close{margin-left:auto;cursor:pointer;color:#b79b6e;border:0;background:none;font-size:20px;line-height:1;padding:0 4px}
+.demo-banner .db-close:hover{color:#7a5a2e}
+
+.ai-sample-note{display:flex;align-items:center;gap:8px;background:#f6f4ef;border:1px dashed #d8cfbf;border-radius:10px;padding:7px 12px;margin:0 0 14px;font-size:12px;color:var(--text-faint)}
+.ai-sample-note .dot{width:7px;height:7px;border-radius:50%;background:var(--gold)}
+
+.web-toggle{display:inline-flex;align-items:center;gap:6px;margin:0 8px;padding:6px 12px;border:1px solid var(--line);border-radius:20px;background:#fff;font-size:12.5px;color:var(--text-faint);cursor:pointer;user-select:none}
+.web-toggle.active{border-color:var(--gold);color:#b5791f;background:#fff8ec}
+.web-toggle svg{width:15px;height:15px}
+
+.src-web-result{margin-top:10px;border:1px solid #e6efe9;border-left:3px solid #2e9e6b;border-radius:8px;padding:8px 12px;font-size:12.5px}
+.src-web-result h6{margin:0 0 6px;font-size:12.5px}
+.src-web-result a{color:#2e7d56;text-decoration:none}
+.src-web-result a:hover{text-decoration:underline}
+.src-web-result .wr{margin:4px 0;color:#555}
+</style>
 </head>
 <body>
 
@@ -842,13 +873,14 @@ body::after{
       <div class="crumb">知渊 / <b id="crumbName">混合工作台</b></div>
       <div class="topbar-search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-        <input placeholder="检索个人知识…">
+        <input id="topSearch" placeholder="检索个人知识…" oninput="onTopSearch(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();onTopSearch(this.value);}" onblur="setTimeout(()=>{const p=document.getElementById('searchPop');if(p)p.classList.remove('show');},180)">
+        <div class="search-pop" id="searchPop"></div>
       </div>
       <div class="api-status off" id="apiStatus" onclick="openSettings()" title="点击配置 AI API">
         <span class="as-dot"></span>
         <span id="apiStatusText">AI 未配置</span>
       </div>
-      <div class="sync-badge" id="syncBadge" onclick="toast('云同步已开启 · 多设备数据实时共享')" title="点击查看同步状态">
+      <div class="sync-badge" id="syncBadge" onclick="onSyncBadge()" title="点击查看同步状态">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 10h-1.3A8 8 0 109 20"/><path d="M8 6h4l4 4-4 4H8z"/></svg>
         <span id="syncText">云同步</span>
       </div>
@@ -860,6 +892,10 @@ body::after{
     <!-- ============ HOME ============ -->
     <section class="view active" id="view-home">
       <div class="wrap stagger">
+        <div class="demo-banner" id="demoBanner">
+          <b>演示版本</b> 当前页面展示的是<strong>示例数据</strong>。AI 对话需先在「设置」填写 DeepSeek / 豆包 Key，联网检索需填写 Tavily Key；登录云端后你的记录才会被保存与多设备同步。
+          <button class="db-close" title="关闭" onclick="document.getElementById('demoBanner').style.display='none'">×</button>
+        </div>
         <div class="hero">
           <div class="eyebrow">2026 年 7 月 31 日 · 周五</div>
           <h1 class="greet">下午好，秦巢雲。<br>今天<em>记录</em>点什么？</h1>
@@ -966,6 +1002,7 @@ body::after{
     <section class="view" id="view-ai">
       <div class="ai-layout">
         <div class="chat" id="chatScroll">
+          <div class="ai-sample-note"><span class="dot"></span>下方为<strong>示例对话 · 非真实生成</strong>。配置 API Key 并输入你自己的问题后，将获得基于你个人知识的真实回答（开启「联网」还会检索实时网络资料）。</div>
           <div class="msg ai">
             <div class="bubble">
               <div class="avatar-mini"><div class="a">渊</div><b>知渊 AI</b><small>来源分层 · 可回溯</small></div>
@@ -999,6 +1036,7 @@ body::after{
             </div>
           </div>
           <div class="chat-input">
+            <button type="button" class="web-toggle" id="webToggle" onclick="toggleWebSearch()" title="开启后，AI 回答将结合实时联网检索（需在设置填写 Tavily Key）"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18M12 3a15 15 0 000 18"/></svg>联网</button>
             <form onsubmit="sendChat(event)">
               <input id="chatInput" placeholder="继续追问，或贴入资料让我加工…">
               <button type="submit" title="发送"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
@@ -1026,7 +1064,7 @@ body::after{
             <h6><span class="tag tag-ai" style="padding:1px 6px">模型路由</span></h6>
             <div class="line"><span>主分析模型</span><b id="modelMain">DeepSeek</b></div>
             <div class="line"><span>向量模型</span><b id="modelVec">豆包 Emb.</b></div>
-            <div class="line"><span>联网插件</span><b>火山方舟</b></div>
+            <div class="line"><span>联网插件</span><b id="webPlugin">Tavily（未配置）</b></div>
           </div>
         </aside>
       </div>
@@ -1274,6 +1312,14 @@ body::after{
         </div>
       </div>
       <div class="set-section">
+        <h4>联网检索（可选）</h4>
+        <div class="set-field">
+          <label>Tavily API Key（联网搜索）</label>
+          <input type="password" id="tvApiKey" placeholder="tvly-xxxxxxxxxxxxxxxx" oninput="saveSettingsDraft()">
+          <div class="set-hint">在 <a href="https://app.tavily.com" target="_blank" style="color:var(--gold-dim)">app.tavily.com</a> 免费获取。AI 对话中开启「联网」后，会实时检索网络资料并标注来源；不填则无法使用联网。</div>
+        </div>
+      </div>
+      <div class="set-section">
         <h4>功能选项</h4>
         <div class="set-field">
           <label>自动分类敏感度</label>
@@ -1296,7 +1342,7 @@ body::after{
       </div>
       <div class="set-status warn" id="settingsStatus">
         <span class="dot"></span>
-        <span id="settingsStatusText">尚未配置 API，AI 功能将以演示模式运行</span>
+        <span id="settingsStatusText">尚未配置 API Key，AI 暂不可用（请先在上方填写 DeepSeek / 豆包 Key）</span>
       </div>
     </div>
     <div class="modal-foot">
@@ -2516,7 +2562,7 @@ document.getElementById('homeAsk').addEventListener('keydown',e=>{if(e.key==='En
  *  功能1：AI API 设置管理 + DeepSeek/豆包 API 调用
  * ============================================================ */
 const SETTINGS_KEY='zhiyuan_ai_settings_v1';
-let aiSettings={provider:'deepseek',dsApiKey:'',dsModel:'deepseek-chat',dbApiKey:'',dbModel:'',classifyMode:'ai',sopThreshold:5};
+let aiSettings={provider:'deepseek',dsApiKey:'',dsModel:'deepseek-chat',dbApiKey:'',dbModel:'',tavilyApiKey:'',classifyMode:'ai',sopThreshold:5};
 
 function loadSettings(){
   try{
@@ -2534,6 +2580,8 @@ function loadSettings(){
   if(dsModel)dsModel.value=aiSettings.dsModel||'deepseek-chat';
   if(dbKey)dbKey.value=aiSettings.dbApiKey||'';
   if(dbModel)dbModel.value=aiSettings.dbModel||'';
+  const tvKey=document.getElementById('tvApiKey');
+  if(tvKey)tvKey.value=aiSettings.tavilyApiKey||'';
   if(cm)cm.value=aiSettings.classifyMode||'ai';
   if(st)st.value=String(aiSettings.sopThreshold||5);
   if(aiSettings.provider==='doubao')switchProvider('doubao');
@@ -2545,6 +2593,7 @@ function saveSettingsDraft(){
   aiSettings.dsModel=document.getElementById('dsModel').value;
   aiSettings.dbApiKey=document.getElementById('dbApiKey').value.trim();
   aiSettings.dbModel=document.getElementById('dbModel').value.trim();
+  aiSettings.tavilyApiKey=document.getElementById('tvApiKey').value.trim();
   aiSettings.classifyMode=document.getElementById('classifyMode').value;
   aiSettings.sopThreshold=parseInt(document.getElementById('sopThreshold').value);
   updateSettingsStatus();
@@ -2569,7 +2618,7 @@ function updateSettingsStatus(){
     text.textContent='API 已配置 · '+aiSettings.provider.toUpperCase()+' · AI 功能可用';
   }else{
     status.className='set-status warn';
-    text.textContent='尚未配置 API Key，AI 功能将以演示模式运行';
+    text.textContent='尚未配置 API Key，AI 暂不可用（请先在设置填写 DeepSeek / 豆包 Key）';
   }
 }
 
@@ -2584,6 +2633,8 @@ function updateApiStatus(){
     el.className='api-status off';
     text.textContent='AI 未配置';
   }
+  const wp=document.getElementById('webPlugin');
+  if(wp)wp.textContent=aiSettings.tavilyApiKey?'Tavily（已配置·可联网）':'Tavily（未配置）';
 }
 
 function updateModelDisplay(){
@@ -2718,6 +2769,68 @@ async function buildContext(query){
   return ctx;
 }
 
+/* ====== 联网检索（Tavily 实时搜索） ====== */
+let webSearchOn=false;
+async function webSearch(query){
+  if(!aiSettings.tavilyApiKey){return {error:'未配置联网搜索 Key'};}
+  try{
+    const res=await fetch('https://api.tavily.com/search',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({api_key:aiSettings.tavilyApiKey,query:query,search_depth:'basic',max_results:5,include_answer:false})
+    });
+    if(!res.ok){const t=await res.text();return {error:'联网检索失败 ('+res.status+')：'+t.substring(0,120)};}
+    const data=await res.json();
+    const results=(data.results||[]).map(r=>({title:r.title||'',url:r.url||'',content:(r.content||'').substring(0,200)}));
+    if(results.length===0)return {text:'',results:[],count:0};
+    let text='\n\n【网络资料（联网检索所得，需你自行核实，不升级为个人观点）】\n';
+    results.forEach((r,i)=>{text+='['+(i+1)+'] '+r.title+' — '+r.url+'\n'+r.content+'\n';});
+    return {text,results,count:results.length};
+  }catch(e){return {error:'联网请求失败：'+e.message};}
+}
+
+function toggleWebSearch(){
+  if(!aiSettings.tavilyApiKey){
+    toast('联网检索需先在「设置 → 联网检索」中填写 Tavily API Key');
+    return;
+  }
+  webSearchOn=!webSearchOn;
+  const b=document.getElementById('webToggle');
+  if(b)b.classList.toggle('active',webSearchOn);
+  toast(webSearchOn?'已开启联网检索：AI 回答将结合实时网络资料':'已关闭联网检索');
+}
+
+/* ====== 顶部搜索：基于本地数据检索 ====== */
+async function collectSearchItems(){
+  const items=[];
+  try{const recs=await getRecords();(recs||[]).forEach(r=>items.push({title:((r.type||'记录')+' · '+((r.content||'').slice(0,40))),body:r.content||'',tag:r.type||'记录',view:'inbox'}));}catch(e){}
+  ['raw','unit','output'].forEach(layer=>{
+    (kcData[layer]||[]).forEach(i=>items.push({title:i.title||'',body:i.summary||'',tag:(layer==='raw'?'原始资料':layer==='unit'?'知识单元':'成果层')+' · '+(i.domain||''),view:'knowledge',id:i.id}));
+  });
+  try{(inboxData||[]).forEach(i=>items.push({title:i.trigger||i.detail||'',body:i.detail||i.trigger||'',tag:(i.category||'候选'),view:'inbox',id:i.id}));}catch(e){}
+  return items;
+}
+async function onTopSearch(q){
+  const pop=document.getElementById('searchPop');
+  if(!pop)return;
+  q=(q||'').trim();
+  if(q.length<1){pop.classList.remove('show');pop.innerHTML='';return;}
+  const items=await collectSearchItems();
+  const kw=q.toLowerCase();
+  const hits=items.filter(it=>(it.title+' '+it.body).toLowerCase().includes(kw)).slice(0,8);
+  if(hits.length===0){pop.innerHTML='<div class="sp-empty">未找到与「'+escHtml(q)+'」相关的内容</div>';pop.classList.add('show');return;}
+  pop.innerHTML='<div class="sp-head">找到 '+hits.length+' 条相关内容</div>'+hits.map(h=>
+    '<div class="sp-item" onclick="go(\''+h.view+'\');document.getElementById(\'searchPop\').classList.remove(\'show\');">'+
+    '<span class="sp-tag">'+escHtml(h.tag)+'</span><h6>'+escHtml(h.title||'(无标题)')+'</h6>'+
+    '<p>'+escHtml((h.body||'').slice(0,60))+'</p></div>'
+  ).join('');
+  pop.classList.add('show');
+}
+function onSyncBadge(){
+  if(cloudMode){toast('云同步已开启 · 多设备登录同一账号数据实时共享');}
+  else{toast('当前为单机模式 · 数据仅保存在本机浏览器，登录云端后可多设备同步');}
+}
+
 /* ====== AI 聊天流式响应 ====== */
 async function streamAIResponse(query,chatContainer){
   const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
@@ -2734,9 +2847,20 @@ async function streamAIResponse(query,chatContainer){
     return;
   }
 
+  // 联网检索
+  let webInfo='';let webCount=0;let lastWeb=[];
+  if(webSearchOn){
+    if(!aiSettings.tavilyApiKey){
+      const sm=am.querySelector('.avatar-mini small');if(sm)sm.innerHTML='正在思考… · 未配置联网 Key';
+    }else{
+      const ws=await webSearch(query);
+      if(ws.error){const sm=am.querySelector('.avatar-mini small');if(sm)sm.innerHTML='正在思考… · 联网失败';}
+      else{webInfo=ws.text||'';webCount=ws.count||0;lastWeb=ws.results||[];const sm=am.querySelector('.avatar-mini small');if(sm)sm.innerHTML='正在思考… · 已联网 '+webCount+' 条';}
+    }
+  }
   // 构建上下文
   const ctx=await buildContext(query);
-  const systemPrompt='你是「知渊」，用户的个人 AI 知识顾问。你的回答要区分三类来源：个人知识（用户已确认的经验）、网络资料（外部信息）、AI 推断（你的分析，非事实）。回答简洁有力，用中文。'+ctx;
+  const systemPrompt='你是「知渊」，用户的个人 AI 知识顾问。你的回答要区分三类来源：个人知识（用户已确认的经验）、网络资料（外部信息）、AI 推断（你的分析，非事实）。回答简洁有力，用中文。'+ctx+webInfo;
   const messages=[
     {role:'system',content:systemPrompt},
     {role:'user',content:query}
@@ -2785,6 +2909,15 @@ async function streamAIResponse(query,chatContainer){
 
     if(!fullText){
       para.textContent='（AI 返回为空，请检查 API 配置）';
+    }
+
+    // 联网检索结果（真实网络资料，需自行核实）
+    if(webCount>0&&lastWeb.length){
+      const wr=document.createElement('div');
+      wr.className='src-web-result';
+      wr.innerHTML='<h6><span class="tag tag-web" style="padding:1px 6px">网络资料</span> 本次联网检索 '+webCount+' 条 · 需自行核实</h6>'+
+        lastWeb.slice(0,3).map(r=>'<div class="wr">· <a href="'+escHtml(r.url)+'" target="_blank" rel="noopener">'+escHtml(r.title)+'</a></div>').join('');
+      area.appendChild(wr);
     }
 
     // 添加操作按钮
