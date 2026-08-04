@@ -947,18 +947,9 @@ body::after{
 
         <div class="split">
           <div class="recall-strip">
-            <div class="recall-head"><span class="pulse"></span><h3>今日知识回溯</h3><small>每日 3 条 · 艾宾浩斯</small></div>
-            <div class="recall-item">
-              <div class="recall-num">01</div>
-              <div class="recall-body"><h5>短视频前 3 秒钩子的"反常识"结构</h5><p>已确认 · 上次复习 14 天前 · 引用 7 次。当时你验证了"否定+承诺"比纯悬念完播率高 22%。</p><div class="meta"><span class="tag tag-personal">个人观点</span><span class="tag tag-soft">短视频运营</span></div></div>
-            </div>
-            <div class="recall-item">
-              <div class="recall-num">02</div>
-              <div class="recall-body"><h5>Dou+ 投放不要在发布后立即加热</h5><p>已确认 · 上次复习 30 天前。经验来自 3 月那次 5000 元试错，自然流被压制。</p><div class="meta"><span class="tag tag-personal">实践经验</span><span class="tag tag-soft">商业变现</span></div></div>
-            </div>
-            <div class="recall-item">
-              <div class="recall-num">03</div>
-              <div class="recall-body"><h5>用 AI 生成脚本要先喂"反面样本"</h5><p>核心知识 · 上次复习 7 天前 · 引用 15 次。这条已升为核心，回溯确认仍有效。</p><div class="meta"><span class="tag tag-gold">核心知识</span><span class="tag tag-soft">AI 应用</span></div></div>
+            <div class="recall-head"><span class="pulse"></span><h3>今日知识回溯</h3><small>每日 3 条 · 来自你的知识中心</small></div>
+            <div id="homeRecallItems">
+              <div style="padding:20px;text-align:center;color:var(--text-faint);font-size:14px">加载中…</div>
             </div>
           </div>
           <div class="projects-mini">
@@ -1065,6 +1056,10 @@ body::after{
             </select>
           </div>
         </div>
+        <div class="kc-filter-bar" id="kcTagFilterBar">
+          <span class="kc-filter-label">标签</span>
+          <div class="kc-sub-tabs" id="kcTagTabs"></div>
+        </div>
         <div class="kc-list-title" id="kcListTitle"></div>
         <div class="kc-layout">
           <div id="kcList"></div>
@@ -1130,55 +1125,21 @@ body::after{
           <p>旧知识在复习中形成新观点版本。系统只更新回溯次数、记忆状态等元数据，<b style="color:var(--gold-bright)">不会</b>自动改写知识正文——你的新观点先入待整理箱。</p>
         </div>
         <div class="recall-hero">
-          <div class="big">3</div>
-          <div><h2>今日待回溯</h2><p>基于艾宾浩斯曲线与你的项目情境智能推送 · 首页常驻</p></div>
+          <div class="big" id="recallCount">0</div>
+          <div><h2>今日待回溯</h2><p>基于你的知识中心数据 · 按引用频率和时间智能推送 · 首页常驻</p></div>
         </div>
-        <div class="recall-cards stagger">
-          <div class="rc">
-            <div class="rc-domain">短视频运营 · 个人观点</div>
-            <h4>前 3 秒"否定+承诺"钩子优于纯悬念</h4>
-            <p>上次复习 14 天前，引用 7 次。当时验证完播率高 22%。近期平台权重转向互动深度，这条是否仍然成立？</p>
-            <div class="rc-actions">
-              <span class="rc-act ok" onclick="recallAct(this,'我还记得')">✓ 我还记得</span>
-              <span class="rc-act warn" onclick="recallAct(this,'需要重新学习')">需要重新学习</span>
-              <span class="rc-act old" onclick="recallAct(this,'已经过时')">已经过时</span>
-              <span class="rc-act gold" onclick="recallAct(this,'增加新观点')">＋ 新观点</span>
-              <span class="rc-act" onclick="toast('已关联到项目')">关联项目</span>
-              <span class="rc-act" onclick="toast('已转 SOP 草案')">转 SOP</span>
-            </div>
-          </div>
-          <div class="rc">
-            <div class="rc-domain">商业变现 · 实践经验</div>
-            <h4>起号期不要发布后立即加热 Dou+</h4>
-            <p>上次复习 30 天前。5000 元试错得出，建议自然流跑 24h。本周 A/B 测试已复现此结论，可考虑升为核心。</p>
-            <div class="rc-actions">
-              <span class="rc-act ok" onclick="recallAct(this,'我还记得')">✓ 我还记得</span>
-              <span class="rc-act gold" onclick="recallAct(this,'升为核心知识')">升为核心</span>
-              <span class="rc-act old" onclick="recallAct(this,'已经过时')">已经过时</span>
-              <span class="rc-act gold" onclick="recallAct(this,'增加新观点')">＋ 新观点</span>
-              <span class="rc-act" onclick="toast('稍后提醒')">稍后提醒</span>
-            </div>
-          </div>
-          <div class="rc">
-            <div class="rc-domain">AI 应用 · 核心知识</div>
-            <h4>用 AI 生成脚本要先喂"反面样本"</h4>
-            <p>核心知识 · 上次复习 7 天前 · 引用 15 次。今日你在回溯中补充了"反面样本需每两周更新"的新观点，已入待整理箱。</p>
-            <div class="rc-actions">
-              <span class="rc-act ok" onclick="recallAct(this,'我还记得')">✓ 我还记得</span>
-              <span class="rc-act gold" onclick="recallAct(this,'增加新观点')">＋ 新观点（已补充）</span>
-              <span class="rc-act" onclick="toast('已关联到脚本工作流项目')">关联项目</span>
-              <span class="rc-act" onclick="toast('稍后提醒')">稍后提醒</span>
-            </div>
+        <div class="recall-cards stagger" id="recallCards">
+          <div class="rc" style="text-align:center;padding:40px 20px;color:var(--text-faint)">
+            <div style="font-size:14px">加载中…</div>
           </div>
         </div>
         <div class="weekly">
           <h3>本周专题回顾</h3>
-          <p>每周日推送 · 围绕一个主题串联相关知识与缺口</p>
-          <div class="weekly-grid">
-            <div class="wk" onclick="toast('打开专题：起号期的流量与互动')"><h6>起号期的流量与互动</h6><p>12 条相关知识 · 1 处冲突 · 周日 20:00</p></div>
-            <div class="wk" onclick="toast('打开专题：AI 脚本去同质化')"><h6>AI 脚本去同质化</h6><p>8 条相关知识 · 2 条缺口 · 周日 20:00</p></div>
-            <div class="wk" onclick="toast('打开专题：私域转化路径')"><h6>私域转化路径</h6><p>3 条相关知识 · 4 条缺口 · 待补充</p></div>
-            <div class="wk" onclick="toast('打开专题：Dou+ 投放决策')"><h6>Dou+ 投放决策树</h6><p>6 条相关知识 · 待转 SOP · 周日 20:00</p></div>
+          <p>基于你的知识领域分布自动生成 · 每周更新</p>
+          <div class="weekly-grid" id="weeklyGrid">
+            <div class="rc" style="text-align:center;padding:20px;color:var(--text-faint)">
+              <div style="font-size:14px">加载中…</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1792,7 +1753,9 @@ function go(v){
   window.scrollTo({top:0,behavior:'smooth'});
   if(v==='ai'){setTimeout(()=>{const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;updateModelDisplay();},100);}
   if(v==='inbox'){setTimeout(()=>{updateInboxStats();renderInboxTabs();renderInboxList();},50);}
-  if(v==='knowledge'){setTimeout(async()=>{await syncRecordsToKc();if(kcData.raw.length===0)initKcData();updateKcCounts();renderKcSubTabs();renderKcList();renderKcDetail();},50);}
+  if(v==='knowledge'){setTimeout(async()=>{await syncRecordsToKc();if(kcData.raw.length===0)initKcData();updateKcCounts();renderKcSubTabs();renderKcTagTabs();renderKcList();renderKcDetail();},50);}
+  if(v==='recall'){setTimeout(()=>{renderRecallCards();renderWeeklyTopics();},50);}
+  if(v==='home'){setTimeout(()=>{renderHomeRecall();},50);}
   if(v==='project'){setTimeout(()=>{if(!window._projInited)initProjectData();renderProjectList();},50);}
 }
 document.querySelectorAll('.nav-item[data-view]').forEach(n=>n.addEventListener('click',()=>go(n.dataset.view)));
@@ -1846,6 +1809,7 @@ const KC_DOMAINS=['AI应用','短视频运营','商业变现','个人成长','�
 const KC_DOMAIN_COLORS={'AI应用':'#6B8AE8','短视频运营':'#E8B86D','商业变现':'#6FB89A','个人成长':'#D4925E','项目管理':'#C97064'};
 let kcLayer='raw';           // raw | unit | output
 let kcDomainFilter='all';    // all | AI应用 | 短视频运营 | ...
+let kcTagFilter='all';       // all | 灵感 | 观察 | 复盘 | 经验 | 待验证
 let kcSelectedId=null;
 
 /* ====== 知识中心数据 ====== */
@@ -1997,10 +1961,12 @@ function updateKcCounts(){
 function kcTab(el,layer){
   kcLayer=layer;
   kcDomainFilter='all';
+  kcTagFilter='all';
   kcSelectedId=null;
   el.parentNode.querySelectorAll('.kc-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   renderKcSubTabs();
+  renderKcTagTabs();
   renderKcList();
   renderKcDetail();
 }
@@ -2024,6 +1990,37 @@ function setKcDomain(d){
   kcDomainFilter=d;
   kcSelectedId=null;
   renderKcSubTabs();
+  renderKcTagTabs();
+  renderKcList();
+  renderKcDetail();
+}
+
+/* ====== 知识中心：标签子筛选（灵感/观察/复盘/经验/待验证） ====== */
+const KC_TAG_TYPES=['灵感','观察','复盘','经验','待验证'];
+
+function renderKcTagTabs(){
+  const container=document.getElementById('kcTagTabs');
+  if(!container)return;
+  const items=kcData[kcLayer];
+  const total=items.length;
+  let html='<div class="kc-sub-tab '+(kcTagFilter==='all'?'active':'')+'" onclick="setKcTag(\'all\')">全部<span class="tab-count">'+total+'</span></div>';
+  KC_TAG_TYPES.forEach(t=>{
+    // 匹配 tag 字段或 recordType 字段
+    const cnt=items.filter(i=>{
+      const itemTag=i.tag||i.recordType||'';
+      return itemTag===t||itemTag.includes(t);
+    }).length;
+    if(cnt>0){
+      html+='<div class="kc-sub-tab '+(kcTagFilter===t?'active':'')+'" onclick="setKcTag(\''+t+'\')">'+t+'<span class="tab-count">'+cnt+'</span></div>';
+    }
+  });
+  container.innerHTML=html;
+}
+
+function setKcTag(t){
+  kcTagFilter=t;
+  kcSelectedId=null;
+  renderKcTagTabs();
   renderKcList();
   renderKcDetail();
 }
@@ -2036,6 +2033,13 @@ function renderKcList(){
   let items=kcData[kcLayer].slice();
   if(kcDomainFilter!=='all'){
     items=items.filter(i=>i.domain===kcDomainFilter);
+  }
+  // 标签筛选
+  if(kcTagFilter!=='all'){
+    items=items.filter(i=>{
+      const itemTag=i.tag||i.recordType||'';
+      return itemTag===kcTagFilter||itemTag.includes(kcTagFilter);
+    });
   }
   // 排序
   if(sortVal==='time-desc'){items.sort((a,b)=>b.ts-a.ts);}
@@ -2222,7 +2226,190 @@ function delCand(b){
   const c=b.closest('.cand');c.style.transition='.4s';c.style.opacity='0';
   setTimeout(()=>{renderInboxList();updateInboxStats();toast('已删除（候选知识，未影响正式知识）');},400);
 }
-function recallAct(b,act){b.style.background='rgba(212,165,116,.14)';b.style.color='var(--gold-bright)';b.style.borderColor='var(--gold-dim)';toast('已记录：'+act+' · 元数据已更新，正文未改');}
+function recallAct(b,act,id){
+  b.style.background='rgba(212,165,116,.14)';
+  b.style.color='var(--gold-bright)';
+  b.style.borderColor='var(--gold-dim)';
+  // 记录回溯日志
+  if(id){
+    if(!recallLog[id])recallLog[id]={count:0,lastRecall:0};
+    recallLog[id].count++;
+    recallLog[id].lastRecall=Date.now();
+    recallLog[id].lastAction=act;
+    saveRecallLog();
+  }
+  // 如果是"增加新观点"，同步到待整理箱
+  if(act==='增加新观点'&&id){
+    const unit=kcData.unit.find(u=>u.id===id);
+    if(unit){
+      addInboxItem({
+        category:'pending',
+        source:'回溯补充',
+        trigger:'复习 '+id+' 时新增观点',
+        detail:'对「'+(unit.title||'').slice(0,40)+'」的新观点补充',
+        meta:'触发：知识回溯 · 关联 '+id,
+        ts:Date.now(),
+        recordType:'经验'
+      });
+      toast('已记录：'+act+' · 已同步到待整理箱 · 元数据已更新');
+      return;
+    }
+  }
+  toast('已记录：'+act+' · 元数据已更新，正文未改');
+}
+
+/* ============================================================
+ *  知识回溯：从知识中心真实数据动态生成
+ * ============================================================ */
+const RECALL_KEY='zhiyuan_recall_v1';
+let recallLog={};
+
+function loadRecallLog(){
+  try{
+    const s=localStorage.getItem(RECALL_KEY);
+    if(s)recallLog=JSON.parse(s);
+  }catch(e){recallLog={};}
+}
+
+function saveRecallLog(){
+  try{localStorage.setItem(RECALL_KEY,JSON.stringify(recallLog));}catch(e){}
+}
+
+/* 获取今日待回溯的知识单元（从 kcData.unit 中选取） */
+function getTodayRecallItems(){
+  // 确保知识中心数据已加载
+  if(kcData.unit.length===0){
+    if(!loadKcData())initKcData();
+  }
+  const units=kcData.unit;
+  if(units.length===0)return [];
+
+  const now=Date.now();
+  const day=86400000;
+  // 获取每个知识单元的回溯记录
+  const items=units.map(u=>{
+    const log=recallLog[u.id]||{};
+    const lastRecall=log.lastRecall||0;
+    const daysSince=Math.floor((now-lastRecall)/day);
+    return {
+      ...u,
+      _lastRecall:lastRecall,
+      _daysSince:daysSince,
+      _recallCount:log.count||0
+    };
+  });
+
+  // 排序：从未回溯的优先 > 回溯间隔最长的 > 引用次数最多的
+  items.sort((a,b)=>{
+    if(a._lastRecall===0&&b._lastRecall!==0)return -1;
+    if(a._lastRecall!==0&&b._lastRecall===0)return 1;
+    if(a._daysSince!==b._daysSince)return b._daysSince-a._daysSince;
+    return b.citeCount-a.citeCount;
+  });
+
+  // 取前3条
+  return items.slice(0,3);
+}
+
+/* 渲染回溯页面卡片 */
+function renderRecallCards(){
+  const container=document.getElementById('recallCards');
+  if(!container)return;
+  const items=getTodayRecallItems();
+  const countEl=document.getElementById('recallCount');
+  if(countEl)countEl.textContent=items.length;
+
+  if(items.length===0){
+    container.innerHTML='<div class="rc" style="text-align:center;padding:40px 20px;color:var(--text-faint)">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:32px;height:32px;margin-bottom:8px"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v16l-8-3-8 3V5z"/></svg>'+
+      '<div style="font-size:14px">知识中心暂无可回溯的内容</div>'+
+      '<div style="font-size:12px;margin-top:4px">在工作台记录并在待整理箱确认后，知识单元将出现在这里</div></div>';
+    return;
+  }
+
+  container.innerHTML=items.map((u,i)=>{
+    const domain=u.domain||'个人成长';
+    const tag=u.tag||u.sourceType||'个人记录';
+    const color=KC_DOMAIN_COLORS[domain]||'#9AA3AF';
+    const daysText=u._lastRecall===0?'首次回溯':('上次复习 '+u._daysSince+' 天前');
+    const citeText=u.citeCount>0?' · 引用 '+u.citeCount+' 次':'';
+    const tagClass=tag==='核心知识'||tag==='方法/原则'?'tag-gold':tag==='个人观点'||tag==='实践经验'||tag==='案例'?'tag-personal':tag==='外部事实'?'tag-web':'tag-soft';
+    return '<div class="rc">'+
+      '<div class="rc-domain" style="color:'+color+'">'+domain+' · '+tag+'</div>'+
+      '<h4>'+escHtml(u.title)+'</h4>'+
+      '<p>'+escHtml(u.summary||'')+'</p>'+
+      '<div style="font-size:12px;color:var(--text-faint);margin-bottom:10px">'+daysText+citeText+' · ID: '+u.id+'</div>'+
+      '<div class="rc-actions">'+
+        '<span class="rc-act ok" onclick="recallAct(this,\'我还记得\',\''+u.id+'\')">✓ 我还记得</span>'+
+        '<span class="rc-act warn" onclick="recallAct(this,\'需要重新学习\',\''+u.id+'\')">需要重新学习</span>'+
+        '<span class="rc-act old" onclick="recallAct(this,\'已经过时\',\''+u.id+'\')">已经过时</span>'+
+        '<span class="rc-act gold" onclick="recallAct(this,\'增加新观点\',\''+u.id+'\')">＋ 新观点</span>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+/* 渲染首页回溯条目 */
+function renderHomeRecall(){
+  const container=document.getElementById('homeRecallItems');
+  if(!container)return;
+  const items=getTodayRecallItems();
+
+  if(items.length===0){
+    container.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-faint);font-size:14px">暂无可回溯的知识<br><span style="font-size:12px">记录并确认后，回溯将自动出现在这里</span></div>';
+    return;
+  }
+
+  container.innerHTML=items.map((u,i)=>{
+    const domain=u.domain||'个人成长';
+    const tag=u.tag||u.sourceType||'个人记录';
+    const color=KC_DOMAIN_COLORS[domain]||'#9AA3AF';
+    const daysText=u._lastRecall===0?'首次回溯':'上次复习 '+u._daysSince+' 天前';
+    const tagClass=tag==='核心知识'||tag==='方法/原则'?'tag-gold':tag==='个人观点'||tag==='实践经验'||tag==='案例'?'tag-personal':tag==='外部事实'?'tag-web':'tag-soft';
+    return '<div class="recall-item" onclick="go(\'recall\')" style="cursor:pointer">'+
+      '<div class="recall-num">'+String(i+1).padStart(2,'0')+'</div>'+
+      '<div class="recall-body"><h5>'+escHtml(u.title)+'</h5>'+
+      '<p>'+tag+' · '+daysText+(u.citeCount>0?' · 引用 '+u.citeCount+' 次':'')+'</p>'+
+      '<div class="meta"><span class="tag '+tagClass+'" style="padding:1px 6px">'+tag+'</span><span class="tag tag-soft" style="padding:1px 6px;background:'+color+'22;color:'+color+'">'+domain+'</span></div>'+
+      '</div></div>';
+  }).join('');
+}
+
+/* 渲染本周专题回顾（基于知识中心领域分布） */
+function renderWeeklyTopics(){
+  const container=document.getElementById('weeklyGrid');
+  if(!container)return;
+  const units=kcData.unit;
+  if(units.length===0){
+    container.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-faint);font-size:14px;grid-column:1/-1">知识中心暂无数据，专题将在你有知识积累后自动生成</div>';
+    return;
+  }
+
+  // 按领域统计
+  const domainStats={};
+  KC_DOMAINS.forEach(d=>{
+    const items=units.filter(u=>u.domain===d);
+    if(items.length>0){
+      domainStats[d]={count:items.length,topTags:{}};
+      // 统计标签分布
+      items.forEach(u=>{
+        const tag=u.tag||u.sourceType||'其他';
+        domainStats[d].topTags[tag]=(domainStats[d].topTags[tag]||0)+1;
+      });
+    }
+  });
+
+  const html=Object.entries(domainStats).map(([domain,stats])=>{
+    const color=KC_DOMAIN_COLORS[domain]||'#9AA3AF';
+    const topTag=Object.entries(stats.topTags).sort((a,b)=>b[1]-a[1])[0];
+    return '<div class="wk" onclick="go(\'knowledge\')" style="cursor:pointer">'+
+      '<h6 style="color:'+color+'">'+domain+'</h6>'+
+      '<p>'+stats.count+' 条知识单元 · 主要类型：'+(topTag?topTag[0]:'混合')+'</p>'+
+    '</div>';
+  }).join('');
+
+  container.innerHTML=html||'<div style="padding:20px;text-align:center;color:var(--text-faint);font-size:14px;grid-column:1/-1">暂无专题</div>';
+}
 let toastT;
 function toast(msg){const t=document.getElementById('toast');document.getElementById('toastTxt').textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2600);}
 document.getElementById('homeAsk').addEventListener('keydown',e=>{if(e.key==='Enter')askFromHome();});
@@ -3070,50 +3257,50 @@ function filterInbox(category){
 function renderInboxTabs(){
   const tabs=document.getElementById('inboxTabs');
   let html='';
-  if(inboxFilter==='settled'){
-    // 已沉淀：按记录类型筛选
-    const types=['all','灵感','观察','复盘','经验','待验证'];
-    const typeCounts={};
-    types.forEach(t=>typeCounts[t]=0);
-    inboxData.filter(i=>i.category==='settled').forEach(i=>{
-      const rt=i.recordType||'灵感';
-      typeCounts[rt]=(typeCounts[rt]||0)+1;
-      typeCounts.all++;
-    });
-    types.forEach(t=>{
-      const label=t==='all'?'全部':t;
-      html+='<div class="inbox-tab '+(inboxSubFilter===t?'active':'')+'" onclick="setInboxSubFilter(\''+t+'\')">'+label+'<span class="tab-count">'+(typeCounts[t]||0)+'</span></div>';
-    });
-  }else if(inboxFilter==='pending'){
-    // 待确认：按来源筛选
-    const sources={};
-    inboxData.filter(i=>i.category==='pending').forEach(i=>{
-      const s=i.source||'其他';
-      sources[s]=(sources[s]||0)+1;
-    });
-    const total=inboxData.filter(i=>i.category==='pending').length;
-    html+='<div class="inbox-tab '+(inboxSubFilter==='all'?'active':'')+'" onclick="setInboxSubFilter(\'all\')">全部<span class="tab-count">'+total+'</span></div>';
-    for(const s in sources){
-      html+='<div class="inbox-tab '+(inboxSubFilter===s?'active':'')+'" onclick="setInboxSubFilter(\''+s+'\')">'+s+'<span class="tab-count">'+sources[s]+'</span></div>';
+  // 所有分类都按记录类型（灵感/观察/复盘/经验/待验证）筛选
+  const types=['all','灵感','观察','复盘','经验','待验证'];
+  const typeCounts={};
+  types.forEach(t=>typeCounts[t]=0);
+  inboxData.filter(i=>i.category===inboxFilter).forEach(i=>{
+    const rt=i.recordType||i.type||'灵感';
+    // 兼容旧数据：把 source 映射到 recordType
+    let actualType=rt;
+    if(inboxFilter==='pending'&&!i.recordType){
+      actualType=mapSourceTypeToRecordType(i.source);
     }
-  }else if(inboxFilter==='gap'){
-    // 知识缺口：按领域筛选
+    if(i.recordType){
+      actualType=i.recordType;
+    }
+    typeCounts[actualType]=(typeCounts[actualType]||0)+1;
+    if(actualType!==rt&&rt!=='all')typeCounts[rt]=(typeCounts[rt]||0);
+    typeCounts.all++;
+  });
+  types.forEach(t=>{
+    const label=t==='all'?'全部':t;
+    html+='<div class="inbox-tab '+(inboxSubFilter===t?'active':'')+'" onclick="setInboxSubFilter(\''+t+'\')">'+label+'<span class="tab-count">'+(typeCounts[t]||0)+'</span></div>';
+  });
+  // 知识缺口和冲突保留原逻辑
+  if(inboxFilter==='gap'){
     const domains={};
     inboxData.filter(i=>i.category==='gap').forEach(i=>{
       const d=i.gapDomain||'其他';
       domains[d]=(domains[d]||0)+1;
     });
-    const total=inboxData.filter(i=>i.category==='gap').length;
-    html+='<div class="inbox-tab '+(inboxSubFilter==='all'?'active':'')+'" onclick="setInboxSubFilter(\'all\')">全部<span class="tab-count">'+total+'</span></div>';
+    html='<div class="inbox-tab '+(inboxSubFilter==='all'?'active':'')+'" onclick="setInboxSubFilter(\'all\')">全部<span class="tab-count">'+inboxData.filter(i=>i.category==='gap').length+'</span></div>';
     for(const d in domains){
       html+='<div class="inbox-tab '+(inboxSubFilter===d?'active':'')+'" onclick="setInboxSubFilter(\''+d+'\')">'+d+'<span class="tab-count">'+domains[d]+'</span></div>';
     }
   }else if(inboxFilter==='conflict'){
-    // 冲突：全部展示
     const total=inboxData.filter(i=>i.category==='conflict').length;
-    html+='<div class="inbox-tab active" onclick="setInboxSubFilter(\'all\')">全部冲突<span class="tab-count">'+total+'</span></div>';
+    html='<div class="inbox-tab active" onclick="setInboxSubFilter(\'all\')">全部冲突<span class="tab-count">'+total+'</span></div>';
   }
   tabs.innerHTML=html;
+}
+
+/* ====== 工具：把 source 映射到记录类型 ====== */
+function mapSourceTypeToRecordType(source){
+  const map={'AI问答':'灵感','项目复盘':'复盘','回溯补充':'经验','资料加工':'观察','工作台记录':'灵感'};
+  return map[source]||'灵感';
 }
 
 function setInboxSubFilter(f){
@@ -3132,10 +3319,12 @@ function renderInboxList(){
 
   // 子筛选
   if(inboxSubFilter!=='all'){
-    if(inboxFilter==='settled'){
-      items=items.filter(i=>(i.recordType||'灵感')===inboxSubFilter);
-    }else if(inboxFilter==='pending'){
-      items=items.filter(i=>(i.source||'其他')===inboxSubFilter);
+    if(inboxFilter==='settled'||inboxFilter==='pending'){
+      // 待确认和已沉淀都按记录类型筛选
+      items=items.filter(i=>{
+        const rt=i.recordType||mapSourceTypeToRecordType(i.source)||'灵感';
+        return rt===inboxSubFilter;
+      });
     }else if(inboxFilter==='gap'){
       items=items.filter(i=>(i.gapDomain||'其他')===inboxSubFilter);
     }
@@ -3560,11 +3749,16 @@ if(!loadKcData()){
 syncRecordsToKc(); // 启动时同步工作台记录到知识中心
 updateKcCounts();
 renderKcSubTabs();
+renderKcTagTabs();
 renderKcList();
 loadInboxData();
 updateInboxStats();
 renderInboxTabs();
 renderInboxList();
+loadRecallLog(); // 加载回溯日志
+renderHomeRecall(); // 渲染首页回溯条目
+renderRecallCards(); // 渲染回溯页面
+renderWeeklyTopics(); // 渲染本周专题
 initProjectData();
 initAuth();
 </script>
