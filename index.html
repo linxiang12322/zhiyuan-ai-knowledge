@@ -1752,8 +1752,8 @@ function go(v){
   document.getElementById('nav').classList.remove('open');
   window.scrollTo({top:0,behavior:'smooth'});
   if(v==='ai'){setTimeout(()=>{const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;updateModelDisplay();},100);}
-  if(v==='inbox'){setTimeout(()=>{updateInboxStats();renderInboxTabs();renderInboxList();},50);}
-  if(v==='knowledge'){setTimeout(async()=>{await syncRecordsToKc();if(kcData.raw.length===0)initKcData();updateKcCounts();renderKcSubTabs();renderKcTagTabs();renderKcList();renderKcDetail();},50);}
+  if(v==='inbox'){setTimeout(()=>{migrateInboxTags();updateInboxStats();renderInboxTabs();renderInboxList();},50);}
+  if(v==='knowledge'){setTimeout(async()=>{await syncRecordsToKc();if(kcData.raw.length===0)initKcData();migrateKcTags();updateKcCounts();renderKcSubTabs();renderKcTagTabs();renderKcList();renderKcDetail();},50);}
   if(v==='recall'){setTimeout(()=>{renderRecallCards();renderWeeklyTopics();},50);}
   if(v==='home'){setTimeout(()=>{renderHomeRecall();},50);}
   if(v==='project'){setTimeout(()=>{if(!window._projInited)initProjectData();renderProjectList();},50);}
@@ -1820,31 +1820,31 @@ function initKcData(){
   const day=86400000;
   // 原始资料层
   kcData.raw=[
-    {id:'RAW-001',domain:'短视频运营',title:'《2026 短视频创作者变现白皮书》要点摘录',summary:'① 中腰部创作者广告收入占比下降，知识付费上升；② 私域转化成主流；③ 平台对导流管控收紧；④ AI 工具使用率超 70%。',sourceType:'网页收集',sourceUrl:'douyin.com/...',ts:now-day,citeCount:8,tag:'外部事实'},
-    {id:'RAW-002',domain:'AI应用',title:'AI 辅助脚本工作流实验记录',summary:'记录了 3 个账号、40+ 条脚本使用"反面样本"方法的完整实验过程和数据对比。',sourceType:'本地文档',sourceUrl:'脚本工作流实验记录.docx',ts:now-3*day,citeCount:15,tag:'实验记录'},
-    {id:'RAW-003',domain:'短视频运营',title:'巨量算数 2026 Q2 冷启动权重报告',summary:'完播率权重下降，评论+收藏权重上升。互动深度成为核心指标。',sourceType:'网页收集',sourceUrl:'oceanengine.com/...',ts:now-6*day,citeCount:2,tag:'外部事实'},
-    {id:'RAW-004',domain:'商业变现',title:'私域转化 A/B 测试原始数据',summary:'5000 元预算的 Dou+ 投放 A/B 测试完整数据，包含方案 A（立即加热）和方案 B（自然流跑 24h 后加热）的 ROI 对比。',sourceType:'项目数据',sourceUrl:'项目附件',ts:now-2*day,citeCount:5,tag:'实验数据'},
-    {id:'RAW-005',domain:'个人成长',title:'每日复盘记录 · 7 月第 4 周',summary:'本周 7 天的每日复盘：时间分配、产出效率、认知更新点的原始记录。',sourceType:'手动记录',sourceUrl:'日志',ts:now-4*day,citeCount:3,tag:'个人记录'},
-    {id:'RAW-006',domain:'AI应用',title:'多模态内容生产工具对比评测',summary:'对比了 5 款图文+视频混合生产工具的功能、价格和产出质量。',sourceType:'网页收集',sourceUrl:'工具评测文章',ts:now-5*day,citeCount:2,tag:'外部事实'},
-    {id:'RAW-007',domain:'项目管理',title:'知识号矩阵二号 30 天运营日志',summary:'从 0 到万粉的完整运营日志，包含每日发布时间、内容类型、互动数据和 Dou+ 投放记录。',sourceType:'项目数据',sourceUrl:'项目附件',ts:now-7*day,citeCount:4,tag:'项目记录'},
-    {id:'RAW-008',domain:'短视频运营',title:'评论区互动数据采样 · 5 条视频',summary:'5 条视频的评论区数据采样，包含投票式提问 vs 直接提问的评论数对比。',sourceType:'手动记录',sourceUrl:'数据表格',ts:now-day-3600000,citeCount:3,tag:'采样数据'}
+    {id:'RAW-001',domain:'短视频运营',title:'《2026 短视频创作者变现白皮书》要点摘录',summary:'① 中腰部创作者广告收入占比下降，知识付费上升；② 私域转化成主流；③ 平台对导流管控收紧；④ AI 工具使用率超 70%。',sourceType:'网页收集',sourceUrl:'douyin.com/...',ts:now-day,citeCount:8,tag:'观察'},
+    {id:'RAW-002',domain:'AI应用',title:'AI 辅助脚本工作流实验记录',summary:'记录了 3 个账号、40+ 条脚本使用"反面样本"方法的完整实验过程和数据对比。',sourceType:'本地文档',sourceUrl:'脚本工作流实验记录.docx',ts:now-3*day,citeCount:15,tag:'经验'},
+    {id:'RAW-003',domain:'短视频运营',title:'巨量算数 2026 Q2 冷启动权重报告',summary:'完播率权重下降，评论+收藏权重上升。互动深度成为核心指标。',sourceType:'网页收集',sourceUrl:'oceanengine.com/...',ts:now-6*day,citeCount:2,tag:'观察'},
+    {id:'RAW-004',domain:'商业变现',title:'私域转化 A/B 测试原始数据',summary:'5000 元预算的 Dou+ 投放 A/B 测试完整数据，包含方案 A（立即加热）和方案 B（自然流跑 24h 后加热）的 ROI 对比。',sourceType:'项目数据',sourceUrl:'项目附件',ts:now-2*day,citeCount:5,tag:'经验'},
+    {id:'RAW-005',domain:'个人成长',title:'每日复盘记录 · 7 月第 4 周',summary:'本周 7 天的每日复盘：时间分配、产出效率、认知更新点的原始记录。',sourceType:'手动记录',sourceUrl:'日志',ts:now-4*day,citeCount:3,tag:'复盘'},
+    {id:'RAW-006',domain:'AI应用',title:'多模态内容生产工具对比评测',summary:'对比了 5 款图文+视频混合生产工具的功能、价格和产出质量。',sourceType:'网页收集',sourceUrl:'工具评测文章',ts:now-5*day,citeCount:2,tag:'观察'},
+    {id:'RAW-007',domain:'项目管理',title:'知识号矩阵二号 30 天运营日志',summary:'从 0 到万粉的完整运营日志，包含每日发布时间、内容类型、互动数据和 Dou+ 投放记录。',sourceType:'项目数据',sourceUrl:'项目附件',ts:now-7*day,citeCount:4,tag:'复盘'},
+    {id:'RAW-008',domain:'短视频运营',title:'评论区互动数据采样 · 5 条视频',summary:'5 条视频的评论区数据采样，包含投票式提问 vs 直接提问的评论数对比。',sourceType:'手动记录',sourceUrl:'数据表格',ts:now-day-3600000,citeCount:3,tag:'观察'}
   ];
   // 知识单元层
   kcData.unit=[
-    {id:'KU-0023',domain:'AI应用',title:'用 AI 生成脚本要先喂"反面样本"',summary:'让模型先看 5-10 条同质化爆款，明确要回避的套路，再生成。产出差异化提升明显。',sourceType:'核心知识',sourceRef:'RAW-002',ts:now-14*day,citeCount:15,tag:'核心知识',status:'核心 · v3',body:'<p>直接让 AI"写一条短视频脚本"，产出大概率落进当前爆款套路的均值——开头留悬念、中段堆卖点、结尾 call to action，同质化严重。</p><p>更有效的做法：先收集 5-10 条<em style="color:var(--gold-bright);font-style:normal">你最不想做成</em>的同领域爆款，把它们作为"反面样本"喂给模型，明确标注"回避这些结构"，再给出你的差异化主张。模型的产出会主动绕开高频套路，差异化显著提升。</p><p>这条经验已在 3 个账号、超过 40 条脚本上验证，平均完播率比直接生成高 18%。</p>',meta:{来源:'RAW-002 脚本工作流实验记录.docx',状态:'核心知识 · 不可自动改写',引用次数:'15 次',验证强度:'3 账号 / 40+ 脚本复现'},versions:[{v:'v3 当前',why:'补充 40+ 脚本验证数据，升为核心知识',time:'2026-07-18'},{v:'v2',why:'从"喂案例"细化为"喂反面样本"，措辞更准',time:'2026-06-02'},{v:'v1',why:'用户首次确认保存（来自 AI 问答标记）',time:'2026-05-11'}]},
-    {id:'KU-0142',domain:'短视频运营',title:'前 3 秒"否定+承诺"钩子优于纯悬念',summary:'验证完播率比纯悬念高 22%，已在 3 个号复现。',sourceType:'个人观点',sourceRef:'RAW-008',ts:now-14*day,citeCount:7,tag:'个人观点',status:'已确认 · v2',body:'<p>"否定+承诺"式开场（如"你以为日更重要？错，关键是互动深度"）比纯悬念式开场（"这个方法你绝对想不到"）的完播率高出 22%。</p><p>原因分析：否定+承诺直接给出信息增量承诺，用户知道"会得到什么"；纯悬念只制造好奇，但信息密度低，用户容易划走。</p><p>已在 3 个账号、30+ 条视频上复现此结论。</p>',meta:{来源:'RAW-008 评论区互动数据采样',状态:'已确认',引用次数:'7 次',验证强度:'3 账号 / 30+ 视频复现'},versions:[{v:'v2 当前',why:'补充 3 账号复现数据',time:'2026-07-10'},{v:'v1',why:'首次观察记录',time:'2026-06-20'}]},
-    {id:'KU-0071',domain:'商业变现',title:'起号期不要发布后立即加热 Dou+',summary:'会压制自然流，5000 元试错得出。建议自然流跑 24h 再决定。',sourceType:'实践经验',sourceRef:'RAW-004',ts:now-30*day,citeCount:5,tag:'实践经验',status:'已确认 · v2',body:'<p>A/B 测试结论：方案 B（自然流跑 24h 后加热首条）ROI 1:3.2，方案 A（立即加热）ROI 1:1.4。</p><p>原因：立即加热会向平台传递"内容需要推流才有曝光"的信号，压制自然流量分发。先让自然流跑 24h，让平台算法充分评估内容的互动质量，再加热效果更好。</p><p>补充条件（KU-0071 v2）：如果 24h 内互动率低于 3%，即使加热效果也差。</p>',meta:{来源:'RAW-004 私域转化 A/B 测试',状态:'已确认',引用次数:'5 次',验证强度:'5000 元 A/B 测试'},versions:[{v:'v2 当前',why:'补充互动率低于 3% 的限制条件',time:'2026-07-15'},{v:'v1',why:'首次确认',time:'2026-06-25'}]},
+    {id:'KU-0023',domain:'AI应用',title:'用 AI 生成脚本要先喂"反面样本"',summary:'让模型先看 5-10 条同质化爆款，明确要回避的套路，再生成。产出差异化提升明显。',sourceType:'核心知识',sourceRef:'RAW-002',ts:now-14*day,citeCount:15,tag:'经验',status:'核心 · v3',body:'<p>直接让 AI"写一条短视频脚本"，产出大概率落进当前爆款套路的均值——开头留悬念、中段堆卖点、结尾 call to action，同质化严重。</p><p>更有效的做法：先收集 5-10 条<em style="color:var(--gold-bright);font-style:normal">你最不想做成</em>的同领域爆款，把它们作为"反面样本"喂给模型，明确标注"回避这些结构"，再给出你的差异化主张。模型的产出会主动绕开高频套路，差异化显著提升。</p><p>这条经验已在 3 个账号、超过 40 条脚本上验证，平均完播率比直接生成高 18%。</p>',meta:{来源:'RAW-002 脚本工作流实验记录.docx',状态:'核心知识 · 不可自动改写',引用次数:'15 次',验证强度:'3 账号 / 40+ 脚本复现'},versions:[{v:'v3 当前',why:'补充 40+ 脚本验证数据，升为核心知识',time:'2026-07-18'},{v:'v2',why:'从"喂案例"细化为"喂反面样本"，措辞更准',time:'2026-06-02'},{v:'v1',why:'用户首次确认保存（来自 AI 问答标记）',time:'2026-05-11'}]},
+    {id:'KU-0142',domain:'短视频运营',title:'前 3 秒"否定+承诺"钩子优于纯悬念',summary:'验证完播率比纯悬念高 22%，已在 3 个号复现。',sourceType:'个人观点',sourceRef:'RAW-008',ts:now-14*day,citeCount:7,tag:'观察',status:'已确认 · v2',body:'<p>"否定+承诺"式开场（如"你以为日更重要？错，关键是互动深度"）比纯悬念式开场（"这个方法你绝对想不到"）的完播率高出 22%。</p><p>原因分析：否定+承诺直接给出信息增量承诺，用户知道"会得到什么"；纯悬念只制造好奇，但信息密度低，用户容易划走。</p><p>已在 3 个账号、30+ 条视频上复现此结论。</p>',meta:{来源:'RAW-008 评论区互动数据采样',状态:'已确认',引用次数:'7 次',验证强度:'3 账号 / 30+ 视频复现'},versions:[{v:'v2 当前',why:'补充 3 账号复现数据',time:'2026-07-10'},{v:'v1',why:'首次观察记录',time:'2026-06-20'}]},
+    {id:'KU-0071',domain:'商业变现',title:'起号期不要发布后立即加热 Dou+',summary:'会压制自然流，5000 元试错得出。建议自然流跑 24h 再决定。',sourceType:'实践经验',sourceRef:'RAW-004',ts:now-30*day,citeCount:5,tag:'经验',status:'已确认 · v2',body:'<p>A/B 测试结论：方案 B（自然流跑 24h 后加热首条）ROI 1:3.2，方案 A（立即加热）ROI 1:1.4。</p><p>原因：立即加热会向平台传递"内容需要推流才有曝光"的信号，压制自然流量分发。先让自然流跑 24h，让平台算法充分评估内容的互动质量，再加热效果更好。</p><p>补充条件（KU-0071 v2）：如果 24h 内互动率低于 3%，即使加热效果也差。</p>',meta:{来源:'RAW-004 私域转化 A/B 测试',状态:'已确认',引用次数:'5 次',验证强度:'5000 元 A/B 测试'},versions:[{v:'v2 当前',why:'补充互动率低于 3% 的限制条件',time:'2026-07-15'},{v:'v1',why:'首次确认',time:'2026-06-25'}]},
     {id:'KU-0089',domain:'短视频运营',title:'日更超过 2 条会触发账号质量降权？',summary:'未充分验证，待 A/B 测试。与最新平台规则可能存在冲突。',sourceType:'待验证',sourceRef:'RAW-003',ts:now-20*day,citeCount:3,tag:'待验证',status:'待验证 · v1',body:'<p>个人观察：日更超过 2 条后，后续视频的平均播放量下降约 30%。</p><p>但此结论未经过严格控制变量的 A/B 测试，且与 KU-0311（Q2 权重转向互动深度）可能存在冲突——如果互动深度高，日更数量可能不再是降权因素。</p><p>需要设计 A/B 测试：同一账号在互动率相当的情况下，对比日更 1 条 vs 3 条的播放量差异。</p>',meta:{来源:'RAW-003 巨量算数报告',状态:'待验证',引用次数:'3 次',验证强度:'仅观察，未控制变量'},versions:[{v:'v1 当前',why:'首次记录，待验证',time:'2026-07-12'}]},
-    {id:'KU-0311',domain:'短视频运营',title:'2026 Q2 冷启动权重偏向互动深度',summary:'来自巨量算数报告，完播率权重下降，评论+收藏权重上升。',sourceType:'外部事实',sourceRef:'RAW-003',ts:now-day,citeCount:2,tag:'外部事实',status:'已确认 · v1',body:'<p>巨量算数 2026 Q2 报告显示，冷启动阶段的权重分配发生了显著变化：</p><p>完播率权重从 35% 下降至 22%，评论权重从 18% 上升至 28%，收藏权重从 12% 上升至 20%。</p><p>这意味着：即使完播率不高，如果评论和收藏数据好，内容仍然有机会获得推荐。这对内容创作策略有直接影响——应优先设计能引发评论和收藏的内容结构。</p>',meta:{来源:'RAW-003 巨量算数报告',状态:'已确认 · 外部事实',引用次数:'2 次',验证强度:'官方报告'},versions:[{v:'v1 当前',why:'从外部报告确认',time:'2026-07-28'}]},
-    {id:'KU-0008',domain:'个人成长',title:'知识只在"用过后"才真正沉淀',summary:'未经实践的内容停留在待整理箱，实践验证后才升为已确认。',sourceType:'方法/原则',sourceRef:'RAW-005',ts:now-7*day,citeCount:9,tag:'方法/原则',status:'核心 · v1',body:'<p>知识管理的核心原则：未经实践验证的内容只能停留在"待整理箱"或标注为"待验证"，只有经过实际使用并确认有效后，才能升为"已确认知识"。</p><p>这条原则确保了知识库的质量——每条已确认知识都有实践支撑，而非仅仅来自 AI 推断或外部资料。</p><p>实践方式包括：在项目中应用、A/B 测试、多账号复现、持续观察等。</p>',meta:{来源:'RAW-005 每日复盘记录',状态:'核心知识',引用次数:'9 次',验证强度:'长期实践验证'},versions:[{v:'v1 当前',why:'提炼为核心原则',time:'2026-07-01'}]},
-    {id:'KU-0205',domain:'项目管理',title:'知识号矩阵二号 30 天破万粉复盘',summary:'关键动作：固定发布时间 + 评论区埋钩 + 第 7 天 Dou+ 加热首条。',sourceType:'案例',sourceRef:'RAW-007',ts:now-21*day,citeCount:4,tag:'案例',status:'已确认 · v1',body:'<p>知识号矩阵二号从 0 到万粉的 30 天复盘：</p><p>第 1 周：固定每天 18:00 发布 1 条，建立账号活跃度信号。日均涨粉 120。</p><p>第 2 周：开始在评论区"埋钩"——用小号提问引出深度讨论，拉升评论率。日均涨粉 280。</p><p>第 3 周：第 7 天对首条爆款视频投放 Dou+ 500 元（自然流跑 24h 后），ROI 1:3.2。日均涨粉 450。</p><p>第 4 周：稳定输出 + 每周 1 次 Dou+ 加热。日均涨粉 380，30 天总粉丝 10,200。</p>',meta:{来源:'RAW-007 运营日志',状态:'已确认 · 复盘',引用次数:'4 次',验证强度:'完整 30 天数据'},versions:[{v:'v1 当前',why:'项目复盘确认',time:'2026-07-10'}]}
+    {id:'KU-0311',domain:'短视频运营',title:'2026 Q2 冷启动权重偏向互动深度',summary:'来自巨量算数报告，完播率权重下降，评论+收藏权重上升。',sourceType:'外部事实',sourceRef:'RAW-003',ts:now-day,citeCount:2,tag:'观察',status:'已确认 · v1',body:'<p>巨量算数 2026 Q2 报告显示，冷启动阶段的权重分配发生了显著变化：</p><p>完播率权重从 35% 下降至 22%，评论权重从 18% 上升至 28%，收藏权重从 12% 上升至 20%。</p><p>这意味着：即使完播率不高，如果评论和收藏数据好，内容仍然有机会获得推荐。这对内容创作策略有直接影响——应优先设计能引发评论和收藏的内容结构。</p>',meta:{来源:'RAW-003 巨量算数报告',状态:'已确认 · 外部事实',引用次数:'2 次',验证强度:'官方报告'},versions:[{v:'v1 当前',why:'从外部报告确认',time:'2026-07-28'}]},
+    {id:'KU-0008',domain:'个人成长',title:'知识只在"用过后"才真正沉淀',summary:'未经实践的内容停留在待整理箱，实践验证后才升为已确认。',sourceType:'方法/原则',sourceRef:'RAW-005',ts:now-7*day,citeCount:9,tag:'经验',status:'核心 · v1',body:'<p>知识管理的核心原则：未经实践验证的内容只能停留在"待整理箱"或标注为"待验证"，只有经过实际使用并确认有效后，才能升为"已确认知识"。</p><p>这条原则确保了知识库的质量——每条已确认知识都有实践支撑，而非仅仅来自 AI 推断或外部资料。</p><p>实践方式包括：在项目中应用、A/B 测试、多账号复现、持续观察等。</p>',meta:{来源:'RAW-005 每日复盘记录',状态:'核心知识',引用次数:'9 次',验证强度:'长期实践验证'},versions:[{v:'v1 当前',why:'提炼为核心原则',time:'2026-07-01'}]},
+    {id:'KU-0205',domain:'项目管理',title:'知识号矩阵二号 30 天破万粉复盘',summary:'关键动作：固定发布时间 + 评论区埋钩 + 第 7 天 Dou+ 加热首条。',sourceType:'案例',sourceRef:'RAW-007',ts:now-21*day,citeCount:4,tag:'复盘',status:'已确认 · v1',body:'<p>知识号矩阵二号从 0 到万粉的 30 天复盘：</p><p>第 1 周：固定每天 18:00 发布 1 条，建立账号活跃度信号。日均涨粉 120。</p><p>第 2 周：开始在评论区"埋钩"——用小号提问引出深度讨论，拉升评论率。日均涨粉 280。</p><p>第 3 周：第 7 天对首条爆款视频投放 Dou+ 500 元（自然流跑 24h 后），ROI 1:3.2。日均涨粉 450。</p><p>第 4 周：稳定输出 + 每周 1 次 Dou+ 加热。日均涨粉 380，30 天总粉丝 10,200。</p>',meta:{来源:'RAW-007 运营日志',状态:'已确认 · 复盘',引用次数:'4 次',验证强度:'完整 30 天数据'},versions:[{v:'v1 当前',why:'项目复盘确认',time:'2026-07-10'}]}
   ];
   // 成果层
   kcData.output=[
-    {id:'SOP-003',domain:'AI应用',title:'AI 辅助脚本生成流程 v3',summary:'收集反面样本 → 喂模型标注回避 → 给出差异化主张 → 生成 → 人工微调。11 步完整 SOP。',sourceType:'SOP',sourceRef:'KU-0023',ts:now-14*day,citeCount:8,tag:'SOP',status:'v3 · 11 步',steps:11,version:'v3'},
-    {id:'SOP-014',domain:'个人成长',title:'每日知识收集与整理流程',summary:'灵感速记 → 待整理箱 → 每周日专题确认 → 沉淀正式知识。闭环已跑通。',sourceType:'SOP',sourceRef:'KU-0008',ts:now-7*day,citeCount:6,tag:'SOP',status:'v4 · 核心',steps:8,version:'v4'},
-    {id:'SOP-007',domain:'短视频运营',title:'Dou+ 投放决策 SOP v2',summary:'自然流跑 24h → 检查互动率（>3%才加热）→ 加热首条 → 监控 ROI。',sourceType:'SOP',sourceRef:'KU-0071',ts:now-20*day,citeCount:5,tag:'SOP',status:'v2',steps:9,version:'v2'},
-    {id:'SOP-021',domain:'短视频运营',title:'评论区互动钩子设计模板',summary:'投票式提问 / 分支选择 / 争议观点 / 反常识开头——4 种钩子模板 + 使用场景。',sourceType:'SOP',sourceRef:'KU-0142',ts:now-10*day,citeCount:4,tag:'SOP',status:'v1',steps:6,version:'v1'},
+    {id:'SOP-003',domain:'AI应用',title:'AI 辅助脚本生成流程 v3',summary:'收集反面样本 → 喂模型标注回避 → 给出差异化主张 → 生成 → 人工微调。11 步完整 SOP。',sourceType:'SOP',sourceRef:'KU-0023',ts:now-14*day,citeCount:8,tag:'经验',status:'v3 · 11 步',steps:11,version:'v3'},
+    {id:'SOP-014',domain:'个人成长',title:'每日知识收集与整理流程',summary:'灵感速记 → 待整理箱 → 每周日专题确认 → 沉淀正式知识。闭环已跑通。',sourceType:'SOP',sourceRef:'KU-0008',ts:now-7*day,citeCount:6,tag:'经验',status:'v4 · 核心',steps:8,version:'v4'},
+    {id:'SOP-007',domain:'短视频运营',title:'Dou+ 投放决策 SOP v2',summary:'自然流跑 24h → 检查互动率（>3%才加热）→ 加热首条 → 监控 ROI。',sourceType:'SOP',sourceRef:'KU-0071',ts:now-20*day,citeCount:5,tag:'经验',status:'v2',steps:9,version:'v2'},
+    {id:'SOP-021',domain:'短视频运营',title:'评论区互动钩子设计模板',summary:'投票式提问 / 分支选择 / 争议观点 / 反常识开头——4 种钩子模板 + 使用场景。',sourceType:'SOP',sourceRef:'KU-0142',ts:now-10*day,citeCount:4,tag:'经验',status:'v1',steps:6,version:'v1'},
     {id:'RPT-002',domain:'商业变现',title:'Dou+ 投放策略 A/B 测试报告',summary:'5000 元预算 · 方案 B 胜出 · ROI 1:3.2 · 完整数据和分析结论。',sourceType:'复盘报告',sourceRef:'RAW-004',ts:now-2*day,citeCount:3,tag:'复盘',status:'已完成',steps:0,version:'final'},
     {id:'RPT-005',domain:'项目管理',title:'知识号矩阵二号 30 天复盘报告',summary:'从 0 到万粉 · 3 阶段策略 · 关键动作拆解 · 可复用经验提炼。',sourceType:'复盘报告',sourceRef:'KU-0205',ts:now-21*day,citeCount:4,tag:'复盘',status:'已完成',steps:0,version:'final'}
   ];
@@ -1873,6 +1873,104 @@ function loadKcData(){
   return false;
 }
 
+/* ====== 知识中心：数据迁移 - 修复旧数据标签 ====== */
+function migrateKcTags(){
+  const tagMap={
+    '外部事实':'观察','实验记录':'经验','实验数据':'经验',
+    '个人记录':'复盘','项目记录':'复盘','采样数据':'观察',
+    '核心知识':'经验','个人观点':'观察','实践经验':'经验',
+    '方法/原则':'经验','方法':'经验','原则':'经验',
+    '案例':'复盘','SOP':'经验','sop':'经验'
+  };
+  let changed=false;
+  ['raw','unit','output'].forEach(layer=>{
+    if(!kcData[layer])return;
+    kcData[layer].forEach(item=>{
+      const oldTag=item.tag||item.recordType||'';
+      if(oldTag && !KC_TAG_TYPES.includes(oldTag)){
+        if(tagMap[oldTag]){
+          item.tag=tagMap[oldTag];
+          if(item.recordType)item.recordType=tagMap[oldTag];
+          changed=true;
+        } else {
+          for(const [k,v] of Object.entries(tagMap)){
+            if(oldTag.includes(k)){
+              item.tag=v;
+              if(item.recordType)item.recordType=v;
+              changed=true;
+              break;
+            }
+          }
+          if(!KC_TAG_TYPES.includes(item.tag||'')){
+            item.tag=inferTagFromContent(item.summary||item.title||'');
+            if(item.recordType)item.recordType=item.tag;
+            changed=true;
+          }
+        }
+      }
+      if(!item.tag && item.recordType){
+        item.tag=item.recordType;
+        changed=true;
+      }
+      if(!item.recordType && item.tag){
+        item.recordType=item.tag;
+        changed=true;
+      }
+    });
+  });
+  if(changed){
+    saveKcData();
+    console.log('知识中心数据迁移完成');
+  }
+  return changed;
+}
+
+/* ====== 工具：根据内容推断标签类型 ====== */
+function inferTagFromContent(text){
+  const lower=text.toLowerCase();
+  if(/灵感|想法|创意|突然|忽然|灵感闪现/.test(lower))return '灵感';
+  if(/观察|发现|注意|现象|规律|看到|数据|采样|事实|报告/.test(lower))return '观察';
+  if(/复盘|总结|回顾|项目|记录|日志|阶段|周期/.test(lower))return '复盘';
+  if(/经验|实践|测试|验证过|试过|做过|A\/B|实验/.test(lower))return '经验';
+  if(/待验证|假设|猜测|可能|也许|推测|待确认/.test(lower))return '待验证';
+  return '灵感';
+}
+
+/* ====== 待整理箱：数据迁移 - 修复旧数据标签 ====== */
+function migrateInboxTags(){
+  const tagMap={
+    '外部事实':'观察','实验记录':'经验','实验数据':'经验',
+    '个人记录':'复盘','项目记录':'复盘','采样数据':'观察',
+    '核心知识':'经验','个人观点':'观察','实践经验':'经验',
+    '方法/原则':'经验','案例':'复盘','SOP':'经验'
+  };
+  const validTypes=['灵感','观察','复盘','经验','待验证'];
+  let changed=false;
+  inboxData.forEach(item=>{
+    if(!item.recordType){
+      const srcMap={
+        'AI问答':'灵感','项目复盘':'复盘','回溯补充':'经验',
+        '资料加工':'观察','知识缺口':'观察','知识冲突':'待验证'
+      };
+      item.recordType=srcMap[item.source]||'灵感';
+      changed=true;
+    } else if(!validTypes.includes(item.recordType)){
+      if(tagMap[item.recordType]){
+        item.recordType=tagMap[item.recordType];
+        changed=true;
+      } else {
+        item.recordType=inferTagFromContent(item.trigger||item.detail||'');
+        changed=true;
+      }
+    }
+  });
+  if(changed){
+    saveInboxData();
+    console.log('待整理箱数据迁移完成');
+  }
+  return changed;
+}
+
 /* ====== 知识中心：将工作台记录添加到原始资料层 ====== */
 function addRecordToKcRaw(content,recordType){
   // 根据记录类型推断领域
@@ -1887,7 +1985,7 @@ function addRecordToKcRaw(content,recordType){
     sourceUrl:'工作台速记',
     ts:Date.now(),
     citeCount:0,
-    tag:recordType||'个人记录',
+    tag:recordType||'灵感',
     _fromRecord:true  // 标记来源为用户记录
   };
   kcData.raw.unshift(kcItem);
@@ -1916,7 +2014,7 @@ async function syncRecordsToKc(){
           sourceUrl:'工作台速记',
           ts:new Date(r.ts).getTime()||Date.now(),
           citeCount:0,
-          tag:r.type||'个人记录',
+          tag:r.type||'灵感',
           _fromRecord:true
         });
         added++;
@@ -3746,12 +3844,14 @@ function openProjDetail(id){
 if(!loadKcData()){
   initKcData();
 }
+migrateKcTags(); // 迁移修复旧数据标签
 syncRecordsToKc(); // 启动时同步工作台记录到知识中心
 updateKcCounts();
 renderKcSubTabs();
 renderKcTagTabs();
 renderKcList();
 loadInboxData();
+migrateInboxTags(); // 迁移修复待整理箱旧数据标签
 updateInboxStats();
 renderInboxTabs();
 renderInboxList();
