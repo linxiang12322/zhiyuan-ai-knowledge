@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知渊 · 个人 AI 知识体系 — 功能审计报告</title>
+<style>
+  :root{
+    --bg:#faf8f4; --card:#fff; --ink:#2b2620; --faint:#8a8175;
+    --line:#e8e1d6; --gold:#c79b5a; --green:#2e9e6b; --red:#d4544a; --amber:#d9952b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;padding:40px 18px}
+  .wrap{max-width:920px;margin:0 auto}
+  header{border-bottom:2px solid var(--gold);padding-bottom:18px;margin-bottom:26px}
+  h1{font-family:"Noto Serif SC",serif;font-size:27px;letter-spacing:.5px}
+  .sub{color:var(--faint);font-size:14px;margin-top:8px}
+  .url{display:inline-block;margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-size:12.5px;color:var(--gold);font-family:monospace}
+  h2{font-family:"Noto Serif SC",serif;font-size:20px;margin:34px 0 14px;padding-left:11px;border-left:4px solid var(--gold)}
+  h3{font-size:15.5px;margin:18px 0 8px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin:14px 0;box-shadow:0 1px 2px rgba(0,0,0,.03)}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px;color:#fff;vertical-align:middle}
+  .ok{background:var(--green)} .bad{background:var(--red)} .warn{background:var(--amber)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#fbf7ef;color:var(--faint);font-weight:600;font-size:12.5px}
+  td .tag{margin-right:6px}
+  code{background:#f3ede2;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:"JetBrains Mono",monospace;color:#9a5b2e}
+  .note{background:#fff8ec;border:1px solid #f0dcb8;border-left:4px solid var(--amber);border-radius:8px;padding:12px 15px;margin:12px 0;font-size:13.5px}
+  .key{background:#fdeeee;border:1px solid #f3c9c4;border-left:4px solid var(--red);border-radius:8px;padding:12px 15px;margin:12px 0;font-size:13.5px}
+  .fix{background:#effaf3;border:1px solid #c8e8d4;border-left:4px solid var(--green);border-radius:8px;padding:12px 15px;margin:10px 0;font-size:13.5px}
+  .fix b{color:var(--green)}
+  ul{margin:6px 0 6px 20px} li{margin:5px 0}
+  .muted{color:var(--faint);font-size:13px}
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>知渊 · 个人 AI 知识体系 — 功能审计报告</h1>
+  <div class="sub">测试对象：个人知识管理 / AI 顾问单页应用（GitHub Pages）· 测试时间：2026-08-04</div>
+  <div class="url">https://linxiang12322.github.io/zhiyuan-ai-knowledge/</div>
+</header>
+
+<div class="card">
+  <h3 style="margin-top:0">一、总体结论</h3>
+  <p>这是一个<strong>完成度很高的"演示型"单页应用</strong>：界面、导航、交互细节都做得相当完整，视觉与文案质量很高。但<strong>开箱即用时，真正"能跑"的功能有限</strong>——核心的 AI 对话、联网检索、云端持久化都依赖用户自行配置外部密钥 / 登录，且页面上大量"看起来有数据"的内容是<strong>写死的演示数据</strong>，并非真实功能产出。</p>
+  <p class="muted">一句话：<strong>展示层齐全，能力层待补齐 / 待说明。</strong>对访客来说，最需要的是在界面上把"这是演示 / 这里需要你配置"说清楚，否则极易误以为功能已可用。</p>
+</div>
+
+<h2>二、功能逐项测试结果</h2>
+
+<table>
+<tr><th>功能模块</th><th>状态</th><th>说明</th></tr>
+<tr>
+  <td>页面导航 / 七视图切换<br><span class="muted">首页·待整理箱·知识中心·项目·AI·回溯·SOP</span></td>
+  <td><span class="tag ok">可用</span></td>
+  <td>通过 <code>go('inbox')</code> 等 SPA 路由切换，结构完整，点击可正常跳转。</td>
+</tr>
+<tr>
+  <td>顶部搜索框<br><span class="muted">"检索个人知识…"</span></td>
+  <td><span class="tag bad">不可用</span></td>
+  <td>输入框<strong>没有任何事件绑定</strong>（无 oninput/onkeydown/onsubmit），纯装饰，输入任何内容都不会触发检索。</td>
+</tr>
+<tr>
+  <td>记录空间 / 保存到待整理箱</td>
+  <td><span class="tag warn">部分可用</span></td>
+  <td>写入逻辑正确（<code>records</code> 表 schema 与代码匹配，已实测可写）。但默认未登录时 <code>cloudMode=false</code>，只写浏览器 localStorage，<strong>不进云端、换设备丢失</strong>。当前展示内容是硬编码演示数据。</td>
+</tr>
+<tr>
+  <td><strong>知渊 AI 对话（核心卖点）</strong></td>
+  <td><span class="tag bad">开箱不可用</span></td>
+  <td>必须先在"设置"填 <strong>DeepSeek Key</strong> + <strong>火山方舟 Key/模型</strong>（存浏览器 localStorage）。无 key 时调用直接报错"未配置 DeepSeek API Key"，<strong>不会产生任何回答</strong>。</td>
+</tr>
+<tr>
+  <td>"联网"检索</td>
+  <td><span class="tag bad">未实现</span></td>
+  <td>全代码仅 2 个 <code>fetch</code> 接口（DeepSeek、火山方舟），<strong>无任何搜索 / 联网接口</strong>。演示里"联网 1 次命中巨量算数 Q2 报告"是写死的样例，并非真实联网。</td>
+</tr>
+<tr>
+  <td>知识中心 / 待确认候选 / 项目 / SOP / 每周整理 / 今日回溯</td>
+  <td><span class="tag warn">展示完整·数据层是演示</span></td>
+  <td>UI 与埋点数据齐全，但内容来自 JS 初始化的<strong>演示数据</strong>（RAW-002、KU-0142、SOP-021 等），并非用户真实数据。后端仅发现 <code>records</code>、<code>knowledge_entries</code> 两张表（均为空），项目/SOP/候选等若依赖独立表则尚未建表。</td>
+</tr>
+<tr>
+  <td>登录 / 注册 / 云同步</td>
+  <td><span class="tag warn">依赖 Supabase 配置</span></td>
+  <td>有完整云端登录（Supabase 邮件确认）与"本地密码"两种模式。已实测 <code>records</code> 表对真实登录用户写入 schema 正确。<strong>但若 Supabase 未开邮箱确认 / 未配 SMTP，注册会卡住。</strong></td>
+</tr>
+</table>
+
+<h2>三、需要重点说明 / 可能引起误解的地方</h2>
+
+<div class="key">
+  <b>❌ 误导点 1：AI 面板的"多源回答"是假的。</b><br>
+  首页 AI 顾问里那段"个人知识 / 网络资料 / AI 推断"的完整回答，是<strong>直接写死在 HTML 里的样例对话</strong>。真实使用时（无 key）只会弹出错误提示。访客极易误以为 AI 已能正常回答。
+</div>
+
+<div class="key">
+  <b>❌ 误导点 2："联网"功能不存在。</b><br>
+  演示对话中的"本次联网 1 次，命中巨量算数 Q2 报告"纯属虚构。代码里没有任何联网搜索实现。
+</div>
+
+<div class="key">
+  <b>⚠️ 误导点 3：设置文案"AI 将以演示模式运行"不准确。</b><br>
+  实际无 key 时并<strong>不会</strong>进入演示回答，而是直接报错。建议改为"未配置 Key 前 AI 无法使用，请先填写"。
+</div>
+
+<div class="key">
+  <b>⚠️ 误导点 4："云同步已开启 · 多设备实时共享"。</b><br>
+  点击右上角同步徽标弹出的提示，在未登录 / 演示态下并不成立——数据此时只在本地浏览器。
+</div>
+
+<div class="key">
+  <b>⚠️ 误导点 5：满屏"数据"其实是演示数据。</b><br>
+  "已连记 12 天""86 单元·12 SOP""本周 +128"等统计，以及知识中心全部条目，都是写死的样例。登录并真实录入后才会变成自己的数据。
+</div>
+
+<h2>四、建议在哪些位置补充"说明"</h2>
+
+<div class="fix">
+  <b>1. 首页顶部加一条演示横幅（最优先）</b><br>
+  例如："当前为演示版本，展示的是示例数据。AI 对话与联网需在「设置」中填写你自己的 DeepSeek / 火山方舟 Key；登录后可开启云端同步保存你自己的内容。" 一句话消除绝大多数误解。
+</div>
+
+<div class="fix">
+  <b>2. AI 顾问面板（未配置时）</b><br>
+  把"AI 将以演示模式运行"改为明确指引："尚未配置 API Key，AI 暂不可用。点击右上角「AI 未配置」→ 填入 DeepSeek Key（对话）+ 火山方舟 Key/模型（向量检索）后即可使用。" 并给出两个官方申请链接（已在设置里有）。
+</div>
+
+<div class="fix">
+  <b>3. 搜索框</b><br>
+  二选一：① 接上真正的检索逻辑（对 records / 知识库做本地关键词过滤）；② 若暂不做，移除该框或标注"检索即将上线"，避免"有框不能用"的负面体验。
+</div>
+
+<div class="fix">
+  <b>4. 知识中心 / 待整理箱空状态</b><br>
+  当用户真实库为空时，显示"这是演示数据；登录并保存你的第一条记录后，这里会显示你的真实内容"，而不是一直展示别人的样例。
+</div>
+
+<div class="fix">
+  <b>5. 同步徽标提示</b><br>
+  未登录时提示改为"未登录：数据仅保存在本设备"；登录成功后再显示"云同步已开启"。
+</div>
+
+<div class="fix">
+  <b>6. 后端数据表（若要真正落地）</b><br>
+  当前 Supabase 仅 <code>records</code> 与 <code>knowledge_entries</code> 两张表且为空。若"项目 / SOP / 候选 / 每周整理"需要独立持久化，需补建对应表与 RLS 策略，或明确文档说明本版仅 <code>records</code>/<code>knowledge_entries</code> 入库。
+</div>
+
+<h2>五、测试方法说明</h2>
+<div class="note">
+  <ul>
+    <li>抓取并解析了站点完整 HTML 源码（234KB 单文件 SPA），逐一定位脚本、事件、接口与数据来源；</li>
+    <li>通过 Supabase REST API 实测了后端表的存在性与可写性（<code>records</code>/<code>knowledge_entries</code> 存在且 schema 正确，其余表 404，已清理测试数据）；</li>
+    <li>审查了 AI 调用函数 <code>callDeepSeek/callDoubao</code>，确认无 key 即报错、且无任何联网搜索接口；</li>
+    <li>注：作为 AI 无法在真实浏览器中点击交互，以上结论基于源码审查 + 后端实测，覆盖度高于纯视觉检查，但 UI 动效类细节仍需人工在浏览器复核。</li>
+  </ul>
+</div>
+
+<footer>
+  本报告由 WorkBuddy 基于源码与后端实测生成 · 仅供功能完整性评估参考。建议据此在界面补充说明文案，或按优先级补全搜索 / 联网 / 真实持久化能力。
+</footer>
+</div>
+</body>
+</html>
