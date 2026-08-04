@@ -1792,7 +1792,7 @@ function go(v){
   window.scrollTo({top:0,behavior:'smooth'});
   if(v==='ai'){setTimeout(()=>{const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;updateModelDisplay();},100);}
   if(v==='inbox'){setTimeout(()=>{updateInboxStats();renderInboxTabs();renderInboxList();},50);}
-  if(v==='knowledge'){setTimeout(()=>{if(kcData.raw.length===0)initKcData();updateKcCounts();renderKcSubTabs();renderKcList();renderKcDetail();},50);}
+  if(v==='knowledge'){setTimeout(async()=>{await syncRecordsToKc();if(kcData.raw.length===0)initKcData();updateKcCounts();renderKcSubTabs();renderKcList();renderKcDetail();},50);}
   if(v==='project'){setTimeout(()=>{if(!window._projInited)initProjectData();renderProjectList();},50);}
 }
 document.querySelectorAll('.nav-item[data-view]').forEach(n=>n.addEventListener('click',()=>go(n.dataset.view)));
@@ -1805,11 +1805,24 @@ async function saveJournal(){
   if(!v){toast('先写点什么再保存吧');t.focus();return;}
   const btn=event.target.closest('.btn');
   if(btn){btn.textContent='保存中…';btn.disabled=true;}
-  await addRecord(getActiveJType(),v);
+  const recType=getActiveJType();
+  await addRecord(recType,v);
+  // 同步到待整理箱（待确认候选）
+  addInboxItem({
+    category:'pending',
+    source:'工作台记录',
+    trigger:v.slice(0,80)+(v.length>80?'…':''),
+    detail:v,
+    meta:'触发：工作台速记 · 类型：'+recType,
+    ts:Date.now(),
+    recordType:recType
+  });
+  // 同步到知识中心原始资料层
+  addRecordToKcRaw(v,recType);
   t.value='';
   resetAutoBadge();
   if(btn){btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>保存到待整理箱';btn.disabled=false;}
-  toast(cloudMode?'已保存 · 已同步到云端 · 多设备可查看':'已保存 · 数据已持久化，次日不会丢失');
+  toast(cloudMode?'已保存 · 已同步到待整理箱与知识中心 · 云端多设备可查看':'已保存 · 已同步到待整理箱与知识中心');
   checkSopTrigger();
 }
 async function sendChat(e){
@@ -1871,6 +1884,106 @@ function initKcData(){
     {id:'RPT-002',domain:'商业变现',title:'Dou+ 投放策略 A/B 测试报告',summary:'5000 元预算 · 方案 B 胜出 · ROI 1:3.2 · 完整数据和分析结论。',sourceType:'复盘报告',sourceRef:'RAW-004',ts:now-2*day,citeCount:3,tag:'复盘',status:'已完成',steps:0,version:'final'},
     {id:'RPT-005',domain:'项目管理',title:'知识号矩阵二号 30 天复盘报告',summary:'从 0 到万粉 · 3 阶段策略 · 关键动作拆解 · 可复用经验提炼。',sourceType:'复盘报告',sourceRef:'KU-0205',ts:now-21*day,citeCount:4,tag:'复盘',status:'已完成',steps:0,version:'final'}
   ];
+}
+
+/* ====== 知识中心：数据持久化 ====== */
+const KC_KEY='zhiyuan_kc_v1';
+
+function saveKcData(){
+  try{localStorage.setItem(KC_KEY,JSON.stringify(kcData));}catch(e){}
+}
+
+function loadKcData(){
+  try{
+    const s=localStorage.getItem(KC_KEY);
+    if(s){
+      const parsed=JSON.parse(s);
+      if(parsed.raw&&parsed.raw.length>0){
+        kcData.raw=parsed.raw;
+        kcData.unit=parsed.unit||[];
+        kcData.output=parsed.output||[];
+        return true;
+      }
+    }
+  }catch(e){}
+  return false;
+}
+
+/* ====== 知识中心：将工作台记录添加到原始资料层 ====== */
+function addRecordToKcRaw(content,recordType){
+  // 根据记录类型推断领域
+  const domain=detectDomain(content);
+  const id='RAW-U-'+Date.now();
+  const kcItem={
+    id:id,
+    domain:domain,
+    title:content.slice(0,50)+(content.length>50?'…':''),
+    summary:content.slice(0,200),
+    sourceType:'工作台记录',
+    sourceUrl:'工作台速记',
+    ts:Date.now(),
+    citeCount:0,
+    tag:recordType||'个人记录',
+    _fromRecord:true  // 标记来源为用户记录
+  };
+  kcData.raw.unshift(kcItem);
+  saveKcData();
+  updateKcCounts();
+}
+
+/* ====== 知识中心：从记录数据同步到原始资料层 ====== */
+async function syncRecordsToKc(){
+  try{
+    const recs=await getRecords();
+    if(!recs||recs.length===0)return;
+    // 获取已有的用户记录条目ID
+    const existingIds=new Set(kcData.raw.filter(r=>r._fromRecord).map(r=>r.id));
+    let added=0;
+    for(const r of recs){
+      const rid='RAW-U-'+r.id;
+      if(!existingIds.has(rid)){
+        const domain=detectDomain(r.content||'');
+        kcData.raw.push({
+          id:rid,
+          domain:domain,
+          title:(r.content||'').slice(0,50)+((r.content||'').length>50?'…':''),
+          summary:(r.content||'').slice(0,200),
+          sourceType:'工作台记录',
+          sourceUrl:'工作台速记',
+          ts:new Date(r.ts).getTime()||Date.now(),
+          citeCount:0,
+          tag:r.type||'个人记录',
+          _fromRecord:true
+        });
+        added++;
+      }
+    }
+    if(added>0){
+      // 按时间降序排列
+      kcData.raw.sort((a,b)=>b.ts-a.ts);
+      saveKcData();
+      updateKcCounts();
+    }
+  }catch(e){console.warn('syncRecordsToKc error',e);}
+}
+
+/* ====== 工具：根据内容关键词推断知识领域 ====== */
+function detectDomain(text){
+  const rules=[
+    {domain:'AI应用',keywords:['ai','AI','人工智能','模型','gpt','脚本','生成','prompt','提示词','deepseek','豆包']},
+    {domain:'短视频运营',keywords:['短视频','视频','抖音','完播','评论','收藏','钩子','日更','流量','涨粉','播放']},
+    {domain:'商业变现',keywords:['变现','收入','付费','私域','转化','dou+','投放','roi','客户','销售']},
+    {domain:'个人成长',keywords:['成长','学习','复盘','习惯','时间','效率','认知','反思','总结']},
+    {domain:'项目管理',keywords:['项目','管理','团队','任务','进度','里程碑','排期']}
+  ];
+  const lower=text.toLowerCase();
+  let best={domain:'个人成长',score:0};
+  for(const r of rules){
+    let score=0;
+    r.keywords.forEach(k=>{if(lower.includes(k.toLowerCase()))score++;});
+    if(score>best.score)best={domain:r.domain,score};
+  }
+  return best.domain;
 }
 
 /* ====== 知识中心：统计计数 ====== */
@@ -2058,7 +2171,7 @@ function renderKcDetail(){
       '</div>';
   }
 }
-function saveCandidate(t){toast('已加入待整理箱 · 待你确认后才写入正式知识');addInboxItem({category:'pending',source:'AI问答',trigger:t,detail:'',ts:Date.now()});}
+function saveCandidate(t){toast('已加入待整理箱 · 待你确认后才写入正式知识');addInboxItem({category:'pending',source:'AI问答',trigger:t,detail:'',ts:Date.now(),recordType:'灵感'});addRecordToKcRaw(t,'灵感');}
 function confirmCand(b){
   const id=b.closest('.cand').dataset.id;
   const item=inboxData.find(i=>i.id==id);
@@ -2066,9 +2179,41 @@ function confirmCand(b){
     item.category='settled';
     item.settledTs=Date.now();
     saveInboxData();
+    // 同步创建知识单元到知识中心
+    addInboxItemToKcUnit(item);
   }
   const c=b.closest('.cand');c.style.transition='.4s';c.style.opacity='0';c.style.transform='translateX(20px)';
-  setTimeout(()=>{renderInboxList();updateInboxStats();toast('已确认保存为正式知识 · 创建新版本');},400);
+  setTimeout(()=>{renderInboxList();updateInboxStats();toast('已确认保存为正式知识 · 已同步到知识中心知识单元层');},400);
+}
+
+/* ====== 将待整理箱确认的条目同步到知识中心知识单元层 ====== */
+function addInboxItemToKcUnit(item){
+  const domain=detectDomain((item.trigger||'')+(item.detail||''));
+  const kuId='KU-U-'+Date.now();
+  const kuItem={
+    id:kuId,
+    domain:domain,
+    title:(item.trigger||'').slice(0,80),
+    summary:(item.detail||'').slice(0,200),
+    sourceType:item.recordType||'个人记录',
+    sourceRef:item.source||'待整理箱确认',
+    ts:Date.now(),
+    citeCount:0,
+    tag:item.recordType||'个人观点',
+    status:'已确认 · v1',
+    body:'<p>'+(item.detail||item.trigger||'').replace(/</g,'&lt;').replace(/\n/g,'</p><p>')+'</p>',
+    meta:{
+      来源:item.source||'工作台记录',
+      状态:'已确认',
+      引用次数:'0 次',
+      验证强度:'用户确认'
+    },
+    versions:[{v:'v1 当前',why:'从待整理箱确认保存',time:new Date().toLocaleDateString('zh-CN')}],
+    _fromInbox:true
+  };
+  kcData.unit.unshift(kuItem);
+  saveKcData();
+  updateKcCounts();
 }
 function delCand(b){
   const id=b.closest('.cand').dataset.id;
@@ -2701,7 +2846,19 @@ async function saveVideoResult(){
     (videoResultData.likes?'\n\n互动数据：点赞'+videoResultData.likes+' · 收藏'+videoResultData.favorites+' · 评论'+videoResultData.comments+' · 转发'+videoResultData.shares:'')+
     (videoResultData.url?'\n\n来源：'+videoResultData.url:'');
   await addRecord('观察',text);
-  toast('视频文案已保存到待整理箱');
+  // 同步到待整理箱
+  addInboxItem({
+    category:'pending',
+    source:'资料加工',
+    trigger:'视频文案：'+(videoResultData.title||'').slice(0,60),
+    detail:text,
+    meta:'触发：视频文案收集'+(videoResultData.url?' · 来源：'+videoResultData.url:''),
+    ts:Date.now(),
+    recordType:'观察'
+  });
+  // 同步到知识中心原始资料层
+  addRecordToKcRaw(text,'观察');
+  toast('视频文案已保存 · 已同步到待整理箱与知识中心');
   closeModal('videoModal');
   document.getElementById('videoContent').innerHTML='';
   document.getElementById('videoUrlInput').value='';
@@ -2801,9 +2958,21 @@ async function confirmSop(){
   // 保存为记录
   const sopText='【SOP · '+sopDraftContext.domain+'】\n\n'+content;
   await addRecord('经验',sopText);
+  // 同步到待整理箱
+  addInboxItem({
+    category:'pending',
+    source:'项目复盘',
+    trigger:'SOP · '+sopDraftContext.domain,
+    detail:content,
+    meta:'触发：SOP 草稿确认 · 领域：'+sopDraftContext.domain,
+    ts:Date.now(),
+    recordType:'经验'
+  });
+  // 同步到知识中心
+  addRecordToKcRaw(sopText,'经验');
   // 标记已提示
   localStorage.setItem('zhiyuan_sop_prompted_'+sopDraftContext.domain,'1');
-  toast('SOP 已确认入库 · 已保存到待整理箱');
+  toast('SOP 已确认入库 · 已同步到待整理箱与知识中心');
   closeModal('sopModal');
   sopDraftContext=null;
 }
@@ -3355,6 +3524,8 @@ function saveNewProject(){
       });
       saveInboxData();
       updateInboxStats();
+      // 同步到知识中心原始资料层
+      addRecordToKcRaw('【项目复盘】'+proj.title+'：'+retro,'复盘');
     }catch(e){console.warn('添加到待整理箱失败',e);}
   }
   btn.textContent='创建项目';btn.disabled=false;
@@ -3382,7 +3553,11 @@ function openProjDetail(id){
 }
 
 /* ====== Init ====== */
-initKcData();
+// 知识中心：优先从 localStorage 加载，否则初始化演示数据
+if(!loadKcData()){
+  initKcData();
+}
+syncRecordsToKc(); // 启动时同步工作台记录到知识中心
 updateKcCounts();
 renderKcSubTabs();
 renderKcList();
