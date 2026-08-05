@@ -258,6 +258,12 @@ body::after{
 .proj-prog-wrap{width:180px;flex-shrink:0}
 .proj-prog-wrap .proj-prog{margin-top:0}
 .proj-prog-label{font-size:11px;color:var(--text-muted);margin-top:6px;font-family:var(--mono)}
+.proj-detail-prog-top{display:flex;justify-content:space-between;font-size:12px;color:var(--text-faint);margin-bottom:5px}
+.proj-detail-prog-top b{color:var(--gold-bright);font-family:var(--mono)}
+.proj-detail-bar{height:8px;background:var(--bg-inset);border-radius:6px;overflow:hidden}
+.proj-detail-bar i{display:block;height:100%;border-radius:6px;background:var(--ai);transition:.3s}
+.sop-detail-body{font-size:14px;line-height:1.8;color:var(--text-dim)}
+.sop-detail-body p{margin-bottom:12px}
 .proj-empty{text-align:center;padding:48px 20px;color:var(--text-faint)}
 .proj-empty svg{width:48px;height:48px;opacity:.3;margin-bottom:12px}
 .proj-empty div{font-size:14px}
@@ -400,6 +406,7 @@ body::after{
 .rel:hover{border-color:var(--border)}
 .rel .r-type{font-size:10px;color:var(--gold-dim);font-family:var(--mono);min-width:72px}
 .rel b{font-weight:500;color:var(--text-dim)}
+.d-actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;border-top:1px solid var(--border-soft);padding-top:18px}
 .versions{border-top:1px solid var(--border-soft);padding-top:18px}
 .ver{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px}
 .ver .v-no{font-family:var(--mono);color:var(--gold-dim);min-width:54px}
@@ -423,6 +430,8 @@ body::after{
 .inbox-tab{font-size:12.5px;padding:6px 14px;border-radius:8px;border:1px solid var(--border-soft);background:var(--bg-inset);color:var(--text-dim);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:5px}
 .inbox-tab:hover{color:var(--text);border-color:var(--border)}
 .inbox-tab.active{color:var(--gold-bright);border-color:var(--gold-dim);background:rgba(212,165,116,.08)}
+.inbox-actions{display:flex;gap:10px;margin:0 0 18px}
+.inbox-actions .btn{padding:7px 14px;font-size:12.5px}
 .inbox-tab .tab-count{font-size:10px;font-family:var(--mono);background:var(--bg-hover);padding:1px 6px;border-radius:5px;color:var(--text-faint)}
 .inbox-tab.active .tab-count{background:rgba(212,165,116,.15);color:var(--gold-bright)}
 .inbox-sort{margin-left:auto;display:flex;gap:6px;align-items:center}
@@ -628,6 +637,17 @@ body::after{
 .auto-badge-menu div:hover{background:var(--bg-hover);color:var(--text)}
 .auto-badge-menu div.active{color:var(--gold-bright);background:rgba(212,165,116,.08)}
 .j-type-wrap{position:relative}
+/* 领域选择 */
+.j-domain-wrap{position:relative}
+.domain-badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:9px;font-size:12.5px;font-weight:500;cursor:pointer;transition:.2s;border:1px dashed var(--border);background:var(--bg-inset);color:var(--text-faint)}
+.domain-badge:hover{border-color:var(--border)}
+.domain-badge.active{color:var(--gold-bright);border-color:var(--gold-dim);border-style:solid;background:rgba(212,165,116,.08)}
+.domain-badge svg{width:13px;height:13px;opacity:.5}
+.domain-menu{position:absolute;top:100%;left:0;margin-top:6px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:10px;padding:6px;z-index:20;display:none;box-shadow:var(--shadow);min-width:140px}
+.domain-menu.show{display:block}
+.domain-menu div{padding:7px 14px;border-radius:7px;cursor:pointer;font-size:12.5px;color:var(--text-dim);transition:.15s}
+.domain-menu div:hover{background:var(--bg-hover);color:var(--text)}
+.domain-menu div.active{color:var(--gold-bright);background:rgba(212,165,116,.08)}
 
 /* Video tool */
 .video-input-row{display:flex;gap:10px;margin-bottom:14px}
@@ -916,6 +936,19 @@ body::after{
                   <div onclick="setJType('待验证',this)">待验证</div>
                 </div>
               </div>
+              <div class="j-domain-wrap">
+                <div class="domain-badge" id="domainBadge" onclick="toggleDomainMenu()">
+                  <span id="domainBadgeText">选择领域</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <div class="domain-menu" id="domainMenu">
+                  <div onclick="selJDomain('AI应用',this)">AI应用</div>
+                  <div onclick="selJDomain('短视频运营',this)">短视频运营</div>
+                  <div onclick="selJDomain('商业变现',this)">商业变现</div>
+                  <div onclick="selJDomain('个人成长',this)">个人成长</div>
+                  <div onclick="selJDomain('项目管理',this)">项目管理</div>
+                </div>
+              </div>
               <span class="j-date">已连记 12 天</span>
             </div>
             <textarea class="journal-input" id="journalInput" oninput="onJournalInput()" placeholder="直接写下你想记录的内容，系统会自动识别分类……&#10;例如：我最近有个灵感，评论区用"投票式提问"比直接提问，评论数高了近 3 倍。&#10;例如：我观察到一个现象，发布后2小时内的互动数据决定了推不推流。&#10;粘贴抖音/小红书视频链接也可自动提取文案。"></textarea>
@@ -1134,10 +1167,14 @@ body::after{
           </div>
           <div class="stat" id="stat-conflict" onclick="filterInbox('conflict')">
             <div class="v" id="statConflict">2</div>
-            <div class="l">冲突待裁决</div>
-            <svg class="stat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </div>
+          <div class="l">冲突待裁决</div>
+          <svg class="stat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </div>
+      </div>
+      <div class="inbox-actions">
+        <button class="btn btn-ghost" onclick="refreshKnowledgeSignals()">运行知识体检</button>
+        <button class="btn btn-ghost" onclick="scanConflicts()">AI 检测冲突</button>
+      </div>
         <div class="inbox-filter-bar" id="inboxFilterBar">
           <span class="inbox-filter-label">筛选</span>
           <div class="inbox-tabs" id="inboxTabs"></div>
@@ -1463,6 +1500,51 @@ body::after{
   </div>
 </div>
 
+<!-- ====== 项目详情 Modal ====== -->
+<div class="modal-overlay" id="projDetailModal">
+  <div class="modal" style="width:560px">
+    <div class="modal-head">
+      <h2 id="projTitle">项目详情</h2>
+      <div class="modal-close" onclick="closeModal('projDetailModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body">
+      <div id="projMeta" style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px"></div>
+      <div class="proj-detail-prog" style="margin-bottom:16px">
+        <div class="proj-detail-prog-top"><span>进度</span><b id="projProgressVal">0%</b></div>
+        <div class="proj-detail-bar"><i id="projProgressFill"></i></div>
+      </div>
+      <div class="side-title" style="margin-bottom:8px">项目描述</div>
+      <p id="projDesc" style="font-size:13.5px;color:var(--text-dim);line-height:1.7;margin-bottom:16px;white-space:pre-wrap"></p>
+      <div id="projRetroBox" style="display:none">
+        <div class="side-title" style="margin-bottom:8px">复盘内容</div>
+        <p id="projRetroText" style="font-size:13.5px;color:var(--text-dim);line-height:1.7;background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:10px;padding:13px 15px;white-space:pre-wrap"></p>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('projDetailModal')">关闭</button>
+      <button class="btn btn-ghost" onclick="deleteProjectFromDetail()">删除</button>
+      <button class="btn btn-primary" onclick="editProjectFromDetail()">编辑</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== SOP / 成果层 详情 Modal ====== -->
+<div class="modal-overlay" id="sopDModal">
+  <div class="modal" style="width:640px">
+    <div class="modal-head">
+      <h2 id="sopDTitle">SOP 详情</h2>
+      <div class="modal-close" onclick="closeModal('sopDModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body">
+      <div id="sopDMeta" style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px"></div>
+      <div class="sop-detail-body" id="sopDBody"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('sopDModal')">关闭</button>
+    </div>
+  </div>
+</div>
+
 <!-- ====== Video Modal ====== -->
 <div class="modal-overlay" id="videoModal">
   <div class="modal" style="width:600px">
@@ -1714,7 +1796,7 @@ function updateSyncBadge(){
     badge.title='云端同步失败：'+(window._syncErr||'请检查网络，或确认已在 Supabase 执行建表 SQL');
   }else{
     text.textContent='云同步';
-    badge.title='云同步已开启 · 知识中心/待整理箱/项目/回溯日志已同步到云端';
+    badge.title='云同步已开启 · 知识中心/待整理箱/项目/回溯日志/速记已条目级同步到云端';
   }
 }
 
@@ -1734,21 +1816,109 @@ let _pushTimers={};
 // 否则新设备首次打开会用演示数据的「最新时间戳」反向覆盖云端真实数据。
 let _seedingDemo=true;
 
+/* —— 同步专项改进（P0·同步）——
+ * ① 条目级合并：云端拉取时不再整域覆盖本地，而是按 id 逐条比对 ts，
+ *    本地独有条目保留，重叠条目取较新版本 —— 避免并发修改丢数据。
+ * ② 速记(records) 纳入同步：登录时把本机速记与云端 records 表按 id 合并。
+ * ③ 冲突提示：双方都在上次同步后改过的条目，合并后给出冲突提示。
+ * ④ 离线队列：上传失败（断网）时记入离线队列，联网后自动补推。
+ */
+const OFFLINE_QUEUE_KEY='zhiyuan_offline_queue_v1';   // 待补推的同步域
+const OFFLINE_RECORDS_KEY='zhiyuan_offline_records_v1';// 待补推的速记
+const SYNC_BASE_KEY='zhiyuan_sync_base_v1';           // 各域「上次同步基线时间戳」
+
+function loadSyncBase(){try{return JSON.parse(localStorage.getItem(SYNC_BASE_KEY)||'{}');}catch(e){return{};}}
+function saveSyncBase(m){try{localStorage.setItem(SYNC_BASE_KEY,JSON.stringify(m));}catch(e){}}
+
+/* 条目级合并：按 id 合并两个数组，重叠条目取 ts 较新者。
+ * baseTs>0 时统计「双方都在基线后改过」的冲突条目数（首次同步 baseTs=0 不计冲突）。*/
+function mergeArraysById(localArr,cloudArr,baseTs){
+  const localMap={},cloudMap={};
+  (localArr||[]).forEach(it=>{if(it&&it.id!=null)localMap[String(it.id)]=it;});
+  (cloudArr||[]).forEach(it=>{if(it&&it.id!=null)cloudMap[String(it.id)]=it;});
+  const out=[];let overwritten=0;
+  const ids=new Set([...Object.keys(localMap),...Object.keys(cloudMap)]);
+  ids.forEach(id=>{
+    const l=localMap[id],c=cloudMap[id];
+    if(l&&!c){out.push(l);}
+    else if(c&&!l){out.push(c);}
+    else{
+      const lt=+(l.ts||0),ct=+(c.ts||0);
+      if(ct>=lt){
+        out.push(c);
+        if(baseTs>0&&lt>baseTs&&ct>baseTs)overwritten++;   // 真·并发冲突
+      }else{
+        out.push(l);
+      }
+    }
+  });
+  return {merged:out,overwritten};
+}
+
+/* 回溯日志是「以知识单元 id 为键的对象」，按 lastRecall/count 合并 */
+function mergeRecallLogs(localObj,cloudObj,baseTs){
+  const out=Object.assign({},localObj||{});let overwritten=0;
+  Object.keys(cloudObj||{}).forEach(k=>{
+    const l=localObj[k],c=cloudObj[k];
+    if(!l){out[k]=c;}
+    else{
+      const lt=+(l.lastRecall||0),ct=+(c.lastRecall||0);
+      out[k]={lastRecall:Math.max(lt,ct),count:Math.max(+(l.count||0),+(c.count||0))};
+      if(baseTs>0&&lt>baseTs&&ct>baseTs)overwritten++;
+    }
+  });
+  return {merged:out,overwritten};
+}
+
+/* —— 离线队列（域级） —— */
+function loadOfflineQueue(){try{return JSON.parse(localStorage.getItem(OFFLINE_QUEUE_KEY)||'[]');}catch(e){return[];}}
+function enqueueOffline(domain){const q=loadOfflineQueue();if(!q.includes(domain)){q.push(domain);try{localStorage.setItem(OFFLINE_QUEUE_KEY,JSON.stringify(q));}catch(e){}}}
+function dequeueOffline(domain){const q=loadOfflineQueue().filter(x=>x!==domain);try{localStorage.setItem(OFFLINE_QUEUE_KEY,JSON.stringify(q));}catch(e){}}
+async function flushOfflineQueue(){
+  const q=loadOfflineQueue();if(!q.length)return;
+  let done=0;
+  for(const domain of q.slice()){
+    if(await pushDomain(domain)){dequeueOffline(domain);done++;}
+  }
+  if(done>0)toast('已补推 '+done+' 项离线修改到云端');
+  await flushOfflineRecords();
+}
+
+/* —— 离线队列（速记级） —— */
+function loadOfflineRecords(){try{return JSON.parse(localStorage.getItem(OFFLINE_RECORDS_KEY)||'[]');}catch(e){return[];}}
+function enqueueOfflineRecord(r){const q=loadOfflineRecords();q.push(r);try{localStorage.setItem(OFFLINE_RECORDS_KEY,JSON.stringify(q));}catch(e){}}
+async function flushOfflineRecords(){
+  const q=loadOfflineRecords();if(!q.length)return;
+  if(!(cloudMode&&sb&&currentUser))return;
+  try{
+    const rows=q.map(it=>({type:it.type,content:it.content,ts:it.ts,user_id:currentUser.id,domain:it.domain||null}));
+    const {error}=await sb.from('records').insert(rows);
+    if(error)throw error;
+    try{localStorage.removeItem(OFFLINE_RECORDS_KEY);}catch(e){}
+    await renderRecords();
+    toast('已补推 '+rows.length+' 条离线速记到云端');
+  }catch(e){console.warn('flushOfflineRecords',e);}
+}
+
 /* 同步域配置（用函数惰性求值，避免常量 TDZ） */
 function getSyncDomains(){
   return {
     kc:{ls:'zhiyuan_kc_v1',label:'知识中心',
       read:()=>kcData,
-      write:v=>{if(v&&typeof v==='object'&&!Array.isArray(v)){kcData.raw=v.raw||[];kcData.unit=v.unit||[];kcData.output=v.output||[];return true;}return false;}},
+      write:v=>{if(v&&typeof v==='object'&&!Array.isArray(v)){kcData.raw=v.raw||[];kcData.unit=v.unit||[];kcData.output=v.output||[];return true;}return false;},
+      merge:(cloud,baseTs)=>{if(!cloud||typeof cloud!=='object'||Array.isArray(cloud))return -1;let total=0;['raw','unit','output'].forEach(layer=>{const r=mergeArraysById(kcData[layer],cloud[layer]||[],baseTs||0);kcData[layer]=r.merged;total+=r.overwritten;});return total;}},
     inbox:{ls:'zhiyuan_inbox_v1',label:'待整理箱',
       read:()=>inboxData,
-      write:v=>{if(Array.isArray(v)){inboxData=v;return true;}return false;}},
+      write:v=>{if(Array.isArray(v)){inboxData=v;return true;}return false;},
+      merge:(cloud,baseTs)=>{const r=mergeArraysById(inboxData,cloud||[],baseTs||0);inboxData=r.merged;return r.overwritten;}},
     proj:{ls:'zhiyuan_projects_v1',label:'项目',
       read:()=>projData,
-      write:v=>{if(Array.isArray(v)){projData=v;return true;}return false;}},
+      write:v=>{if(Array.isArray(v)){projData=v;return true;}return false;},
+      merge:(cloud,baseTs)=>{const r=mergeArraysById(projData,cloud||[],baseTs||0);projData=r.merged;return r.overwritten;}},
     recall:{ls:'zhiyuan_recall_v1',label:'回溯日志',
       read:()=>recallLog,
-      write:v=>{if(v&&typeof v==='object'){recallLog=v;return true;}return false;}}
+      write:v=>{if(v&&typeof v==='object'){recallLog=v;return true;}return false;},
+      merge:(cloud,baseTs)=>{const r=mergeRecallLogs(recallLog,cloud||{},baseTs||0);recallLog=r.merged;return r.overwritten;}}
   };
 }
 
@@ -1780,9 +1950,11 @@ async function pushDomain(domain){
     );
     if(error)throw error;
     setSyncState('synced');
+    dequeueOffline(domain);   // 推送成功 → 移出离线队列
     return true;
   }catch(e){
     console.warn('[同步] 上传失败',domain,e);
+    enqueueOffline(domain);   // 断网/失败 → 进入离线队列，联网后补推
     setSyncState('error',e.message||'');
     if(e&&(e.code==='42P01'||String(e.message||'').indexOf('user_state')>=0)){
       toast('云同步表 user_state 不存在 · 请先在 Supabase 执行 supabase-schema.sql');
@@ -1791,13 +1963,14 @@ async function pushDomain(domain){
   }
 }
 
-/* 登录后自动执行：拉取云端并与本地按时间戳合并 */
+/* 登录后自动执行：拉取云端并与本地按「条目级」合并（避免整域覆盖丢数据） */
 async function cloudPullAll(){
   if(!(cloudMode&&sb&&currentUser))return;
   setSyncState('syncing');
   const domains=getSyncDomains();
   const meta=loadSyncMeta();
-  let pulled=0;
+  const base=loadSyncBase();
+  let pulled=0, conflictItems=0;
   try{
     const {data,error}=await sb.from(CLOUD_TABLE).select('key,data,updated_at');
     if(error)throw error;
@@ -1809,24 +1982,33 @@ async function cloudPullAll(){
       const localTs=meta[k]||0;
       if(!row){
         // 云端尚无该域数据 → 首次把本地推上去
-        if(await pushDomain(k))meta[k]=Date.now();
+        if(await pushDomain(k)){meta[k]=Date.now();base[k]=Date.now();}
         continue;
       }
       const cloudTs=new Date(row.updated_at).getTime()||0;
       const payload=row.data&&row.data.payload;
       if(cloudTs>localTs){
-        if(d.write(payload)){
-          try{localStorage.setItem(d.ls,JSON.stringify(payload));}catch(e){}
-          meta[k]=cloudTs;pulled++;
+        // 条目级合并：保留本地独有条目，重叠条目取较新版本，返回冲突数
+        const overwritten=d.merge?d.merge(payload,base[k]||0):(d.write(payload)?0:-1);
+        if(overwritten>=0){
+          try{localStorage.setItem(d.ls,JSON.stringify(d.read()));}catch(e){}
+          meta[k]=cloudTs;pulled++;conflictItems+=overwritten;
         }
       }else if(localTs>cloudTs){
         await pushDomain(k);
       }
+      base[k]=Math.max(base[k]||0,cloudTs,localTs);
     }
-    saveSyncMeta(meta);
+    // 速记(records) 也纳入跨设备合并
+    await syncRecords();
+    saveSyncMeta(meta);saveSyncBase(base);
     setSyncState('synced');
-    if(pulled>0){
-      refreshAllViews();
+    // 联网恢复 → 补推离线队列（含断网期间的域修改与速记）
+    await flushOfflineQueue();
+    if(pulled>0||conflictItems>0)refreshAllViews();
+    if(conflictItems>0){
+      toast('云端有 '+conflictItems+' 条与本地冲突 · 已采用各自较新版本（可在各板块查看）');
+    }else if(pulled>0){
       toast('已从云端恢复 '+pulled+' 项数据');
     }
   }catch(e){
@@ -1891,6 +2073,8 @@ async function syncPushAll(){
   saveSyncMeta(meta);
   setSyncState(ok?'synced':'error');
   toast(ok?('已上传 '+ok+' 项数据到云端'):'上传失败 · 请检查网络或是否已执行建表 SQL');
+  // 手动全量同步后，顺便补推离线队列
+  flushOfflineQueue();
 }
 
 /* 手动：用云端数据强制覆盖本机 */
@@ -1933,19 +2117,57 @@ async function getRecords(){
 }
 
 /* ====== 数据层：添加记录 ====== */
-async function addRecord(type,content){
+async function addRecord(type,content,domain){
   const ts=new Date().toISOString();
   if(cloudMode && sb && currentUser){
-    const {data,error}=await sb.from('records').insert([
-      {type,content,ts,user_id:currentUser.id}
-    ]).select();
-    if(error){toast('保存失败：'+(error.message||'未知错误'));return;}
+    try{
+      const {data,error}=await sb.from('records').insert([
+        {type,content,ts,user_id:currentUser.id,domain:domain||null}
+      ]).select();
+      if(error)throw error;
+    }catch(e){
+      // 断网：暂存到离线速记队列，联网后由 flushOfflineRecords 自动补推
+      enqueueOfflineRecord({type,content,ts,domain:domain||null});
+      toast('当前离线 · 速记已暂存本机，联网后自动同步');
+    }
     await renderRecords();
   }else{
     const d=JSON.parse(localStorage.getItem(DATA_KEY)||'{"records":[]}');
-    d.records.unshift({id:Date.now(),type,content,ts});
+    d.records.unshift({id:Date.now(),type,content,ts,domain:domain||''});
     localStorage.setItem(DATA_KEY,JSON.stringify(d));
     await renderRecords();
+  }
+}
+
+/* ====== 速记同步：把本机速记与云端 records 表按 id 合并（纳入四域同步体系） ====== */
+async function syncRecords(){
+  if(!(cloudMode&&sb&&currentUser))return;
+  try{
+    const local=JSON.parse(localStorage.getItem(DATA_KEY)||'{"records":[]}').records||[];
+    const {data:cloud,error}=await sb.from('records').select('*');
+    if(error)throw error;
+    const cloudArr=cloud||[];
+    const cloudIds=new Set(cloudArr.map(c=>String(c.id)));
+    // 本机独有（未上云）的速记 → 推到云端（让云端生成 id）
+    const localOnly=local.filter(l=>!cloudIds.has(String(l.id)));
+    let localMerged=local;
+    if(localOnly.length){
+      const rows=localOnly.map(it=>({type:it.type,content:it.content,ts:new Date(it.ts).toISOString(),user_id:currentUser.id,domain:it.domain||null}));
+      const {data:ins,error:e2}=await sb.from('records').insert(rows).select();
+      if(e2)throw e2;
+      const byTs=new Map((ins||[]).map(x=>[x.ts,x]));
+      localMerged=local.map(l=>{const m=byTs.get(new Date(l.ts).toISOString());return m?{id:m.id,type:m.type,content:m.content,ts:m.ts,domain:m.domain}:l;});
+    }
+    // 合并远端条目
+    const r=mergeArraysById(localMerged,cloudArr,loadSyncBase().records||0);
+    const merged=r.merged;
+    try{localStorage.setItem(DATA_KEY,JSON.stringify({records:merged}));}catch(e){}
+    if(r.overwritten>0)toast('速记有 '+r.overwritten+' 条与云端冲突，已按时间合并');
+    await renderRecords();
+    setSyncState('synced');
+  }catch(e){
+    console.warn('[同步] 速记合并失败',e);
+    setSyncState('error',e.message||'');
   }
 }
 
@@ -1993,6 +2215,8 @@ async function renderRecords(){
 /* ====== 当前记录类型（自动分类后的当前类型）====== */
 let currentJType='灵感';
 function getActiveJType(){return currentJType;}
+let currentJDomain='';   // 当前记录的知识领域（空=未选，保存时由 AI 或关键词推断）
+function getActiveJDomain(){return currentJDomain;}
 
 /* ====== 初始化认证 ====== */
 async function initAuth(){
@@ -2061,19 +2285,21 @@ async function saveJournal(){
   const btn=event.target.closest('.btn');
   if(btn){btn.textContent='保存中…';btn.disabled=true;}
   const recType=getActiveJType();
-  await addRecord(recType,v);
+  const recDomain=getActiveJDomain();
+  await addRecord(recType,v,recDomain);
   // 同步到待整理箱（待确认候选）
   addInboxItem({
     category:'pending',
     source:'工作台记录',
     trigger:v.slice(0,80)+(v.length>80?'…':''),
     detail:v,
-    meta:'触发：工作台速记 · 类型：'+recType,
+    meta:'触发：工作台速记 · 类型：'+recType+(recDomain?' · 领域：'+recDomain:''),
     ts:Date.now(),
-    recordType:recType
+    recordType:recType,
+    domain:recDomain
   });
   // 同步到知识中心原始资料层
-  addRecordToKcRaw(v,recType);
+  addRecordToKcRaw(v,recType,recDomain);
   t.value='';
   resetAutoBadge();
   if(btn){btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>保存到待整理箱';btn.disabled=false;}
@@ -2265,9 +2491,9 @@ function migrateInboxTags(){
 }
 
 /* ====== 知识中心：将工作台记录添加到原始资料层 ====== */
-function addRecordToKcRaw(content,recordType){
-  // 根据记录类型推断领域
-  const domain=detectDomain(content);
+function addRecordToKcRaw(content,recordType,domain){
+  // 优先使用传入的领域，否则根据内容推断
+  domain=domain||detectDomain(content);
   const id='RAW-U-'+Date.now();
   const kcItem={
     id:id,
@@ -2284,6 +2510,65 @@ function addRecordToKcRaw(content,recordType){
   kcData.raw.unshift(kcItem);
   saveKcData();
   updateKcCounts();
+}
+
+/* ====== 知识三层流转：原始资料 → 知识单元 ====== */
+function promoteRawToUnit(id){
+  const item=kcData.raw.find(i=>i.id===id);
+  if(!item)return;
+  if(kcData.unit.some(u=>u.sourceRef===id)){toast('该原始资料已提升为知识单元');return;}
+  const kuId='KU-U-'+Date.now();
+  const kuItem={
+    id:kuId,
+    domain:item.domain,
+    title:item.title,
+    summary:item.summary,
+    sourceType:item.tag||'个人记录',
+    sourceRef:id,
+    ts:Date.now(),
+    citeCount:0,
+    tag:item.tag||'个人观点',
+    status:'已确认 · v1',
+    body:'<p>'+(item.summary||item.title||'').replace(/</g,'&lt;').replace(/\n/g,'</p><p>')+'</p>',
+    meta:{来源:item.title,状态:'已确认 · 手动提升',引用次数:'0 次',验证强度:'用户确认'},
+    versions:[{v:'v1 当前',why:'从原始资料提升为知识单元',time:new Date().toLocaleDateString('zh-CN')}],
+    _promoted:true
+  };
+  kcData.unit.unshift(kuItem);
+  saveKcData();updateKcCounts();
+  kcSelectedId=kuId;
+  kcTab(document.querySelectorAll('.kc-tab')[1],'unit');
+  toast('已提升为知识单元：'+(item.title||'').slice(0,30));
+}
+
+/* ====== 知识三层流转：知识单元 → 成果层（SOP/报告） ====== */
+function promoteUnitToOutput(id){
+  const item=kcData.unit.find(i=>i.id===id);
+  if(!item)return;
+  if(kcData.output.some(o=>o.sourceRef===id)){toast('该知识单元已生成为SOP');return;}
+  const outId='SOP-U-'+Date.now();
+  const outItem={
+    id:outId,
+    domain:item.domain,
+    title:item.title,
+    summary:item.summary||item.title,
+    sourceType:'SOP',
+    sourceRef:id,
+    ts:Date.now(),
+    citeCount:0,
+    tag:item.tag||'经验',
+    status:'草稿 · v1',
+    steps:0,
+    version:'v1',
+    body:item.body||'<p>'+(item.summary||'')+'</p>',
+    meta:{来源:item.title,状态:'草稿',引用次数:'0 次'},
+    _promoted:true
+  };
+  kcData.output.unshift(outItem);
+  saveKcData();updateKcCounts();
+  kcSelectedId=outId;
+  kcTab(document.querySelectorAll('.kc-tab')[2],'output');
+  toast('已生成为 SOP 草稿：'+(item.title||'').slice(0,30));
 }
 
 /* ====== 知识中心：从记录数据同步到原始资料层 ====== */
@@ -2528,6 +2813,7 @@ function renderKcDetail(){
         (item.id==='KU-0071'?'<div class="rel" onclick="toast(\'跳转：SOP-007\')"><span class="r-type">转化为SOP</span><b>SOP-007 Dou+ 投放决策 SOP v2</b></div>':'')+
         (item.id==='KU-0089'?'<div class="rel" onclick="toast(\'跳转：KU-0311\')"><span class="r-type">冲突</span><b>KU-0311 2026 Q2 平台权重变化</b></div>':'')+
       '</div>'+
+      '<div class="d-actions"><button class="btn btn-primary" onclick="promoteUnitToOutput(\''+item.id+'\')">⚙ 生成为 SOP</button></div>'+
       verHtml;
   }else if(kcLayer==='raw'){
     // 原始资料：来源信息
@@ -2547,7 +2833,8 @@ function renderKcDetail(){
           const uc=KC_DOMAIN_COLORS[u.domain]||'#9AA3AF';
           return '<div class="rel" onclick="kcTab(document.querySelectorAll(\'.kc-tab\')[1],\'unit\');setTimeout(()=>selKcItem(\''+u.id+'\'),100)"><span class="r-type">'+u.id+'</span><b>'+escHtml(u.title)+'</b></div>';
         }).join('')||'<div style="font-size:12px;color:var(--text-faint);padding:8px 0">暂无关联知识单元</div>'+
-      '</div>';
+      '</div>'+
+      '<div class="d-actions"><button class="btn btn-primary" onclick="promoteRawToUnit(\''+item.id+'\')">↑ 提升为知识单元</button></div>';
   }else{
     // 成果层：SOP/报告信息
     const oTag=item.sourceType==='SOP'?'tag-gold':'tag-personal';
@@ -2563,7 +2850,8 @@ function renderKcDetail(){
       '<div class="side-title" style="margin-bottom:12px">关联知识单元</div>'+
       '<div class="rel-grid">'+
         '<div class="rel" onclick="kcTab(document.querySelectorAll(\'.kc-tab\')[1],\'unit\');setTimeout(()=>selKcItem(\''+item.sourceRef+'\'),100)"><span class="r-type">'+item.sourceRef+'</span><b>'+escHtml(kcData.unit.find(u=>u.id===item.sourceRef)?.title||item.sourceRef)+'</b></div>'+
-      '</div>';
+      '</div>'+
+      '<div class="d-actions"><button class="btn btn-primary" onclick="openSopDetail(\''+item.id+'\')">📖 查看完整'+escHtml(item.sourceType)+'</button></div>';
   }
 }
 function saveCandidate(t){toast('已加入待整理箱 · 待你确认后才写入正式知识');addInboxItem({category:'pending',source:'AI问答',trigger:t,detail:'',ts:Date.now(),recordType:'灵感'});addRecordToKcRaw(t,'灵感');}
@@ -2578,7 +2866,7 @@ function confirmCand(b){
     addInboxItemToKcUnit(item);
   }
   const c=b.closest('.cand');c.style.transition='.4s';c.style.opacity='0';c.style.transform='translateX(20px)';
-  setTimeout(()=>{renderInboxList();updateInboxStats();toast('已确认保存为正式知识 · 已同步到知识中心知识单元层');},400);
+  setTimeout(()=>{renderInboxList();updateInboxStats();refreshKnowledgeSignals();toast('已确认保存为正式知识 · 已同步到知识中心知识单元层');},400);
 }
 
 /* ====== 将待整理箱确认的条目同步到知识中心知识单元层 ====== */
@@ -2996,24 +3284,66 @@ async function callDoubao(messages,opts){
   }
 }
 
-/* ====== 构建上下文（简单 RAG）====== */
+/* ====== 中文 N-gram 分词器 ======
+ * 解决原实现用空格分词导致中文完全无法召回的问题。
+ * 中文做二元(bigram)切分，拉丁字母/数字保留为词。
+ */
+function tokenize(text){
+  if(!text)return [];
+  const lower=String(text).toLowerCase();
+  const tokens=[];
+  // 拉丁字母 / 数字词（长度>=2）
+  const latin=(lower.match(/[a-z0-9]+/g)||[]);
+  latin.forEach(w=>{if(w.length>=2)tokens.push(w);});
+  // 中文字符段做 bigram
+  const cjk=(lower.match(/[\u4e00-\u9fff]+/g)||[]);
+  cjk.forEach(seg=>{
+    if(seg.length===1){tokens.push(seg);return;}
+    for(let i=0;i<seg.length-1;i++)tokens.push(seg.slice(i,i+2));
+  });
+  return tokens;
+}
+
+/* ====== 构建上下文（RAG 召回）======
+ * 改进点：
+ *  1. 搜索范围覆盖「速记 + 知识中心三层 + 待整理箱」（原版只搜速记）
+ *  2. 中文 bigram 分词，命中率大幅提升
+ *  3. 领域/标签加成打分
+ *  4. 注入条目标号，要求 AI 引用来源
+ */
 async function buildContext(query){
-  const recs=await getRecords();
-  if(recs.length===0)return '';
-  // 简单关键词匹配召回
-  const keywords=query.split(/\s+/).filter(w=>w.length>1);
-  const scored=recs.map(r=>{
+  const qTokens=tokenize(query);
+  if(qTokens.length===0)return '';
+  const qSet=new Set(qTokens);
+  const scored=[];
+  function scoreItem(item,prefix){
+    if(!item)return;
+    const text=[item.title,item.summary,item.body,item.content,item.detail,item.trigger,item.meta]
+      .filter(Boolean).join(' ');
+    const tks=tokenize(text);
+    if(tks.length===0)return;
     let score=0;
-    const text=(r.content||'').toLowerCase();
-    keywords.forEach(k=>{
-      if(text.includes(k.toLowerCase()))score+=2;
-    });
-    return {r,score};
-  }).filter(x=>x.score>0).sort((a,b)=>b.score-a.score).slice(0,5);
+    tks.forEach(t=>{if(qSet.has(t))score+=2;});
+    if(score<=0)return;
+    // 领域匹配加成
+    if(item.domain && query.indexOf(item.domain)>=0)score+=3;
+    scored.push({item,prefix,id:item.id,score});
+  }
+  try{const recs=await getRecords();(recs||[]).forEach(r=>scoreItem(r,'记录'));}catch(e){}
+  if(kcData){
+    (kcData.raw||[]).forEach(i=>scoreItem(i,'原始资料'));
+    (kcData.unit||[]).forEach(i=>scoreItem(i,'知识单元'));
+    (kcData.output||[]).forEach(i=>scoreItem(i,'成果层'));
+  }
+  try{(inboxData||[]).forEach(i=>scoreItem(i,'待整理箱'));}catch(e){}
   if(scored.length===0)return '';
-  let ctx='\n\n【用户个人知识参考】\n';
-  scored.forEach(x=>{
-    ctx+='['+x.r.type+'] '+x.r.content+'\n';
+  scored.sort((a,b)=>b.score-a.score);
+  const top=scored.slice(0,8);
+  let ctx='\n\n【用户个人知识参考（按相关度召回，回答中引用时请使用条目标号，如 [KU-0142]）】\n';
+  top.forEach(x=>{
+    const content=[x.item.content,x.item.body,x.item.summary,x.item.detail,x.item.trigger]
+      .filter(Boolean)[0]||'';
+    ctx+='['+x.id+'] ('+(x.item.domain||x.item.type||'未分类')+') '+content.slice(0,300)+'\n';
   });
   return ctx;
 }
@@ -3122,6 +3452,7 @@ async function streamAIResponse(query,chatContainer){
   // 构建上下文
   const ctx=await buildContext(query);
   const systemPrompt='你是「知渊」，用户的个人 AI 知识顾问。你的回答要区分三类来源：个人知识（用户已确认的经验）、网络资料（外部信息）、AI 推断（你的分析，非事实）。回答简洁有力，用中文。'+ctx+webInfo;
+  if(ctx)systemPrompt+='\n\n【重要】个人知识参考中每条都标有条目标号（如 [KU-0142]、[RAW-001]、[记录]）。当你引用其中的具体知识时，必须在相应句子后标注该标号，例如"日更超过2条会触发降权[KU-0089]"。未标注来源的观点视为 AI 推断。';
   const messages=[
     {role:'system',content:systemPrompt},
     {role:'user',content:query}
@@ -3218,7 +3549,7 @@ function onJournalInput(){
 
 async function aiClassify(text){
   const messages=[
-    {role:'system',content:'你是分类助手。判断用户输入属于以下哪种类型，只返回类型名称，不要其他文字：灵感、观察、复盘、经验、待验证。灵感=突然的想法创意；观察=注意到的现象规律；复盘=事后总结回顾；经验=实践得出的方法结论；待验证=假设猜想需验证。'},
+    {role:'system',content:'你是分类助手。判断用户输入的类型和知识领域，只返回「类型｜领域」两个词，用中文竖线分隔，不要其他文字。\n类型从以下选一个：灵感、观察、复盘、经验、待验证。\n领域从以下选一个：AI应用、短视频运营、商业变现、个人成长、项目管理。\n示例输出：经验｜短视频运营'},
     {role:'user',content:text.substring(0,500)}
   ];
   const res=await callAI(messages,{temperature:0.1,max_tokens:20});
@@ -3228,10 +3559,16 @@ async function aiClassify(text){
   }
   const result=res.content.trim();
   const types=['灵感','观察','复盘','经验','待验证'];
-  const matched=types.find(t=>result.includes(t));
-  if(matched){
-    setAutoBadge(matched);
-  }else{
+  const domains=['AI应用','短视频运营','商业变现','个人成长','项目管理'];
+  const matchedType=types.find(t=>result.includes(t));
+  const matchedDomain=domains.find(d=>result.includes(d));
+  if(matchedType){
+    setAutoBadge(matchedType);
+  }
+  if(matchedDomain && !currentJDomain){
+    selJDomain(matchedDomain);
+  }
+  if(!matchedType){
     keywordClassify(text);
   }
 }
@@ -3240,7 +3577,7 @@ function keywordClassify(text){
   const rules=[
     {type:'灵感',keywords:['灵感','想法','创意','突然想到','要不','可以试试','如果']},
     {type:'观察',keywords:['观察','发现','注意到','现象','规律','好像','似乎','看起来']},
-    {type:'复盘',keywords:['复盘','回顾','总结','事后','结果','这次','上周','上周']},
+    {type:'复盘',keywords:['复盘','回顾','总结','事后','结果','这次','上周']},
     {type:'经验',keywords:['经验','教训','学会了','得出','验证了','证明','确认','方法']},
     {type:'待验证',keywords:['假设','猜测','待验证','需要验证','不确定','可能','或许']}
   ];
@@ -3251,6 +3588,11 @@ function keywordClassify(text){
     if(score>best.score)best={type:r.type,score};
   }
   setAutoBadge(best.type);
+  // 关键词降级时顺便自动推断领域（用户未手动选领域时）
+  if(!currentJDomain){
+    const d=detectDomain(text);
+    if(d)selJDomain(d);
+  }
 }
 
 function setAutoBadge(type){
@@ -3270,6 +3612,12 @@ function setAutoBadge(type){
 
 function resetAutoBadge(){
   setAutoBadge('灵感');
+  // 重置领域选择（保留不强制，但保存后清空以便下次识别）
+  currentJDomain='';
+  const badge=document.getElementById('domainBadge');
+  const text=document.getElementById('domainBadgeText');
+  if(badge){badge.classList.remove('active');badge.style.borderColor='';text.textContent='选择领域';}
+  document.querySelectorAll('#domainMenu div').forEach(d=>d.classList.remove('active'));
   document.getElementById('journalInput').value='';
 }
 
@@ -3282,10 +3630,30 @@ function toggleTypeMenu(){
   document.getElementById('typeMenu').classList.toggle('show');
 }
 
+/* ====== 领域选择 ====== */
+function toggleDomainMenu(){
+  document.getElementById('domainMenu').classList.toggle('show');
+}
+function selJDomain(domain,el){
+  currentJDomain=domain;
+  const badge=document.getElementById('domainBadge');
+  const text=document.getElementById('domainBadgeText');
+  const color=KC_DOMAIN_COLORS[domain]||'#9AA3AF';
+  badge.classList.add('active');
+  badge.style.borderColor=color;
+  text.textContent=domain;
+  document.querySelectorAll('#domainMenu div').forEach(d=>d.classList.toggle('active',d.textContent===domain));
+  document.getElementById('domainMenu').classList.remove('show');
+}
+
 // 点击外部关闭下拉菜单
 document.addEventListener('click',e=>{
   if(!e.target.closest('.j-type-wrap')){
     const m=document.getElementById('typeMenu');
+    if(m)m.classList.remove('show');
+  }
+  if(!e.target.closest('.j-domain-wrap')){
+    const m=document.getElementById('domainMenu');
     if(m)m.classList.remove('show');
   }
 });
@@ -3716,6 +4084,86 @@ function addInboxItem(item){
   inboxData.unshift(item);
   saveInboxData();
   updateInboxStats();
+}
+
+/* ============================================================
+ *  知识信号检测：缺口 + 冲突（替换硬编码演示数据）
+ * ============================================================ */
+
+/* 知识缺口：基于真实领域覆盖度（本地，无需 AI） */
+function detectGaps(){
+  try{
+    KC_DOMAINS.forEach(d=>{
+      const unitCount=(kcData.unit||[]).filter(u=>u.domain===d).length;
+      const settledCount=inboxData.filter(i=>i.category==='settled'&&(i.domain===d)).length;
+      const hasData=unitCount+settledCount>0;
+      const gapId='GAP-AUTO-'+d;
+      const existing=inboxData.find(i=>i.id===gapId);
+      if(!hasData){
+        if(!existing){
+          addInboxItem({
+            id:gapId,category:'gap',type:'知识缺口',source:'知识缺口',
+            trigger:d+' 领域暂无可确认的知识',
+            detail:'你的知识库在「'+d+'」领域尚无可确认知识。建议在该领域多积累记录、复盘与验证；当你提问涉及该领域却无可靠答案时，系统会一并标记缺口。',
+            meta:'触发：领域覆盖度检测 · 自动',ts:Date.now(),gapDomain:d,_autoGap:true
+          });
+        }
+      }else if(existing){
+        inboxData=inboxData.filter(i=>i.id!==gapId);
+        saveInboxData();updateInboxStats();
+      }
+    });
+  }catch(e){console.warn('detectGaps error',e);}
+}
+
+/* 知识冲突：AI 检测已确认知识之间的矛盾 */
+async function scanConflicts(){
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(!hasKey){toast('配置 AI Key 后可自动检测知识冲突');return;}
+  const units=(kcData.unit||[]).filter(u=>u.domain&&u.title);
+  if(units.length<2){toast('知识单元不足，暂无可检测的冲突');return;}
+  toast('正在检测知识冲突…');
+  const knowledgeText=units.map(u=>'['+u.id+'] ('+u.domain+') '+u.title+'：'+(u.summary||'').slice(0,120)).join('\n');
+  const messages=[
+    {role:'system',content:'你是知识审查助手。下面是一组用户已确认的知识单元。请找出其中内容相互矛盾、可能无法同时成立的条目对。只输出矛盾对，每行格式：冲突ID1 ↔ 冲突ID2 | 矛盾点简述。若没有矛盾，只输出"无矛盾"。'},
+    {role:'user',content:knowledgeText}
+  ];
+  const res=await callAI(messages,{temperature:0.2,max_tokens:300});
+  if(res.error){toast('冲突检测失败：'+res.error);return;}
+  const lines=(res.content||'').split('\n').map(s=>s.trim()).filter(Boolean);
+  let added=0;
+  lines.forEach(line=>{
+    if(line.indexOf('无矛盾')>=0)return;
+    const m=line.match(/([A-Za-z0-9\-]+)\s*↔\s*([A-Za-z0-9\-]+)/);
+    if(!m)return;
+    const a=m[1],b=m[2];
+    const ua=units.find(u=>u.id===a),ub=units.find(u=>u.id===b);
+    if(!ua||!ub)return;
+    const gapId='CONF-AUTO-'+a+'-'+b;
+    if(inboxData.some(i=>i.id===gapId))return;
+    addInboxItem({
+      id:gapId,category:'conflict',type:'知识冲突',source:'知识冲突',
+      trigger:ua.title+' 与 '+ub.title+' 可能矛盾',
+      detail:'AI 检测到以下两条知识可能存在冲突：\n• ['+a+'] '+ua.title+'：'+(ua.summary||'').slice(0,100)+'\n• ['+b+'] '+ub.title+'：'+(ub.summary||'').slice(0,100)+'\n'+line,
+      meta:'触发：AI 冲突检测 · '+a+' ↔ '+b,ts:Date.now(),
+      conflictA:{label:a,content:(ua.summary||'')},conflictB:{label:b,content:(ub.summary||'')},_autoConflict:true
+    });
+    added++;
+  });
+  toast(added?('检测到 '+added+' 处知识冲突，已加入待裁决'):'未检测到明显知识冲突');
+  if(typeof renderInboxList==='function')renderInboxList();
+}
+
+/* 统一刷新知识信号（缺口实时 + 冲突按需 AI） */
+let _signalTimer=null;
+function refreshKnowledgeSignals(){
+  detectGaps();
+  if(typeof renderInboxList==='function')renderInboxList();
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(hasKey){
+    clearTimeout(_signalTimer);
+    _signalTimer=setTimeout(()=>scanConflicts(),1500);
+  }
 }
 
 function updateInboxStats(){
@@ -4166,7 +4614,7 @@ function toggleRetroArea(){
   document.getElementById('npRetroArea').classList.toggle('show',cb.checked);
 }
 
-/* ====== 保存新项目 ====== */
+/* ====== 保存新项目 / 编辑项目 ====== */
 function saveNewProject(){
   const title=document.getElementById('npTitle').value.trim();
   if(!title){toast('请输入项目名称');document.getElementById('npTitle').focus();return;}
@@ -4177,7 +4625,33 @@ function saveNewProject(){
   const hasRetro=document.getElementById('npHasRetro').checked;
   const retro=hasRetro?document.getElementById('npRetro').value.trim():'';
   const btn=document.getElementById('npSaveBtn');
-  btn.textContent='创建中…';btn.disabled=true;
+  btn.textContent='保存中…';btn.disabled=true;
+  const editId=document.getElementById('newProjectModal').dataset.editId;
+  if(editId){
+    // 编辑模式
+    const p=projData.find(x=>x.id===editId);
+    if(p){
+      p.title=title;p.type=npSelectedType;p.status=status;p.progress=progress;
+      p.color=npSelectedColor;p.desc=desc||'暂无描述';p.retro=retro;p.ts=Date.now();
+      saveProjData();
+      if(retro){
+        // 同步复盘到待整理箱（仅当本次编辑新增了复盘内容）
+        try{
+          if(!inboxData.some(i=>i.meta&&i.meta.indexOf('来自项目：'+p.title)>=0&&i.detail===retro)){
+            inboxData.unshift({id:Date.now()+1,category:'pending',type:'项目复盘',source:'项目复盘',trigger:p.title+' · 想法/复盘',detail:retro,meta:'来自项目：'+p.title+' · '+p.type,ts:Date.now(),recordType:'复盘'});
+            saveInboxData();updateInboxStats();
+            addRecordToKcRaw('【项目复盘】'+p.title+'：'+retro,'复盘');
+          }
+        }catch(e){}
+      }
+    }
+    btn.textContent='创建项目';btn.disabled=false;
+    delete document.getElementById('newProjectModal').dataset.editId;
+    closeModal('newProjectModal');
+    renderProjectList();
+    toast('项目已更新');
+    return;
+  }
   const proj={
     id:'P-'+Date.now(),
     title:title,
@@ -4227,12 +4701,75 @@ function delProject(id){
 }
 
 /* ====== 查看项目详情 ====== */
+/* ====== 项目详情（模态框） ====== */
+let projDetailId=null;
 function openProjDetail(id){
   const p=projData.find(x=>x.id===id);
   if(!p)return;
+  projDetailId=id;
   const hasRetro=p.retro&&p.retro.trim();
-  const retroText=hasRetro?p.retro.replace(/\n/g,' ').slice(0,100)+(p.retro.length>100?'…':''):'暂无复盘内容';
-  toast(p.title+' · '+p.progress+'% · '+(hasRetro?'含复盘':'无复盘'));
+  const c=p.color||'#6B8AE8';
+  document.getElementById('projTitle').textContent=p.title;
+  document.getElementById('projMeta').innerHTML=
+    '<span class="tag tag-soft" style="padding:1px 6px">'+escHtml(p.type)+'</span>'+
+    '<span class="tag '+(STATUS_TAG_CLASS[p.status]||'tag-soft')+'" style="padding:1px 6px">'+escHtml(p.status)+'</span>'+
+    (hasRetro?'<span class="tag tag-personal" style="padding:1px 6px">含复盘</span>':'');
+  document.getElementById('projProgressVal').textContent=p.progress+'%';
+  document.getElementById('projProgressFill').style.width=p.progress+'%';
+  document.getElementById('projProgressFill').style.background=c;
+  document.getElementById('projDesc').textContent=p.desc||'暂无描述';
+  const retroBox=document.getElementById('projRetroBox');
+  if(hasRetro){retroBox.style.display='block';document.getElementById('projRetroText').textContent=p.retro;}
+  else{retroBox.style.display='none';}
+  document.getElementById('projDetailModal').classList.add('show');
+}
+function editProjectFromDetail(){
+  if(!projDetailId)return;
+  closeModal('projDetailModal');
+  openEditProjectModal(projDetailId);
+}
+async function deleteProjectFromDetail(){
+  if(!projDetailId)return;
+  closeModal('projDetailModal');
+  delProject(projDetailId);
+}
+
+/* ====== 编辑项目（在新建模态框基础上预填） ====== */
+function openEditProjectModal(id){
+  const p=projData.find(x=>x.id===id);
+  if(!p)return;
+  document.getElementById('npTitle').value=p.title||'';
+  document.getElementById('npDesc').value=p.desc||'';
+  document.getElementById('npRetro').value=p.retro||'';
+  document.getElementById('npProgress').value=p.progress||0;
+  document.getElementById('npProgressVal').textContent=(p.progress||0)+'%';
+  document.getElementById('npStatus').value=p.status||'进行中';
+  document.getElementById('npHasRetro').checked=!!(p.retro&&p.retro.trim());
+  document.getElementById('npRetroArea').classList.toggle('show',!!(p.retro&&p.retro.trim()));
+  // 类型
+  npSelectedType=p.type||'';
+  document.querySelectorAll('#npTypeTags .proj-type-tag').forEach(t=>t.classList.toggle('active',t.textContent.trim()===p.type));
+  document.getElementById('npCustomTypeWrap').classList.remove('show');
+  // 颜色
+  npSelectedColor=p.color||'#6B8AE8';
+  document.querySelectorAll('#npColorPicker .proj-color-dot').forEach(d=>d.classList.toggle('active',d.dataset.color===p.color));
+  document.getElementById('npSaveBtn').textContent='保存修改';
+  document.getElementById('npSaveBtn').disabled=false;
+  document.getElementById('newProjectModal').dataset.editId=id;
+  document.getElementById('newProjectModal').classList.add('show');
+}
+/* ====== SOP / 成果层 详情（模态框） ====== */
+function openSopDetail(id){
+  const item=kcData.output.find(o=>o.id===id);
+  if(!item){toast('未找到该SOP');return;}
+  const c=KC_DOMAIN_COLORS[item.domain]||'#9AA3AF';
+  document.getElementById('sopDTitle').textContent=item.title;
+  document.getElementById('sopDMeta').innerHTML=
+    '<span class="tag tag-gold" style="padding:1px 6px">'+escHtml(item.sourceType)+'</span>'+
+    '<span class="cand-type-badge" style="background:'+c+'22;color:'+c+'">'+escHtml(item.domain)+'</span>'+
+    '<span class="tag tag-soft">'+escHtml(item.status)+'</span>';
+  document.getElementById('sopDBody').innerHTML=item.body||'<p>'+(item.summary||'')+'</p>';
+  document.getElementById('sopDModal').classList.add('show');
 }
 
 /* ====== Init ====== */
@@ -4251,6 +4788,7 @@ migrateInboxTags(); // 迁移修复待整理箱旧数据标签
 updateInboxStats();
 renderInboxTabs();
 renderInboxList();
+refreshKnowledgeSignals(); // 启动后因子检测：缺口实时 + 冲突（有 Key 时 AI 检测）
 loadRecallLog(); // 加载回溯日志
 renderHomeRecall(); // 渲染首页回溯条目
 renderRecallCards(); // 渲染回溯页面

@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>知渊 · 个人 AI 知识体系 — 深度测评报告</title>
+<style>
+  :root{
+    --bg:#f7f5f0; --card:#fff; --ink:#2b2620; --faint:#8a8175;
+    --line:#e8e1d6; --gold:#c79b5a; --green:#2e9e6b; --red:#d4544a; --amber:#d9952b; --blue:#4a7cc4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:"Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.75;padding:40px 18px}
+  .wrap{max-width:960px;margin:0 auto}
+  header{border-bottom:2px solid var(--gold);padding-bottom:20px;margin-bottom:30px}
+  h1{font-family:"Noto Serif SC",serif;font-size:28px;letter-spacing:.5px}
+  .sub{color:var(--faint);font-size:14px;margin-top:8px}
+  .url{display:inline-block;margin-top:10px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 11px;font-size:12.5px;color:var(--gold);font-family:monospace}
+  h2{font-family:"Noto Serif SC",serif;font-size:21px;margin:36px 0 16px;padding-left:12px;border-left:4px solid var(--gold)}
+  h3{font-size:16px;margin:20px 0 10px}
+  h4{font-size:14.5px;margin:16px 0 8px;color:#5a4f42}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:20px 22px;margin:14px 0;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+  .tag{display:inline-block;font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px;color:#fff;vertical-align:middle}
+  .ok{background:var(--green)} .bad{background:var(--red)} .warn{background:var(--amber)} .info{background:var(--blue)}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#fbf7ef;color:var(--faint);font-weight:600;font-size:12.5px}
+  td .tag{margin-right:6px}
+  code{background:#f3ede2;padding:1px 6px;border-radius:5px;font-size:12.5px;font-family:"JetBrains Mono",monospace;color:#9a5b2e}
+  .note{background:#fff8ec;border:1px solid #f0dcb8;border-left:4px solid var(--amber);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13.5px}
+  .key{background:#fdeeee;border:1px solid #f3c9c4;border-left:4px solid var(--red);border-radius:8px;padding:12px 16px;margin:12px 0;font-size:13.5px}
+  .fix{background:#effaf3;border:1px solid #c8e8d4;border-left:4px solid var(--green);border-radius:8px;padding:12px 16px;margin:10px 0;font-size:13.5px}
+  .fix b{color:var(--green)}
+  .key b{color:var(--red)}
+  .note b{color:var(--amber)}
+  ul{margin:6px 0 6px 20px} li{margin:5px 0}
+  .muted{color:var(--faint);font-size:13px}
+  .score-bar{display:inline-block;width:60px;height:8px;background:#eee;border-radius:4px;overflow:hidden;vertical-align:middle;margin-right:6px}
+  .score-bar i{display:block;height:100%;border-radius:4px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:680px){.grid2{grid-template-columns:1fr}}
+  footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--faint);font-size:12.5px}
+  .toc{background:#fbf7ef;border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:16px 0}
+  .toc ol{margin:6px 0 6px 24px}
+  .toc li{margin:4px 0}
+  .toc a{color:var(--gold);text-decoration:none}
+  .toc a:hover{text-decoration:underline}
+  .priority-P0{color:var(--red);font-weight:700}
+  .priority-P1{color:var(--amber);font-weight:700}
+  .priority-P2{color:var(--blue);font-weight:700}
+  .priority-P3{color:var(--green);font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>知渊 · 个人 AI 知识体系 — 深度测评报告</h1>
+  <div class="sub">测评视角：10年+ 大厂产品经理 · 测评时间：2026-08-05 · 测评方法：全量源码审查 + 线上实测 + 架构分析</div>
+  <div class="url">https://linxiang12322.github.io/zhiyuan-ai-knowledge/</div>
+</header>
+
+<!-- ===== TOC ===== -->
+<div class="toc">
+  <strong>目录</strong>
+  <ol>
+    <li><a href="#s1">总体评价与核心结论</a></li>
+    <li><a href="#s2">产品定位与商业模式分析</a></li>
+    <li><a href="#s3">功能模块逐项测评（8大模块）</a></li>
+    <li><a href="#s4">知识调用·归类·同步专项评估</a></li>
+    <li><a href="#s5">技术架构与安全性评估</a></li>
+    <li><a href="#s6">用户体验与交互设计评估</a></li>
+    <li><a href="#s7">缺失功能与补全建议</a></li>
+    <li><a href="#s8">优先级矩阵与迭代路线建议</a></li>
+    <li><a href="#s9">最终评分与结论</a></li>
+  </ol>
+</div>
+
+<!-- ===== 1. 总体评价 ===== -->
+<h2 id="s1">一、总体评价与核心结论</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">一句话结论</h3>
+  <p><strong>知渊是一款"设计理念远超工程成熟度"的个人知识管理产品。</strong>它在知识体系架构设计（三层内容 × 五大领域 × 待整理箱流转）上展现了很强的产品思考，但在工程落地、数据安全、用户引导和核心功能闭环上仍处于"MVP 之前的 Demo 阶段"。如果把它当作一个产品原型来看，方向正确、框架清晰；如果当作一个可用产品来看，<strong>距离最小可用产品（MVP）仍有 3-5 个关键 gap 需要补齐</strong>。</p>
+</div>
+
+<div class="card">
+  <h3>核心数据</h3>
+  <table>
+    <tr><th>维度</th><th>数据</th></tr>
+    <tr><td>代码规模</td><td>单文件 4264 行（HTML + CSS + JS 全内联）</td></tr>
+    <tr><td>功能模块</td><td>8 大模块（工作台/待整理箱/知识中心/AI顾问/回溯/SOP/项目/个人规则）</td></tr>
+    <tr><td>外部依赖</td><td>Supabase（云数据库+认证）、DeepSeek API、豆包API、Tavily API、CORS代理</td></tr>
+    <tr><td>数据表</td><td>2 张（records + user_state），RLS 已启用</td></tr>
+    <tr><td>测试覆盖</td><td>云同步层 7 个离线测试场景（synctest.js），其余无测试</td></tr>
+    <tr><td>部署方式</td><td>GitHub Pages 静态托管</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3>相比上一版审计报告的改进</h3>
+  <p>项目仓库中附带的<code>知渊网站功能审计报告.html</code>（2026-08-04）指出了 5 个关键问题。本次测评发现<strong>已有 3 个被修复</strong>：</p>
+  <table>
+    <tr><th>问题</th><th>上版状态</th><th>当前状态</th></tr>
+    <tr><td>顶部搜索框无事件绑定</td><td><span class="tag bad">不可用</span></td><td><span class="tag ok">已修复</span> 现有 <code>oninput="onTopSearch()"</code>，支持记录/知识/待整理箱联合检索</td></tr>
+    <tr><td>联网检索功能不存在</td><td><span class="tag bad">未实现</span></td><td><span class="tag ok">已修复</span> Tavily API 集成已完成，支持实时联网搜索 + 来源标注</td></tr>
+    <tr><td>演示数据未标注</td><td><span class="tag bad">误导</span></td><td><span class="tag ok">已修复</span> 顶部已加演示横幅 + AI面板标注"示例对话·非真实生成"</td></tr>
+    <tr><td>"AI 以演示模式运行"文案不准确</td><td><span class="tag warn">误导</span></td><td><span class="tag warn">仍存在</span> 无 key 时改为引导配置，但文案仍有优化空间</td></tr>
+    <tr><td>云同步徽标在未登录时误导</td><td><span class="tag warn">误导</span></td><td><span class="tag ok">已修复</span> 单机模式点击徽标会明确提示"数据仅保存在本机"</td></tr>
+  </table>
+  <p class="muted">→ 结论：开发者在 24 小时内响应了审计报告并修复了大部分问题，迭代速度值得肯定。</p>
+</div>
+
+<!-- ===== 2. 产品定位 ===== -->
+<h2 id="s2">二、产品定位与商业模式分析</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">产品定位</h3>
+  <p>知渊的定位是<strong>"个人 AI 知识体系"</strong>——以用户记录为核心，AI 为辅助能力层，构建"收集 → 自动加工 → 人工确认 → 知识沉淀"的闭环。</p>
+  <p>这个定位在当前 AI-Native 产品浪潮中<strong>方向正确但有竞争风险</strong>：</p>
+  <ul>
+    <li><strong>正向</strong>：不是又一个 ChatGPT 套壳，而是强调"人的知识体系"为核心、AI 为辅——这与 Notion AI、Obsidian + Copilot、飞书知识库等产品思路一致，是正确的高位定位。</li>
+    <li><strong>风险</strong>：个人知识管理（PKM）赛道极其拥挤——Notion、Obsidian、Logseq、飞书文档、Roam Research 都在做"AI + 知识管理"，且都有完整的多端同步、协作能力和成熟的插件生态。知渊作为单文件应用，在这些维度上几乎没有竞争力。</li>
+    <li><strong>差异化机会</strong>：知渊独有的"待整理箱"四分类（待确认候选/已沉淀/知识缺口/冲突待裁决）和"三层知识架构"（原始资料→知识单元→成果层）是竞品没有显式做的。<strong>如果能把这个"知识沉淀工作流"做深做透，是有差异化价值的。</strong></li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3>目标用户画像分析</h3>
+  <table>
+    <tr><th>维度</th><th>推测画像</th><th>评估</th></tr>
+    <tr><td>用户类型</td><td>短视频创作者 / 自媒体运营 / 个人 IP 打造者</td><td><span class="tag warn">过窄</span></td></tr>
+    <tr><td>使用场景</td><td>日常灵感速记 → AI 加工 → 知识沉淀 → SOP 复用</td><td><span class="tag ok">合理</span></td></tr>
+    <tr><td>技术能力</td><td>需自行注册 Supabase、申请 DeepSeek/Tavily API Key</td><td><span class="tag bad">门槛过高</span></td></tr>
+    <tr><td>设备偏好</td><td>PC 为主（移动端适配有限）</td><td><span class="tag warn">需补齐</span></td></tr>
+  </table>
+  <div class="key">
+    <b>关键问题</b>：产品预设的五大知识领域（AI应用/短视频运营/商业变现/个人成长/项目管理）过于偏向"自媒体创作者"群体。如果定位是通用个人知识管理，应该允许用户自定义领域；如果定位是垂直工具，则需要在品类上更加聚焦。<strong>目前处于"既不通用也不垂直"的中间状态。</strong>
+  </div>
+</div>
+
+<!-- ===== 3. 功能模块逐项测评 ===== -->
+<h2 id="s3">三、功能模块逐项测评（8大模块）</h2>
+
+<!-- 模块1: 工作台 -->
+<div class="card">
+  <h3 style="margin-top:0">模块 1：混合工作台（首页记录空间）</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>快速记录</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>输入文本 → 自动分类 → 保存到待整理箱。写入 <code>localStorage</code>，云模式下写入 <code>records</code> 表。逻辑完整。</td>
+    </tr>
+    <tr>
+      <td>自动分类</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>AI 优先 + 关键词降级，设计合理。但：① 关键词规则过于简单（"上次"同时匹配复盘和经验）；② AI 分类仅返回类型名，不提取关键词/领域标签；③ 无分类置信度展示。</td>
+    </tr>
+    <tr>
+      <td>视频转文字</td>
+      <td><span class="tag warn">不稳定</span></td>
+      <td>通过 CORS 代理抓取抖音/小红书页面，解析文案后用 AI 整理。<strong>严重依赖第三方 CORS 代理服务的可用性</strong>，代理挂掉则功能完全不可用。且小红书页面结构变化会导致解析失败。</td>
+    </tr>
+    <tr>
+      <td>记录类型切换</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>5 种类型（灵感/观察/复盘/经验/待验证），手动切换 + 自动识别联动。</td>
+    </tr>
+    <tr>
+      <td>领域选择</td>
+      <td><span class="tag warn">缺失</span></td>
+      <td>UI 上有"领域"按钮但<strong>点击后无任何交互</strong>——无法在记录时指定知识领域。这是一个核心功能缺失。</td>
+    </tr>
+  </table>
+  <div class="key">
+    <b>P0 问题</b>：首页"领域"按钮无功能。用户在记录时无法指定这条记录属于哪个知识领域，导致后续知识归类和领域筛选失去数据基础。
+  </div>
+  <div class="note">
+    <b>补充说明</b>：自动分类目前只分"记录类型"（灵感/观察等），不分"知识领域"（AI应用/短视频等）。理想情况下应同时自动识别两个维度，或至少允许用户手动选择领域。
+  </div>
+</div>
+
+<!-- 模块2: 待整理箱 -->
+<div class="card">
+  <h3 style="margin-top:0">模块 2：待整理箱</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>四分类展示</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>待确认候选 / 已沉淀 / 知识缺口 / 冲突待裁决，四类清晰，统计卡片可筛选。</td>
+    </tr>
+    <tr>
+      <td>确认/保存操作</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>"确认保存"会将候选条目标记为已沉淀并同步到知识中心原始资料层。但<strong>"保存为知识单元"的逻辑不完整</strong>——只是把文本存入 raw 层，没有让用户编辑标题/摘要/领域/标签。</td>
+    </tr>
+    <tr>
+      <td>编辑功能</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>"编辑"按钮存在，但点击后<strong>仅弹出 prompt 对话框</strong>（浏览器原生），编辑体验极差。应该用模态框或行内编辑。</td>
+    </tr>
+    <tr>
+      <td>暂缓/删除</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>暂缓将条目移到"已沉淀"，删除直接移除。逻辑正确。</td>
+    </tr>
+    <tr>
+      <td>冲突检测</td>
+      <td><span class="tag bad">未实现</span></td>
+      <td>"冲突待裁决"分类中的数据是<strong>硬编码的演示数据</strong>。代码中没有实现真实的知识冲突检测逻辑——即无法自动发现"日更降权"与"互动深度优先"之间的矛盾。</td>
+    </tr>
+    <tr>
+      <td>知识缺口</td>
+      <td><span class="tag bad">未实现</span></td>
+      <td>"知识缺口"同样是硬编码演示数据。没有机制自动识别"用户在某领域记录稀少"或"AI 回答时发现知识空白"并生成缺口条目。</td>
+    </tr>
+  </table>
+  <div class="key">
+    <b>P0 问题</b>：待整理箱的核心价值——"自动发现知识冲突和知识缺口"——完全未实现。当前只有"待确认候选"是真实数据流，其余三类是静态展示。这使得"待整理箱"退化为一个简单的待办列表，失去了产品设计中"知识质量把关"的核心价值。
+  </div>
+</div>
+
+<!-- 模块3: 知识中心 -->
+<div class="card">
+  <h3 style="margin-top:0">模块 3：知识中心</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>三层架构</td>
+      <td><span class="tag ok">设计优秀</span></td>
+      <td>原始资料层 → 知识单元层 → 成果层。三层分离的设计非常专业，体现了"知识不是平的"这一核心理念。</td>
+    </tr>
+    <tr>
+      <td>领域筛选</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>五大领域 tab 筛选，切换正常。</td>
+    </tr>
+    <tr>
+      <td>标签筛选</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>按记录类型标签筛选，有迁移函数兼容旧数据。</td>
+    </tr>
+    <tr>
+      <td>排序</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>时间正/倒序 + 引用次数排序。</td>
+    </tr>
+    <tr>
+      <td>详情面板</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>点击条目显示详情，但<strong>详情内容非常简陋</strong>——仅显示标题、摘要、来源标签。缺少：原始内容全文、关联知识单元、版本历史、引用链路等。</td>
+    </tr>
+    <tr>
+      <td>知识单元创建</td>
+      <td><span class="tag bad">缺失</span></td>
+      <td><strong>无法手动创建知识单元</strong>。知识单元层的数据全部来自演示数据或待整理箱的"确认保存"（但后者只写入原始资料层，不直接创建知识单元）。<strong>三层之间的流转通路断裂。</strong></td>
+    </tr>
+    <tr>
+      <td>成果层创建</td>
+      <td><span class="tag bad">缺失</span></td>
+      <td>成果层（SOP/报告）的数据来自 SOP 生成模块，但<strong>无法在知识中心内直接创建或编辑成果层内容</strong>。</td>
+    </tr>
+    <tr>
+      <td>知识关联</td>
+      <td><span class="tag bad">未实现</span></td>
+      <td>设计文档说"每条引用都能回溯到原始资料"，但代码中<strong>没有实现知识单元到原始资料的关联链接</strong>。演示数据中的"引用 N 次"是写死的数字。</td>
+    </tr>
+  </table>
+  <div class="key">
+    <b>P0 问题</b>：三层知识架构是"展示型"的——用户能看到三层的数据，但<strong>无法在三层之间流转知识</strong>。原始资料不能被"提升"为知识单元，知识单元不能被"提升"为成果层。这导致三层架构沦为三个独立列表，失去了"知识沉淀流水线"的设计初衷。
+  </div>
+</div>
+
+<!-- 模块4: AI顾问 -->
+<div class="card">
+  <h3 style="margin-top:0">模块 4：AI 顾问</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>AI 对话</td>
+      <td><span class="tag warn">需配置</span></td>
+      <td>支持 DeepSeek + 豆包双引擎切换，SSE 流式输出。无 key 时引导配置，不伪造回答。<strong>但 API Key 存储在 localStorage 中，明文可见。</strong></td>
+    </tr>
+    <tr>
+      <td>联网检索</td>
+      <td><span class="tag warn">需配置</span></td>
+      <td>Tavily API 集成已完成，结果标注为"网络资料"并附来源链接。但无 key 时仅静默跳过，<strong>未在对话前告知用户"联网不可用"</strong>。</td>
+    </tr>
+    <tr>
+      <td>RAG 上下文</td>
+      <td><span class="tag bad">严重不足</span></td>
+      <td><code>buildContext()</code> 仅从 <code>records</code>（速记）中按<strong>空格分词的关键词 includes 匹配</strong>召回 Top 5。<strong>不搜索知识中心的知识单元和成果层</strong>，不搜索待整理箱。中文分词用空格切分完全不合理（中文用户不会用空格分词）。</td>
+    </tr>
+    <tr>
+      <td>来源分层</td>
+      <td><span class="tag ok">设计优秀</span></td>
+      <td>System Prompt 明确要求 AI 区分"个人知识/网络资料/AI推断"三类来源，并在 UI 上分层展示。这是很好的可信 AI 设计。</td>
+    </tr>
+    <tr>
+      <td>"值得保存"按钮</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>点击后 AI 回答进入待整理箱，用户确认后才写入正式知识。符合"自动化停在待整理箱"的设计原则。</td>
+    </tr>
+    <tr>
+      <td>对话历史</td>
+      <td><span class="tag bad">缺失</span></td>
+      <td><strong>无对话历史保存</strong>。刷新页面后对话丢失。不支持多轮对话上下文（每次提问都是独立的 system + user）。</td>
+    </tr>
+    <tr>
+      <td>多轮对话</td>
+      <td><span class="tag bad">缺失</span></td>
+      <td>每次提问只发送 system prompt + 当前 query，<strong>不携带之前的对话历史</strong>。AI 无法理解"上面提到的那个方案B"等上下文引用。</td>
+    </tr>
+  </table>
+  <div class="key">
+    <b>P0 问题</b>：RAG 实现有严重缺陷。① 只搜索 records 不搜索知识中心，意味着用户辛苦沉淀的知识在 AI 对话中完全不被使用；② 中文关键词用空格分词，实际几乎无法命中任何中文内容；③ 没有向量检索或语义匹配，纯关键词 includes 召回率极低。<strong>这使得"AI 基于你的个人知识回答"这一核心卖点基本不成立。</strong>
+  </div>
+</div>
+
+<!-- 模块5: 回溯 -->
+<div class="card">
+  <h3 style="margin-top:0">模块 5：知识回溯</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>每日 3 条回溯</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>从知识单元中随机选 3 条展示。但<strong>不是基于艾宾浩斯曲线的真实间隔重复算法</strong>——没有记忆强度衰减模型，没有复习间隔递增逻辑，只是简单的"未被回溯过的优先 + 随机"。</td>
+    </tr>
+    <tr>
+      <td>每周专题</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>展示本周热点知识。但"热点"的判定逻辑是<strong>硬编码的演示数据</strong>，没有基于真实交互数据（如引用次数、回溯次数、最近修改时间）的动态计算。</td>
+    </tr>
+    <tr>
+      <td>回溯补充</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>用户在回溯时可以补充新观点，补充内容自动进入待整理箱。这个设计很好。</td>
+    </tr>
+    <tr>
+      <td>回溯日志</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>记录每条知识的回溯次数，存储在 localStorage 并同步云端。</td>
+    </tr>
+  </table>
+  <div class="note">
+    <b>产品建议</b>：艾宾浩斯曲线是这个模块的核心卖点，但目前只是"每日随机 3 条"。建议实现真实的间隔重复算法（参考 Anki 的 SM-2 算法），根据每条知识的"上次回溯时间 + 回溯次数"计算下次应该复习的时间，而非随机选取。
+  </div>
+</div>
+
+<!-- 模块6: SOP -->
+<div class="card">
+  <h3 style="margin-top:0">模块 6：手册与 SOP</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>SOP 列表展示</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>展示已有 SOP 列表，含状态标签（草稿/已发布/已废弃）和领域分类。</td>
+    </tr>
+    <tr>
+      <td>自动生成触发</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>当某领域记录数达到阈值（默认 5 条）时提示生成 SOP。但<strong>阈值检测逻辑简单</strong>——只看记录数量，不看内容相关性和质量。</td>
+    </tr>
+    <tr>
+      <td>AI 草稿生成</td>
+      <td><span class="tag warn">需配置</span></td>
+      <td>调用 AI 生成 SOP 草稿，需配置 API Key。生成的草稿进入审阅状态。</td>
+    </tr>
+    <tr>
+      <td>人工审阅确认</td>
+      <td><span class="tag warn">部分可用</span></td>
+      <td>审阅界面仅展示 SOP 内容，<strong>不支持编辑</strong>——用户只能"发布"或"废弃"，不能修改 AI 生成的草稿内容。这在实际使用中几乎不可接受。</td>
+    </tr>
+    <tr>
+      <td>SOP 详情</td>
+      <td><span class="tag bad">缺失</span></td>
+      <td>点击 SOP 只弹出一个 toast 提示标题和状态，<strong>没有 SOP 详情页</strong>——无法查看完整内容、步骤、关联知识。</td>
+    </tr>
+  </table>
+  <div class="key">
+    <b>P1 问题</b>：SOP 审阅不支持编辑 + SOP 无详情页 = SOP 模块基本不可用。AI 生成的草稿质量参差不齐，用户必须能编辑后才能发布。且发布后的 SOP 也需要可查看、可更新。
+  </div>
+</div>
+
+<!-- 模块7: 项目 -->
+<div class="card">
+  <h3 style="margin-top:0">模块 7：项目与复盘</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>项目列表</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>卡片式展示，含进度条、状态标签、类型图标。筛选和排序正常。</td>
+    </tr>
+    <tr>
+      <td>新建项目</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>模态框表单完整：标题、描述、类型（预设+自定义）、状态、进度、颜色、复盘内容。</td>
+    </tr>
+    <tr>
+      <td>删除项目</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>有二次确认。</td>
+    </tr>
+    <tr>
+      <td>项目详情</td>
+      <td><span class="tag bad">严重不足</span></td>
+      <td><code>openProjDetail()</code> 仅调用 <code>toast()</code> 显示一行文字！<strong>没有项目详情页</strong>——无法查看项目完整信息、编辑项目、查看关联记录和复盘内容。</td>
+    </tr>
+    <tr>
+      <td>复盘联动</td>
+      <td><span class="tag ok">设计良好</span></td>
+      <td>新建项目时填写复盘内容，自动同步到待整理箱 + 知识中心原始资料层。这个跨模块联动设计很好。</td>
+    </tr>
+    <tr>
+      <td>项目编辑</td>
+      <td><span class="tag bad">缺失</span></td>
+      <td><strong>无法编辑已有项目</strong>。进度、状态、描述都是创建后不可修改。</td>
+    </tr>
+  </table>
+  <div class="key">
+    <b>P0 问题</b>：项目详情页缺失（仅 toast）+ 项目不可编辑 = 项目管理模块只有"创建"和"删除"两个完整功能。用户无法更新项目进度、无法查看项目详情、无法关联知识到项目。这使项目管理模块基本不可用于实际项目管理。
+  </div>
+</div>
+
+<!-- 模块8: 个人规则 -->
+<div class="card">
+  <h3 style="margin-top:0">模块 8：个人规则</h3>
+  <table>
+    <tr><th width="130">子功能</th><th>状态</th><th>详细评估</th></tr>
+    <tr>
+      <td>规则展示</td>
+      <td><span class="tag ok">可用</span></td>
+      <td>5 条个人规则以精美卡片展示，内容清晰。</td>
+    </tr>
+    <tr>
+      <td>规则编辑</td>
+      <td><span class="tag bad">缺失</span></td>
+      <td><strong>完全不可编辑</strong>。规则内容硬编码在 HTML 中，用户无法修改、添加或删除规则。</td>
+    </tr>
+    <tr>
+      <td>规则应用</td>
+      <td><span class="tag warn">部分实现</span></td>
+      <td>规则被写入 AI System Prompt 作为行为约束。但仅限"网络资料不得冒充个人观点"等通用规则，<strong>不支持用户自定义行为约束</strong>（如"回答时优先引用 2026 年以后的数据"）。</td>
+    </tr>
+  </table>
+  <div class="note">
+    <b>产品建议</b>：个人规则是知渊差异化的重要设计——让 AI 遵守用户自定义的知识管理规则。但当前实现完全静态化。应支持：① 用户编辑现有规则；② 添加自定义规则；③ 规则按场景生效（对话时/分类时/SOP生成时）。
+  </div>
+</div>
+
+<!-- ===== 4. 知识调用·归类·同步 ===== -->
+<h2 id="s4">四、知识调用·归类·同步专项评估</h2>
+
+<p>这是用户特别关注的三个维度，以下做深度专项分析。</p>
+
+<div class="card">
+  <h3 style="margin-top:0">4.1 知识调用（AI 如何使用用户的知识）</h3>
+
+  <h4>当前实现</h4>
+  <p>AI 对话时通过 <code>buildContext(query)</code> 函数构建上下文：</p>
+  <ol>
+    <li>从 <code>getRecords()</code> 获取速记记录</li>
+    <li>将用户输入按空格分词，过滤长度 > 1 的词作为关键词</li>
+    <li>遍历所有记录，对每条做 <code>content.includes(keyword)</code> 匹配</li>
+    <li>命中 +2 分，取 Top 5 条记录拼入 System Prompt</li>
+  </ol>
+
+  <h4>问题诊断（5 个严重问题）</h4>
+  <div class="key">
+    <b>问题 1：搜索范围严重不足</b><br>
+    只搜索 <code>records</code>（速记），不搜索知识中心的<strong>知识单元层</strong>和<strong>成果层</strong>。用户花时间确认和沉淀的知识完全不被 AI 使用——这直接违背了"正式知识只读赋能 AI"的产品设计原则。<br>
+    <span class="muted">代码位置：<code>buildContext()</code> 第 3001 行，仅调用 <code>getRecords()</code></span>
+  </div>
+  <div class="key">
+    <b>问题 2：中文分词完全失效</b><br>
+    <code>query.split(/\s+/)</code> 用空格分词。中文用户输入"短视频起号阶段踩过哪些坑"不会包含空格，分词结果是一个完整句子，<code>filter(w=>w.length>1)</code> 保留整个句子，然后 <code>includes(整个句子)</code> 几乎不会命中任何记录。<strong>这意味着 RAG 在中文场景下基本失效。</strong>
+  </div>
+  <div class="key">
+    <b>问题 3：无语义理解能力</b><br>
+    纯关键词 includes 匹配，无法理解同义词、近义词、概念关联。用户问"起号踩坑"，记录里写的是"新号运营教训"，完全无法召回。
+  </div>
+  <div class="key">
+    <b>问题 4：Top 5 截断过于粗暴</b><br>
+    无论知识库大小，只取 Top 5。当知识库有 100+ 条记录时，大部分相关内容被丢弃。且没有去重、没有多样性保证。
+  </div>
+  <div class="key">
+    <b>问题 5：无引用追溯</b><br>
+    AI 回答中虽然标注了 [KU-0142] 等引用标识，但这些是演示数据中写死的。真实 RAG 召回的内容<strong>不会在回答中标注引用来源</strong>，用户无法验证 AI 回答的知识依据。
+  </div>
+
+  <h4>改进建议</h4>
+  <div class="fix">
+    <b>方案 A（短期，低成本）</b>：① 搜索范围扩展到知识中心三层 + 待整理箱；② 用 jieba 或简单的 N-gram 替代空格分词；③ 在 System Prompt 中注入召回内容的 ID，要求 AI 在回答中引用。
+  </div>
+  <div class="fix">
+    <b>方案 B（中期，推荐）</b>：接入向量嵌入 API（如 DeepSeek Embedding 或豆包 Embedding），将所有知识内容向量化存储，实现语义检索。这能根本解决召回率问题。
+  </div>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">4.2 知识归类</h3>
+
+  <h4>当前实现</h4>
+  <p>知识归类有两个维度：</p>
+  <ul>
+    <li><strong>记录类型</strong>（灵感/观察/复盘/经验/待验证）：AI 自动分类 + 关键词降级</li>
+    <li><strong>知识领域</strong>（AI应用/短视频/商业变现/个人成长/项目管理）：<strong>无自动分类，无手动选择入口</strong></li>
+  </ul>
+
+  <h4>问题诊断</h4>
+  <div class="key">
+    <b>问题 1：领域归类完全缺失</b><br>
+    首页"领域"按钮无功能，用户无法在记录时指定领域。待整理箱中也没有领域选择。知识中心的领域筛选虽然可用，但<strong>数据的领域字段全部来自演示数据的预设值</strong>——用户新增的记录没有领域归属。
+  </div>
+  <div class="key">
+    <b>问题 2：自动分类仅分类型，不分领域</b><br>
+    AI 分类 prompt 只要求返回"灵感/观察/复盘/经验/待验证"中的一个。理想情况下应同时返回类型 + 领域 + 关键词标签，构建多维分类。
+  </div>
+  <div class="key">
+    <b>问题 3：关键词分类规则有 bug</b><br>
+    <code>keywordClassify()</code> 中复盘类型的关键词包含两个"上周"（重复），且"这次""结果"等词过于通用，会导致大量误分类。
+  </div>
+  <div class="note">
+    <b>问题 4：分类不可修正</b><br>
+    自动分类结果展示在输入框旁边，用户可以看到但<strong>无法手动覆盖</strong>（虽然有手动切换菜单，但切换后如果继续输入会被自动分类覆盖）。
+  </div>
+
+  <h4>改进建议</h4>
+  <div class="fix">
+    <b>建议</b>：① 实现"领域"按钮的交互——弹出领域选择菜单；② AI 分类 prompt 扩展为同时返回类型 + 领域；③ 修复关键词重复 bug；④ 用户手动切换类型后锁定，不被自动分类覆盖。
+  </div>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">4.3 知识同步</h3>
+
+  <h4>当前实现</h4>
+  <p>同步策略是本项目中设计最完善的部分：</p>
+  <ul>
+    <li><strong>本地优先</strong>：所有数据先写 localStorage，断网可用</li>
+    <li><strong>四域同步</strong>：知识中心(kc) / 待整理箱(inbox) / 项目(proj) / 回溯日志(recall) 各自独立同步</li>
+    <li><strong>域+时间戳合并</strong>：每个域独立比较本地和云端时间戳，后写胜出</li>
+    <li><strong>1.2 秒防抖推送</strong>：避免频繁写入云端</li>
+    <li><strong>种子保护</strong>：启动初始化期的演示数据不会被误推到云端覆盖真实数据</li>
+    <li><strong>表不存在检测</strong>：42P01 错误码明确提示执行建表 SQL</li>
+  </ul>
+
+  <h4>问题诊断</h4>
+  <div class="key">
+    <b>问题 1：域级覆盖会导致数据丢失</b><br>
+    "后写胜出"是<strong>域级别</strong>的——如果设备 A 修改了知识中心，设备 B 同时修改了待整理箱，两边各自同步不会冲突。但如果<strong>两台设备同时修改了知识中心的不同条目</strong>，后同步的一方会整体覆盖先同步的一方，导致先修改的条目丢失。<br>
+    <span class="muted">正确做法应该是条目级别合并——比较每条记录的 <code>ts</code> 字段，逐条合并而非整体覆盖。</span>
+  </div>
+  <div class="key">
+    <b>问题 2：records 表未纳入四域同步</b><br>
+    <code>records</code> 表（速记记录）使用 Supabase 原生表操作（直接 insert/select），而<strong>不是</strong>通过 <code>user_state</code> JSON 快照同步。这意味着速记记录的同步策略与知识中心等不同——没有时间戳合并，没有冲突处理。<strong>两台设备同时离线写入的速记记录在同步时可能丢失或重复。</strong>
+  </div>
+  <div class="note">
+    <b>问题 3：无同步冲突提示</b><br>
+    当云端覆盖本地时，用户只看到"已从云端恢复 N 条"的 toast，<strong>不会提示哪些本地修改被覆盖了</strong>。用户可能在不知情的情况下丢失数据。
+  </div>
+  <div class="note">
+    <b>问题 4：无离线队列</b><br>
+    网络断开时的本地修改不会排队，恢复网络后不会自动补推。需要用户手动触发或等待下次登录时拉取合并——但此时如果本地时间戳比云端旧（因为云端在他设备上有更新），本地修改会被覆盖。
+  </div>
+
+  <h4>测试覆盖评估</h4>
+  <p><code>synctest.js</code> 包含 7 个测试场景，覆盖了：首次上传、云端覆盖本地、本地较新推送、表不存在、防抖推送、手动恢复、种子保护。<strong>这是整个项目中测试覆盖最好的模块</strong>，值得肯定。但缺少：并发修改冲突测试、离线重连测试、大数据量性能测试。</p>
+</div>
+
+<!-- ===== 5. 技术架构与安全性 ===== -->
+<h2 id="s5">五、技术架构与安全性评估</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">5.1 架构评估</h3>
+  <table>
+    <tr><th width="160">维度</th><th>评估</th><th>详细说明</th></tr>
+    <tr>
+      <td>单文件架构</td>
+      <td><span class="tag warn">可维护性差</span></td>
+      <td>4264 行单文件，CSS/HTML/JS 全内联。优点是部署简单（GitHub Pages 即可），缺点是<strong>任何修改都需要在巨大文件中定位</strong>，无法做模块化开发、无法做代码审查、无法做单元测试隔离。</td>
+    </tr>
+    <tr>
+      <td>数据存储</td>
+      <td><span class="tag warn">扩展性有限</span></td>
+      <td>localStorage 容量上限约 5-10MB。知识中心、待整理箱、项目、回溯日志全部以 JSON 快照存一个 key，数据量增长后<strong>读写性能会下降</strong>（每次修改都要序列化整个数组）。</td>
+    </tr>
+    <tr>
+      <td>云同步设计</td>
+      <td><span class="tag ok">设计合理</span></td>
+      <td>JSON 快照同步 + 域级时间戳合并，对于个人小数据量场景是合理选择。文档中解释了"为什么不用细粒度分表"的理由，有技术判断力。</td>
+    </tr>
+    <tr>
+      <td>API 调用</td>
+      <td><span class="tag ok">实现完整</span></td>
+      <td>DeepSeek + 豆包双引擎 + Tavily 联网，统一接口封装，流式响应处理正确。</td>
+    </tr>
+    <tr>
+      <td>错误处理</td>
+      <td><span class="tag warn">不统一</span></td>
+      <td>同步层错误处理完善（状态机 + 用户提示），但 AI 调用层和视频转文字层的错误处理较弱——很多地方 <code>catch(e){console.warn(...)}</code> 吞掉错误，用户无感知。</td>
+    </tr>
+    <tr>
+      <td>代码质量</td>
+      <td><span class="tag warn">中等</span></td>
+      <td>函数命名清晰，注释充分（中文），代码组织有分区。但<strong>全局变量过多</strong>（kcData, inboxData, projData 等都是全局变量），无模块封装，容易产生命名冲突。</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">5.2 安全性评估</h3>
+  <table>
+    <tr><th width="180">安全项</th><th>状态</th><th>详细说明</th></tr>
+    <tr>
+      <td>Supabase RLS</td>
+      <td><span class="tag ok">已启用</span></td>
+      <td>行级安全策略正确：每用户只能读写自己的数据。SQL 建表脚本中 select/insert/update/delete 四个策略齐全。</td>
+    </tr>
+    <tr>
+      <td>API Key 存储</td>
+      <td><span class="tag bad">明文存储</span></td>
+      <td>DeepSeek/豆包/Tavily API Key 全部明文存储在 localStorage 中，<strong>任何能访问浏览器的人或 XSS 攻击都能窃取</strong>。应至少做 Base64 编码或使用 sessionStorage。</td>
+    </tr>
+    <tr>
+      <td>单机模式密码</td>
+      <td><span class="tag warn">弱保护</span></td>
+      <td>使用 SHA-256 哈希存储，但<strong>无盐值（salt）</strong>，容易被彩虹表破解。且 SHA-256 不适合密码哈希，应使用 bcrypt 或 PBKDF2。</td>
+    </tr>
+    <tr>
+      <td>XSS 防护</td>
+      <td><span class="tag warn">部分实现</span></td>
+      <td>有 <code>escHtml()</code> 和 <code>escHtmlP()</code> 函数做 HTML 转义，但<strong>并非所有用户输入都经过转义</strong>。例如 <code>saveCandidate()</code> 中直接用字符串拼接构建 onclick 属性，可能被注入。</td>
+    </tr>
+    <tr>
+      <td>CORS 代理</td>
+      <td><span class="tag bad">安全风险</span></td>
+      <td>视频转文字功能使用公共 CORS 代理服务（如 corsproxy.io），<strong>用户的视频链接和页面内容会经过第三方服务器</strong>，存在隐私泄露风险。</td>
+    </tr>
+    <tr>
+      <td>HTTPS</td>
+      <td><span class="tag ok">已启用</span></td>
+      <td>GitHub Pages 默认 HTTPS，API 调用也都走 HTTPS。</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===== 6. UX/UI ===== -->
+<h2 id="s6">六、用户体验与交互设计评估</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">6.1 视觉设计</h3>
+  <table>
+    <tr><th width="160">维度</th><th>评分</th><th>说明</th></tr>
+    <tr><td>视觉风格</td><td><span class="score-bar"><i style="width:85%;background:var(--green)"></i></span> 8.5/10</td><td>暖色调（米白+金色）风格统一，有品质感。配色和排版体现了较高的审美水平。</td></tr>
+    <tr><td>信息架构</td><td><span class="score-bar"><i style="width:80%;background:var(--green)"></i></span> 8/10</td><td>七视图导航清晰，各模块边界明确。但部分模块内部信息层级不够分明。</td></tr>
+    <tr><td>交互动效</td><td><span class="score-bar"><i style="width:75%;background:var(--amber)"></i></span> 7.5/10</td><td>有基本的过渡动画和加载状态，但缺少微交互反馈（如按钮点击波纹、卡片悬浮效果）。</td></tr>
+    <tr><td>移动端适配</td><td><span class="score-bar"><i style="width:45%;background:var(--red)"></i></span> 4.5/10</td><td>CSS 有少量 <code>@media</code> 查询，但<strong>整体未做移动端适配</strong>——侧边栏、模态框、表格在手机上体验很差。</td></tr>
+    <tr><td>空状态设计</td><td><span class="score-bar"><i style="width:60%;background:var(--amber)"></i></span> 6/10</td><td>有空状态提示，但<strong>所有模块初始都展示演示数据</strong>，用户看不到空状态。应提供"清除演示数据"按钮。</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">6.2 用户引导与 Onboarding</h3>
+  <div class="key">
+    <b>严重缺失：无新用户引导流程</b><br>
+    新用户打开后看到的是满屏演示数据，虽然有横幅提示"当前为演示版本"，但<strong>没有任何引导流程</strong>告诉用户：<br>
+    ① 应该先去设置配置 API Key；<br>
+    ② 如何写第一条记录；<br>
+    ③ 记录如何变成知识；<br>
+    ④ AI 如何使用你的知识。<br>
+    <strong>建议</strong>：首次打开时展示 3-4 步引导卡片，或在侧边栏添加"新手指南"入口。
+  </div>
+  <div class="note">
+    <b>配置门槛过高</b><br>
+    用户需要：注册 Supabase → 执行 SQL → 配置认证 → 填入 URL/Key → 申请 DeepSeek Key → 申请 Tavily Key → 填入 6 个配置项。<strong>这个过程对非技术用户几乎不可能完成。</strong>建议提供"一键体验"模式（使用共享 Demo Key + 限制用量），或提供托管服务。
+  </div>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">6.3 交互问题清单</h3>
+  <table>
+    <tr><th>问题</th><th>严重度</th><th>说明</th></tr>
+    <tr><td>编辑功能用浏览器原生 prompt</td><td><span class="tag bad">P0</span></td><td>待整理箱"编辑"点击后弹出 <code>prompt()</code> 对话框，体验极差，且无法编辑多行内容。</td></tr>
+    <tr><td>项目详情仅 toast 提示</td><td><span class="tag bad">P0</span></td><td>点击项目卡片只弹出一行文字，无法查看详情。</td></tr>
+    <tr><td>SOP 详情仅 toast 提示</td><td><span class="tag bad">P0</span></td><td>同上，SOP 不可查看完整内容。</td></tr>
+    <tr><td>知识中心详情面板信息过少</td><td><span class="tag warn">P1</span></td><td>仅显示标题+摘要+标签，无法查看全文、关联和版本。</td></tr>
+    <tr><td>无"清除演示数据"功能</td><td><span class="tag warn">P1</span></td><td>用户无法一键清除所有演示数据，只能逐条删除。</td></tr>
+    <tr><td>无数据导出功能</td><td><span class="tag warn">P1</span></td><td>无法导出为 JSON/Markdown/CSV，数据被锁定在应用内。</td></tr>
+    <tr><td>模态框无 ESC 关闭</td><td><span class="tag info">P2</span></td><td>所有模态框只能点击关闭按钮或遮罩关闭，不支持键盘 ESC。</td></tr>
+    <tr><td>无快捷键支持</td><td><span class="tag info">P2</span></td><td>无法用快捷键保存记录、切换视图、打开搜索等。</td></tr>
+    <tr><td>无 Toast 堆叠管理</td><td><span class="tag info">P2</span></td><td>多个 toast 会堆叠在屏幕底部，无消失动画，可能遮挡内容。</td></tr>
+  </table>
+</div>
+
+<!-- ===== 7. 缺失功能 ===== -->
+<h2 id="s7">七、缺失功能与补全建议</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">7.1 核心缺失功能（影响产品可用性）</h3>
+  <table>
+    <tr><th width="40">优先级</th><th>缺失功能</th><th>影响</th><th>建议</th></tr>
+    <tr>
+      <td class="priority-P0">P0</td>
+      <td>知识三层流转机制</td>
+      <td>原始资料 → 知识单元 → 成果层 之间无流转通路，三层架构沦为三个独立列表</td>
+      <td>在原始资料详情中加"提升为知识单元"按钮；在知识单元详情中加"生成为SOP"入口</td>
+    </tr>
+    <tr>
+      <td class="priority-P0">P0</td>
+      <td>RAG 语义检索</td>
+      <td>AI 对话无法有效召回用户知识，核心卖点不成立</td>
+      <td>接入 Embedding API，实现向量检索；搜索范围扩展到知识中心全层</td>
+    </tr>
+    <tr>
+      <td class="priority-P0">P0</td>
+      <td>项目/SOP 详情页</td>
+      <td>两个模块的核心查看功能缺失</td>
+      <td>实现详情面板/页面，支持查看完整内容 + 编辑</td>
+    </tr>
+    <tr>
+      <td class="priority-P0">P0</td>
+      <td>领域选择功能</td>
+      <td>记录无法归入知识领域，领域筛选无数据基础</td>
+      <td>实现"领域"按钮交互，支持手动选择 + AI 自动识别</td>
+    </tr>
+    <tr>
+      <td class="priority-P0">P0</td>
+      <td>知识冲突/缺口自动检测</td>
+      <td>待整理箱的核心价值未实现</td>
+      <td>① 冲突：AI 对话时检测与已有知识的矛盾；② 缺口：统计各领域记录密度，标记薄弱领域</td>
+    </tr>
+    <tr>
+      <td class="priority-P1">P1</td>
+      <td>多轮对话上下文</td>
+      <td>AI 无法理解上下文引用，对话体验割裂</td>
+      <td>维护对话历史数组，每次请求携带最近 N 轮对话</td>
+    </tr>
+    <tr>
+      <td class="priority-P1">P1</td>
+      <td>对话历史保存</td>
+      <td>刷新后对话丢失</td>
+      <td>保存到 localStorage / user_state</td>
+    </tr>
+    <tr>
+      <td class="priority-P1">P1</td>
+      <td>SOP/项目编辑功能</td>
+      <td>创建后不可修改</td>
+      <td>复用新建模态框，预填数据进行编辑</td>
+    </tr>
+    <tr>
+      <td class="priority-P1">P1</td>
+      <td>数据导出/导入</td>
+      <td>数据锁定在应用内，无法备份迁移</td>
+      <td>支持导出 JSON/Markdown，导入 JSON</td>
+    </tr>
+    <tr>
+      <td class="priority-P1">P1</td>
+      <td>清除演示数据</td>
+      <td>新用户被演示数据困扰</td>
+      <td>设置中加"一键清除演示数据"按钮</td>
+    </tr>
+    <tr>
+      <td class="priority-P1">P1</td>
+      <td>条目级同步合并</td>
+      <td>域级覆盖导致并发修改丢数据</td>
+      <td>比较每条记录的 ts 字段，逐条合并</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">7.2 体验增强功能（提升产品竞争力）</h3>
+  <table>
+    <tr><th width="40">优先级</th><th>缺失功能</th><th>说明</th></tr>
+    <tr><td class="priority-P2">P2</td><td>移动端适配</td><td>响应式布局 + 触摸优化，支持手机/平板使用</td></tr>
+    <tr><td class="priority-P2">P2</td><td>新用户引导流程</td><td>3-4 步 Onboarding 卡片，引导配置和首次记录</td></tr>
+    <tr><td class="priority-P2">P2</td><td>个人规则编辑</td><td>允许用户自定义 AI 行为约束规则</td></tr>
+    <tr><td class="priority-P2">P2</td><td>知识图谱可视化</td><td>展示知识单元之间的关联关系和引用网络</td></tr>
+    <tr><td class="priority-P2">P2</td><td>数据统计仪表盘</td><td>知识增长趋势、领域分布、记录频率等可视化</td></tr>
+    <tr><td class="priority-P2">P2</td><td>PWA 离线支持</td><td>Service Worker + Manifest，支持安装到桌面和离线使用</td></tr>
+    <tr><td class="priority-P2">P2</td><td>暗色模式</td><td>CSS 变量已部分预留，完善暗色主题</td></tr>
+    <tr><td class="priority-P3">P3</td><td>多语言支持</td><td>目前仅中文，考虑英文支持以拓展用户群</td></tr>
+    <tr><td class="priority-P3">P3</td><td>协作/分享</td><td>支持分享单条知识或整个知识库给他人</td></tr>
+    <tr><td class="priority-P3">P3</td><td>浏览器插件</td><td>一键收集网页内容到知识中心</td></tr>
+    <tr><td class="priority-P3">P3</td><td>知识版本历史</td><td>记录每次修改，支持回溯到历史版本</td></tr>
+  </table>
+</div>
+
+<!-- ===== 8. 优先级矩阵 ===== -->
+<h2 id="s8">八、优先级矩阵与迭代路线建议</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">8.1 优先级矩阵</h3>
+  <table>
+    <tr><th>优先级</th><th>定义</th><th>事项数</th><th>预计工作量</th></tr>
+    <tr><td class="priority-P0">P0</td><td>不做就不能当产品用——阻断核心价值</td><td>5 项</td><td>2-3 周</td></tr>
+    <tr><td class="priority-P1">P1</td><td>不做体验很差——用户会流失</td><td>6 项</td><td>2-3 周</td></tr>
+    <tr><td class="priority-P2">P2</td><td>做了更有竞争力——差异化加分</td><td>7 项</td><td>4-6 周</td></tr>
+    <tr><td class="priority-P3">P3</td><td>锦上添花——长期规划</td><td>4 项</td><td>按需</td></tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">8.2 建议迭代路线</h3>
+
+  <h4>阶段一：补齐核心闭环（2-3 周）—— 目标：从 Demo 变成 MVP</h4>
+  <ol>
+    <li>实现知识三层流转：原始资料详情中加"提升为知识单元"，知识单元详情中加"生成为SOP"</li>
+    <li>修复 RAG：扩展搜索范围到知识中心 + 待整理箱，用 N-gram 替代空格分词</li>
+    <li>实现项目/SOP 详情页：支持查看完整内容 + 编辑</li>
+    <li>实现领域选择：首页"领域"按钮交互 + AI 自动识别领域</li>
+    <li>实现知识冲突/缺口检测：AI 对话时检测矛盾，统计领域密度标记缺口</li>
+  </ol>
+
+  <h4>阶段二：打磨体验（2-3 周）—— 目标：让用户愿意留下来</h4>
+  <ol>
+    <li>多轮对话上下文 + 对话历史保存</li>
+    <li>SOP/项目编辑功能</li>
+    <li>数据导出/导入（JSON + Markdown）</li>
+    <li>清除演示数据 + 新用户引导流程</li>
+    <li>条目级同步合并</li>
+    <li>替换所有 prompt() 为模态框</li>
+  </ol>
+
+  <h4>阶段三：差异化竞争（4-6 周）—— 目标：建立护城河</h4>
+  <ol>
+    <li>移动端适配 + PWA 离线</li>
+    <li>接入 Embedding API 实现语义检索</li>
+    <li>个人规则编辑 + 场景化生效</li>
+    <li>知识图谱可视化</li>
+    <li>数据统计仪表盘</li>
+    <li>暗色模式</li>
+    <li>艾宾浩斯真实间隔重复算法</li>
+  </ol>
+</div>
+
+<!-- ===== 9. 最终评分 ===== -->
+<h2 id="s9">九、最终评分与结论</h2>
+
+<div class="card">
+  <h3 style="margin-top:0">9.1 分维度评分</h3>
+  <table>
+    <tr><th width="140">维度</th><th>评分</th><th>说明</th></tr>
+    <tr>
+      <td>产品设计理念</td>
+      <td><span class="score-bar"><i style="width:88%;background:var(--green)"></i></span> 8.8/10</td>
+      <td>三层知识架构 + 待整理箱四分类 + 来源分层 + 个人规则——设计理念在同类产品中领先</td>
+    </tr>
+    <tr>
+      <td>功能完整度</td>
+      <td><span class="score-bar"><i style="width:42%;background:var(--red)"></i></span> 4.2/10</td>
+      <td>核心闭环多处断裂（三层流转、RAG、冲突检测），多个详情页缺失</td>
+    </tr>
+    <tr>
+      <td>工程实现质量</td>
+      <td><span class="score-bar"><i style="width:55%;background:var(--amber)"></i></span> 5.5/10</td>
+      <td>同步层质量高（有测试），但单文件架构、全局变量、XSS 风险拉低整体质量</td>
+    </tr>
+    <tr>
+      <td>用户体验</td>
+      <td><span class="score-bar"><i style="width:58%;background:var(--amber)"></i></span> 5.8/10</td>
+      <td>视觉设计优秀，但交互细节差（prompt 编辑、toast 详情）、无引导流程、移动端未适配</td>
+    </tr>
+    <tr>
+      <td>安全性</td>
+      <td><span class="score-bar"><i style="width:50%;background:var(--amber)"></i></span> 5.0/10</td>
+      <td>RLS 正确，但 API Key 明文存储、无盐 SHA-256、CORS 代理隐私风险</td>
+    </tr>
+    <tr>
+      <td>可扩展性</td>
+      <td><span class="score-bar"><i style="width:45%;background:var(--red)"></i></span> 4.5/10</td>
+      <td>单文件 4264 行、localStorage 全量加载、无分页——数据量增长后会有性能瓶颈</td>
+    </tr>
+    <tr>
+      <td>文档与可维护性</td>
+      <td><span class="score-bar"><i style="width:72%;background:var(--green)"></i></span> 7.2/10</td>
+      <td>README 清晰，配置指南详细，代码注释充分。但无架构文档、无 API 文档</td>
+    </tr>
+  </table>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">9.2 综合评分</h3>
+  <p style="font-size:36px;font-family:'Noto Serif SC',serif;color:var(--gold);text-align:center;margin:20px 0">
+    6.0 / 10
+  </p>
+  <p style="text-align:center;color:var(--faint);font-size:14px">
+    <strong>设计理念优秀（8.8），工程落地不足（4.5）</strong>——一个"想法比实现领先两步"的产品原型
+  </p>
+</div>
+
+<div class="card">
+  <h3 style="margin-top:0">9.3 最终结论</h3>
+
+  <p><strong>知渊是一个让我"又惊喜又遗憾"的项目。</strong></p>
+
+  <p><strong>惊喜</strong>在于：在个人知识管理这个已经很拥挤的赛道里，知渊提出了真正有价值的差异化设计——"待整理箱"作为知识质量把关的缓冲区、"三层知识架构"作为知识深度的分层模型、"来源分层"作为可信 AI 的透明度设计。这些设计理念放在任何一个一线大厂的产品评审会上，都值得被认真讨论。</p>
+
+  <p><strong>遗憾</strong>在于：这些设计理念在代码层面<strong>大多停留在"展示层"</strong>——你能看到三层架构的 UI，但三层之间无法流转；你能看到待整理箱的四分类，但冲突和缺口检测是假的；你能看到 AI 标注了引用来源，但 RAG 召回在中文场景下基本失效；你能看到艾宾浩斯曲线的文案，但实际只是随机选 3 条。</p>
+
+  <p><strong>一句话总结：如果把知渊当作一个产品概念验证（POC），它值得 8 分以上；如果把知渊当作一个可用产品，它还需要至少 2-3 周的密集开发来补齐 P0 级缺失功能，才能真正跑通"记录 → 加工 → 确认 → 沉淀 → 复用"的核心闭环。</strong></p>
+
+  <p>建议开发者优先解决以下 5 个 P0 问题，它们是"从 Demo 到 MVP"的关键路径：</p>
+  <ol>
+    <li><strong>知识三层流转</strong>——让知识真正流动起来</li>
+    <li><strong>RAG 中文语义检索</strong>——让 AI 真正用上用户的知识</li>
+    <li><strong>项目/SOP 详情页</strong>——让核心模块可看可编辑</li>
+    <li><strong>领域选择功能</strong>——让知识归类有数据基础</li>
+    <li><strong>冲突/缺口检测</strong>——让待整理箱真正有价值</li>
+  </ol>
+
+  <p>补齐这 5 项后，知渊将从"好看的 Demo"升级为"可用的 MVP"，届时再进入体验打磨和差异化竞争阶段。</p>
+</div>
+
+<footer>
+  本报告由 WorkBuddy 基于全量源码审查（4264 行）+ 线上实测 + 架构分析生成 · 测评时间：2026-08-05 · 仅供产品改进参考。
+</footer>
+</div>
+</body>
+</html>
