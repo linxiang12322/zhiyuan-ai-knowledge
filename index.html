@@ -351,8 +351,9 @@ body::after{
 .kc-tab{padding:8px 18px;border-radius:8px;font-size:13px;color:var(--text-dim);cursor:pointer;transition:.2s;display:flex;align-items:center;gap:7px;font-weight:500}
 .kc-tab.active{background:var(--bg-hover);color:var(--gold-bright)}
 .kc-tab .n{font-family:var(--mono);font-size:11px;color:var(--text-faint)}
-.kc-layout{display:grid;grid-template-columns:380px 1fr;gap:20px}
-.ku-list{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 280px);overflow-y:auto;padding-right:6px}
+.kc-layout{display:block}
+.ku-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;max-height:none;overflow:visible;padding-right:0}
+@media(max-width:900px){.ku-list{grid-template-columns:1fr}}
 /* 知识中心筛选栏 */
 .kc-filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;padding:14px 18px;background:var(--bg-elevated);border:1px solid var(--border-soft);border-radius:var(--radius)}
 .kc-filter-label{font-size:12px;color:var(--text-faint);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
@@ -369,30 +370,57 @@ body::after{
 .kc-empty{padding:40px;text-align:center;color:var(--text-faint);font-size:13px}
 .kc-empty svg{width:40px;height:40px;margin-bottom:12px;opacity:.4}
 /* 原始资料卡片 */
-.src-card{padding:14px 16px;border-radius:11px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s;margin-bottom:8px}
+.src-card{padding:14px 16px;border-radius:11px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s;display:flex;flex-direction:column;height:100%;box-sizing:border-box}
 .src-card:hover{border-color:var(--border)}
 .src-card.sel{border-color:var(--gold-dim);background:linear-gradient(160deg,rgba(212,165,116,.06),var(--bg-elevated))}
 .src-card-top{display:flex;align-items:center;gap:7px;margin-bottom:6px;flex-wrap:wrap}
 .src-card h5{font-size:13.5px;font-weight:500;line-height:1.5;margin-bottom:4px}
-.src-card p{font-size:12px;color:var(--text-faint);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.src-card-foot{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:11px;color:var(--text-muted)}
+.src-card p{font-size:12px;color:var(--text-faint);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.src-card-foot{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;color:var(--text-muted)}
 /* 成果层卡片 */
-.out-card{padding:16px;border-radius:12px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s;margin-bottom:8px}
+.out-card{padding:16px;border-radius:12px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s;display:flex;flex-direction:column;height:100%;box-sizing:border-box}
 .out-card:hover{border-color:var(--border)}
 .out-card.sel{border-color:var(--gold-dim);background:linear-gradient(160deg,rgba(212,165,116,.06),var(--bg-elevated))}
 .out-card-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;flex-wrap:wrap}
 .out-card h5{font-size:13.5px;font-weight:500;line-height:1.5;margin-bottom:5px}
-.out-card p{font-size:12px;color:var(--text-faint);line-height:1.55}
-.out-card-foot{display:flex;align-items:center;gap:10px;margin-top:9px;font-size:11px;color:var(--text-muted)}
-.ku{padding:16px;border-radius:12px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s}
+.out-card p{font-size:12px;color:var(--text-faint);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.out-card-foot{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;color:var(--text-muted)}
+.ku{padding:16px;border-radius:12px;border:1px solid var(--border-soft);background:var(--bg-elevated);cursor:pointer;transition:.2s;display:flex;flex-direction:column;height:100%;box-sizing:border-box}
 .ku:hover{border-color:var(--border)}
 .ku.sel{border-color:var(--gold-dim);background:linear-gradient(160deg,rgba(212,165,116,.06),var(--bg-elevated))}
 .ku-top{display:flex;align-items:center;gap:7px;margin-bottom:8px;flex-wrap:wrap}
 .ku h5{font-size:13.5px;font-weight:500;line-height:1.5;margin-bottom:5px}
-.ku p{font-size:12px;color:var(--text-faint);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.ku-foot{display:flex;align-items:center;gap:10px;margin-top:9px;font-size:11px;color:var(--text-muted)}
+.ku p{font-size:12px;color:var(--text-faint);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;flex:1}
+.ku-foot{display:flex;align-items:center;gap:10px;margin-top:10px;font-size:11px;color:var(--text-muted)}
 .ku-foot .cite-c{font-family:var(--mono)}
-.ku-detail{padding:30px;border-radius:var(--radius);border:1px solid var(--border-soft);background:var(--bg-elevated);min-height:500px}
+.ku-detail{display:none}
+/* 知识中心工具栏 */
+.kc-toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;align-items:center}
+.kc-toolbar .btn-ghost{font-size:12px;padding:7px 13px}
+/* 知识中心编辑弹窗分块 */
+.kc-edit-section{background:var(--bg-inset);border:1px solid var(--border-soft);border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.kc-edit-section label{font-size:11px;color:var(--text-muted);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:6px}
+.kc-edit-section input,.kc-edit-section textarea,.kc-edit-section select{width:100%;background:var(--bg);border:1px solid var(--border-soft);border-radius:10px;padding:10px 13px;color:var(--text);font-size:13px;outline:none;box-sizing:border-box}
+.kc-edit-section textarea{min-height:160px;line-height:1.7;resize:vertical}
+.kc-edit-section input:focus,.kc-edit-section textarea:focus,.kc-edit-section select:focus{border-color:var(--gold-dim)}
+.kc-edit-section select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239AA3AF' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px}
+.kc-edit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+/* SOP 生成器 */
+.kc-sop-rec{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--border-soft);border-radius:10px;background:var(--bg-elevated);cursor:pointer;transition:.2s;margin-bottom:8px}
+.kc-sop-rec:hover{border-color:var(--border)}
+.kc-sop-rec.selected{border-color:var(--gold-dim);background:rgba(212,165,116,.08)}
+.kc-sop-rec input[type=checkbox]{margin-top:3px}
+.kc-sop-rec .rec-title{font-size:13px;font-weight:500;margin-bottom:3px}
+.kc-sop-rec .rec-meta{font-size:11px;color:var(--text-faint)}
+.kc-sop-rec .rec-summary{font-size:12px;color:var(--text-dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+/* 个人规则 */
+.rules-list .rule{display:flex;gap:14px;padding:16px 18px;border-radius:12px;border:1px solid var(--border-soft);background:var(--bg-elevated);margin-bottom:10px;transition:.2s}
+.rules-list .rule:hover{border-color:var(--border)}
+.rules-list .rule .rn{flex-shrink:0;width:32px;height:32px;border-radius:8px;background:var(--bg-inset);border:1px solid var(--border-soft);display:grid;place-items:center;font-size:12px;font-weight:600;color:var(--gold-bright)}
+.rules-list .rule h5{font-size:14px;font-weight:500;margin-bottom:5px}
+.rules-list .rule p{font-size:12.5px;color:var(--text-dim);line-height:1.65}
+.rule-actions{margin-left:auto;display:flex;gap:6px;align-items:flex-start}
+.rule-actions button{font-size:11px;padding:4px 8px}
 .ku-detail .d-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}
 .ku-detail h2{font-family:var(--serif);font-size:24px;font-weight:600;line-height:1.35;margin-bottom:14px}
 .ku-detail .d-body{font-size:14px;line-height:1.85;color:var(--text-dim);margin-bottom:22px}
@@ -1116,6 +1144,10 @@ body::after{
           <div class="kc-tab" onclick="kcTab(this,'unit')">知识单元 <span class="n" id="kcCountUnit">0</span></div>
           <div class="kc-tab" onclick="kcTab(this,'output')">成果层 <span class="n" id="kcCountOutput">0</span></div>
         </div>
+        <div class="kc-toolbar">
+          <button class="btn btn-ghost" onclick="openSopBuilder()">📖 整理为手册/SOP</button>
+          <button class="btn btn-ghost" onclick="openKcAddModal()">+ 新增资料</button>
+        </div>
         <div class="kc-filter-bar" id="kcFilterBar">
           <span class="kc-filter-label">领域</span>
           <div class="kc-sub-tabs" id="kcSubTabs"></div>
@@ -1134,9 +1166,6 @@ body::after{
         <div class="kc-list-title" id="kcListTitle"></div>
         <div class="kc-layout">
           <div id="kcList"></div>
-          <div class="ku-detail" id="kcDetail">
-            <div class="kc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><div>选择左侧条目查看详情</div></div>
-          </div>
         </div>
       </div>
     </section>
@@ -1278,16 +1307,8 @@ body::after{
           <h1>个人规则</h1>
           <p>这些规则会注入每次 AI 问答的上下文，约束 AI 的行为边界。它们保护你的知识不被污染、观点不被冒充。</p>
         </div>
-        <div class="rules-list stagger">
-          <div class="rule"><div class="rn">01</div><div><h5>个人知识体系是核心，AI 是辅助能力层</h5><p>AI 只负责资料加工、知识检索、实时搜索、内容分析与知识回溯。系统主体始终是用户本人的知识体系。</p></div></div>
-          <div class="rule"><div class="rn">02</div><div><h5>AI 不得冒充用户观点</h5><p>未经用户确认，AI 不得将外部内容或模型推断冒充为用户本人的观点。网络资料不能自动升级为个人观点。</p></div></div>
-          <div class="rule"><div class="rn">03</div><div><h5>自动化默认停在待整理箱</h5><p>所有 AI 摘要、候选知识、项目结果先入待整理箱。只有用户确认、编辑或"保存为个人知识"后，内容才写入正式知识。</p></div></div>
-          <div class="rule"><div class="rn">04</div><div><h5>正式知识只读赋能 AI</h5><p>AI 对正式知识执行只读检索，不在问答过程中修改知识正文。AI 通过候选知识和人工确认反向赋能正式知识。</p></div></div>
-          <div class="rule"><div class="rn">05</div><div><h5>自动反馈只能改元数据</h5><p>引用次数、最近使用、有用性评分、回溯表现可自动更新，用于改进排序。但不得自动改写知识正文、个人立场或验证结论。</p></div></div>
-          <div class="rule"><div class="rn">06</div><div><h5>三类来源永远分层</h5><p>个人知识、网络资料、AI 推断在任何回答中都必须明确标注、分层展示。每条引用都能回溯到原始资料或已确认知识单元。</p></div></div>
-          <div class="rule"><div class="rn">07</div><div><h5>所有私人数据从模型层绑定所有者</h5><p>每张私人数据表含 owner_id，服务端从会话取用户 ID。权限过滤发生在数据库查询和向量召回之前，禁止先召回再过滤。</p></div></div>
-          <div class="rule"><div class="rn">08</div><div><h5>认知更新创建新版本，旧版本不可覆盖</h5><p>每次更新保存变化原因、时间和操作者。向量索引是可重建派生数据，原始资料与正式知识是不可替代数据，优先恢复。</p></div></div>
-        </div>
+        <button class="btn btn-primary" onclick="openAddRuleModal()" style="margin-bottom:16px">+ 添加个人规则</button>
+        <div class="rules-list stagger" id="rulesList"></div>
       </div>
     </section>
 
@@ -1591,6 +1612,101 @@ body::after{
   </div>
 </div>
 
+<!-- ====== 知识中心 · 编辑/新增条目 Modal ====== -->
+<div class="modal-overlay" id="kcEditModal">
+  <div class="modal" style="width:640px">
+    <div class="modal-head">
+      <h2 id="kcEditTitle">编辑资料</h2>
+      <div class="modal-close" onclick="closeModal('kcEditModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body" id="kcEditBody">
+      <div class="kc-edit-section">
+        <label>标题</label>
+        <input type="text" id="kcEditTitleInput" placeholder="输入标题">
+      </div>
+      <div class="kc-edit-section">
+        <label>内容 / 摘要</label>
+        <textarea id="kcEditContentInput" placeholder="输入内容……"></textarea>
+      </div>
+      <div class="kc-edit-grid">
+        <div class="kc-edit-section">
+          <label>领域</label>
+          <select id="kcEditDomainInput"></select>
+        </div>
+        <div class="kc-edit-section">
+          <label>类型 / 标签</label>
+          <select id="kcEditTagInput"></select>
+        </div>
+      </div>
+      <div class="kc-edit-section" id="kcEditMetaSection">
+        <label>元信息</label>
+        <div class="d-meta" id="kcEditMeta"></div>
+      </div>
+      <div class="kc-edit-section" id="kcEditRelSection">
+        <label>关联</label>
+        <div class="rel-grid" id="kcEditRel"></div>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="deleteKcItem()" id="kcEditDeleteBtn">删除</button>
+      <button class="btn btn-ghost" onclick="closeModal('kcEditModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveKcEdit()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== 个人规则 · 添加 Modal ====== -->
+<div class="modal-overlay" id="addRuleModal">
+  <div class="modal" style="width:520px">
+    <div class="modal-head">
+      <h2>添加个人规则</h2>
+      <div class="modal-close" onclick="closeModal('addRuleModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body">
+      <div class="set-field">
+        <label>规则标题</label>
+        <input type="text" id="ruleTitleInput" placeholder="例如：AI 不得替我下结论">
+      </div>
+      <div class="set-field">
+        <label>规则说明</label>
+        <textarea id="ruleBodyInput" placeholder="详细描述这条规则约束 AI 的哪些行为……" style="min-height:120px"></textarea>
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('addRuleModal')">取消</button>
+      <button class="btn btn-primary" onclick="saveRule()">保存规则</button>
+    </div>
+  </div>
+</div>
+
+<!-- ====== SOP 生成器 · 主题 + 推荐 + 复选 Modal ====== -->
+<div class="modal-overlay" id="sopBuilderModal">
+  <div class="modal" style="width:680px">
+    <div class="modal-head">
+      <h2>整理为手册 / SOP</h2>
+      <div class="modal-close" onclick="closeModal('sopBuilderModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></div>
+    </div>
+    <div class="modal-body">
+      <div class="kc-edit-section">
+        <label>第一步：输入 SOP 主题（系统会据此推荐相关知识）</label>
+        <input type="text" id="sopBuilderTheme" placeholder="例如：新号起号 30 天 SOP、每日知识整理流程、AI 脚本生成 SOP" oninput="recommendForSop()">
+      </div>
+      <div class="kc-edit-section" style="max-height:320px;overflow-y:auto">
+        <label>第二步：勾选要纳入手册的条目 <span id="sopBuilderCount" style="font-size:11px;color:var(--text-faint)">已选 0 条</span></label>
+        <div id="sopBuilderList"><div style="font-size:13px;color:var(--text-faint);padding:12px 0">先输入主题，系统会从原始资料和知识单元中推荐相关内容。</div></div>
+      </div>
+      <div class="kc-edit-section">
+        <label>第三步：预览 / 编辑手册标题</label>
+        <input type="text" id="sopBuilderTitle" placeholder="生成的手册标题">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal('sopBuilderModal')">取消</button>
+      <button class="btn btn-primary" onclick="generateSopFromSelection()">一键生成手册</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg><span id="toastTxt">操作完成</span></div>
 
 <script>
@@ -1741,19 +1857,36 @@ function resetConfirm(){
   }
 }
 
+/* ====== 登出前清理：清空内存态 + 全部本地数据键，杜绝跨账号串号 ====== */
+function clearAllCloudLocalData(){
+  // ① 清空内存中的业务数据对象（避免下一账号登录后内存残留上个账号内容）
+  try{
+    if(kcData&&typeof kcData==='object'){kcData.raw=[];kcData.unit=[];kcData.output=[];}
+    if(Array.isArray(inboxData)){inboxData.length=0;}
+    if(Array.isArray(projData)){projData.length=0;}
+    if(recallLog&&typeof recallLog==='object'){Object.keys(recallLog).forEach(k=>delete recallLog[k]);}
+  }catch(e){}
+  // ② 清空全部 zhiyuan_* 本地键（含 AI 设置、离线队列、同步基线等）
+  try{
+    const toRemove=[];
+    for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k&&k.indexOf('zhiyuan_')===0)toRemove.push(k);}
+    toRemove.forEach(k=>{try{localStorage.removeItem(k);}catch(e){}});
+  }catch(e){}
+}
+
 /* ====== 登出 ====== */
 async function doLogout(){
   if(cloudMode && sb){
-    // 退出前清理同步状态：避免切换账号后，把上个账号残留的本地数据推给新账号
+    // 退出前清理同步状态与全部本地数据：避免切换账号后，把上个账号残留的本地数据推给新账号（P0-3 跨账号串号）
     try{
       Object.keys(_pushTimers).forEach(k=>clearTimeout(_pushTimers[k]));
       _pushTimers={};
-      localStorage.removeItem(SYNC_META_KEY);
-      syncState='local';
     }catch(e){}
-    await sb.auth.signOut();
-    localStorage.removeItem(SB_SESSION_KEY);
+    try{await sb.auth.signOut();}catch(e){}
+    clearAllCloudLocalData();   // 清空内存态 + 全部 zhiyuan_* 本地键
     currentUser=null;
+    syncState='local';
+    setSyncState&&setSyncState('local');
   }else{
     sessionStorage.removeItem(SESSION_KEY);
   }
@@ -1918,7 +2051,11 @@ function getSyncDomains(){
     recall:{ls:'zhiyuan_recall_v1',label:'回溯日志',
       read:()=>recallLog,
       write:v=>{if(v&&typeof v==='object'){recallLog=v;return true;}return false;},
-      merge:(cloud,baseTs)=>{const r=mergeRecallLogs(recallLog,cloud||{},baseTs||0);recallLog=r.merged;return r.overwritten;}}
+      merge:(cloud,baseTs)=>{const r=mergeRecallLogs(recallLog,cloud||{},baseTs||0);recallLog=r.merged;return r.overwritten;}},
+    rules:{ls:'zhiyuan_rules_v1',label:'个人规则',
+      read:()=>rulesData,
+      write:v=>{if(Array.isArray(v)){rulesData=v;return true;}return false;},
+      merge:(cloud,baseTs)=>{const r=mergeArraysById(rulesData,cloud||[],baseTs||0);rulesData=r.merged;return r.overwritten;}}
   };
 }
 
@@ -2108,9 +2245,19 @@ async function syncPullForce(){
 /* ====== 数据层：获取记录 ====== */
 async function getRecords(){
   if(cloudMode && sb && currentUser){
-    const {data,error}=await sb.from('records').select('*').order('ts',{ascending:false});
-    if(error){console.warn('Fetch error',error);return[];}
-    return data||[];
+    try{
+      const {data,error}=await sb.from('records').select('*').order('ts',{ascending:false});
+      if(error)throw error;
+      const cloud=Array.isArray(data)?data:[];
+      // 合并本机尚未同步的速记（loc_ 前缀），保证云端不可用时界面不丢内容
+      let loc=[];
+      try{loc=(JSON.parse(localStorage.getItem(DATA_KEY)||'{"records":[]}').records||[]).filter(r=>String(r.id).indexOf('loc_')===0);}catch(e){}
+      const seen=new Set(cloud.map(c=>String(c.id)));
+      return cloud.concat(loc.filter(l=>!seen.has(String(l.id))));
+    }catch(e){
+      // 云端读不到时，退回展示本机全部速记
+      try{return JSON.parse(localStorage.getItem(DATA_KEY)||'{"records":[]}').records||[];}catch(e){return[];}
+    }
   }else{
     return JSON.parse(localStorage.getItem(DATA_KEY)||'{"records":[]}').records||[];
   }
@@ -2120,15 +2267,39 @@ async function getRecords(){
 async function addRecord(type,content,domain){
   const ts=new Date().toISOString();
   if(cloudMode && sb && currentUser){
+    // 本地优先：先把记录写进本机，保证云端写入失败时界面不丢失内容（P0-1 防凭空消失）
+    const locId='loc_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
+    const rec={id:locId,type,content,ts,domain:domain||null,_local:true};
+    try{
+      const d=JSON.parse(localStorage.getItem(DATA_KEY)||'{"records":[]}');
+      d.records.unshift(rec);
+      localStorage.setItem(DATA_KEY,JSON.stringify(d));
+    }catch(e){}
     try{
       const {data,error}=await sb.from('records').insert([
         {type,content,ts,user_id:currentUser.id,domain:domain||null}
       ]).select();
       if(error)throw error;
+      // 用云端返回的真实 id 回填本地记录
+      const saved=(data&&data[0])||null;
+      if(saved){
+        try{
+          const dd=JSON.parse(localStorage.getItem(DATA_KEY)||'{"records":[]}');
+          const i=dd.records.findIndex(r=>r.id===locId);
+          if(i>=0){dd.records[i]={id:saved.id,type:saved.type,content:saved.content,ts:saved.ts,domain:saved.domain,user_id:currentUser.id};localStorage.setItem(DATA_KEY,JSON.stringify(dd));}
+        }catch(e){}
+      }
+      setSyncState('synced');
     }catch(e){
-      // 断网：暂存到离线速记队列，联网后由 flushOfflineRecords 自动补推
-      enqueueOfflineRecord({type,content,ts,domain:domain||null});
-      toast('当前离线 · 速记已暂存本机，联网后自动同步');
+      // 失败处理：区分「表结构缺失」与「网络/离线」，并保留本机记录
+      const msg=String((e&&e.message)||'');
+      const schemaErr=e&&(e.code==='42703'||e.code==='42P01'||msg.indexOf('user_state')>=0||msg.indexOf('domain')>=0||msg.indexOf('does not exist')>=0);
+      if(schemaErr){
+        toast('云端表结构不完整 · 请在 Supabase 执行 supabase-schema.sql（含 records.domain 列）');
+      }else{
+        toast('云端暂不可用 · 速记已保存在本机，联网后自动同步');
+        syncRecords();   // 立即重试（失败则保留 loc_ 记录，待下次同步补推）
+      }
     }
     await renderRecords();
   }else{
@@ -2155,7 +2326,10 @@ async function syncRecords(){
       const rows=localOnly.map(it=>({type:it.type,content:it.content,ts:new Date(it.ts).toISOString(),user_id:currentUser.id,domain:it.domain||null}));
       const {data:ins,error:e2}=await sb.from('records').insert(rows).select();
       if(e2)throw e2;
-      const byTs=new Map((ins||[]).map(x=>[x.ts,x]));
+      // 关键修复（P0-2）：PostgREST 返回的 timestamptz 为 "+00:00" 格式，
+      // 而 new Date(l.ts).toISOString() 是 "Z" 格式，二者字符串不等 → id 永不回填 → 每次同步重复插入。
+      // 统一用 new Date(x.ts).toISOString() 规范化两侧时间戳，回填云端 id，保证幂等。
+      const byTs=new Map((ins||[]).map(x=>[new Date(x.ts).toISOString(),x]));
       localMerged=local.map(l=>{const m=byTs.get(new Date(l.ts).toISOString());return m?{id:m.id,type:m.type,content:m.content,ts:m.ts,domain:m.domain}:l;});
     }
     // 合并远端条目
@@ -2269,7 +2443,8 @@ function go(v){
   window.scrollTo({top:0,behavior:'smooth'});
   if(v==='ai'){setTimeout(()=>{const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;updateModelDisplay();},100);}
   if(v==='inbox'){setTimeout(()=>{migrateInboxTags();updateInboxStats();renderInboxTabs();renderInboxList();},50);}
-  if(v==='knowledge'){setTimeout(async()=>{await syncRecordsToKc();if(kcData.raw.length===0)initKcData();migrateKcTags();updateKcCounts();renderKcSubTabs();renderKcTagTabs();renderKcList();renderKcDetail();},50);}
+  if(v==='knowledge'){setTimeout(async()=>{await syncRecordsToKc();if(kcData.raw.length===0)initKcData();migrateKcTags();updateKcCounts();renderKcSubTabs();renderKcTagTabs();renderKcList();},50);}
+  if(v==='rules'){renderRulesList();}
   if(v==='recall'){setTimeout(()=>{renderRecallCards();renderWeeklyTopics();},50);}
   if(v==='home'){setTimeout(()=>{renderHomeRecall();},50);}
   if(v==='project'){setTimeout(()=>{if(!window._projInited)initProjectData();renderProjectList();},50);}
@@ -2332,6 +2507,81 @@ let kcSelectedId=null;
 
 /* ====== 知识中心数据 ====== */
 let kcData={raw:[],unit:[],output:[]};
+
+/* ====== 个人规则数据 ====== */
+const RULES_KEY='zhiyuan_rules_v1';
+let rulesData=[];
+const DEFAULT_RULES=[
+  {id:'R-001',title:'个人知识体系是核心，AI 是辅助能力层',body:'AI 只负责资料加工、知识检索、实时搜索、内容分析与知识回溯。系统主体始终是用户本人的知识体系。'},
+  {id:'R-002',title:'AI 不得冒充用户观点',body:'未经用户确认，AI 不得将外部内容或模型推断冒充为用户本人的观点。网络资料不能自动升级为个人观点。'},
+  {id:'R-003',title:'自动化默认停在待整理箱',body:'所有 AI 摘要、候选知识、项目结果先入待整理箱。只有用户确认、编辑或"保存为个人知识"后，内容才写入正式知识。'},
+  {id:'R-004',title:'正式知识只读赋能 AI',body:'AI 对正式知识执行只读检索，不在问答过程中修改知识正文。AI 通过候选知识和人工确认反向赋能正式知识。'},
+  {id:'R-005',title:'自动反馈只能改元数据',body:'引用次数、最近使用、有用性评分、回溯表现可自动更新，用于改进排序。但不得自动改写知识正文、个人立场或验证结论。'},
+  {id:'R-006',title:'三类来源永远分层',body:'个人知识、网络资料、AI 推断在任何回答中都必须明确标注、分层展示。每条引用都能回溯到原始资料或已确认知识单元。'},
+  {id:'R-007',title:'所有私人数据从模型层绑定所有者',body:'每张私人数据表含 owner_id，服务端从会话取用户 ID。权限过滤发生在数据库查询和向量召回之前，禁止先召回再过滤。'},
+  {id:'R-008',title:'认知更新创建新版本，旧版本不可覆盖',body:'每次更新保存变化原因、时间和操作者。向量索引是可重建派生数据，原始资料与正式知识是不可替代数据，优先恢复。'}
+];
+
+function loadRulesData(){
+  try{
+    const s=localStorage.getItem(RULES_KEY);
+    if(s){
+      const parsed=JSON.parse(s);
+      if(Array.isArray(parsed)&&parsed.length>0){rulesData=parsed;return true;}
+    }
+  }catch(e){}
+  rulesData=DEFAULT_RULES.map((r,i)=>({...r,id:'R-'+String(i+1).padStart(3,'0')}));
+  return false;
+}
+
+function saveRulesData(){
+  try{localStorage.setItem(RULES_KEY,JSON.stringify(rulesData));}catch(e){}
+  try{markLocalChange('rules');}catch(e){}
+}
+
+function renderRulesList(){
+  const container=document.getElementById('rulesList');
+  if(!container)return;
+  if(!rulesData.length)loadRulesData();
+  container.innerHTML=rulesData.map((r,idx)=>
+    '<div class="rule" data-id="'+r.id+'">'+
+      '<div class="rn">'+String(idx+1).padStart(2,'0')+'</div>'+
+      '<div style="flex:1">'+
+        '<h5>'+escHtml(r.title)+'</h5>'+
+        '<p>'+escHtml(r.body)+'</p>'+
+      '</div>'+
+      '<div class="rule-actions">'+
+        '<button class="btn btn-ghost" onclick="openEditRuleModal(\''+r.id+'\')">编辑</button>'+
+        '<button class="btn btn-ghost" onclick="deleteRule(\''+r.id+'\')">删除</button>'+
+      '</div>'+
+    '</div>'
+  ).join('');
+}
+
+let ruleEditId=null;
+function openAddRuleModal(){ruleEditId=null;document.getElementById('ruleTitleInput').value='';document.getElementById('ruleBodyInput').value='';openModal('addRuleModal');}
+function openEditRuleModal(id){
+  const r=rulesData.find(x=>x.id===id);if(!r)return;
+  ruleEditId=id;document.getElementById('ruleTitleInput').value=r.title;document.getElementById('ruleBodyInput').value=r.body;openModal('addRuleModal');
+}
+function saveRule(){
+  const title=document.getElementById('ruleTitleInput').value.trim();
+  const body=document.getElementById('ruleBodyInput').value.trim();
+  if(!title||!body){toast('请填写标题和说明');return;}
+  if(ruleEditId){
+    const r=rulesData.find(x=>x.id===ruleEditId);
+    if(r){r.title=title;r.body=body;}
+  }else{
+    const id='R-'+String(rulesData.length+1).padStart(3,'0');
+    rulesData.push({id,title,body});
+  }
+  saveRulesData();renderRulesList();closeModal('addRuleModal');toast('规则已保存');
+}
+function deleteRule(id){
+  if(!confirm('确定删除这条个人规则？'))return;
+  rulesData=rulesData.filter(r=>r.id!==id);
+  saveRulesData();renderRulesList();toast('已删除');
+}
 
 function initKcData(){
   const now=Date.now();
@@ -2727,7 +2977,7 @@ function renderKcList(){
   titleEl.innerHTML=titleMap[kcLayer]+' <span class="count">'+items.length+' 条</span> <span style="font-size:12px;color:var(--text-faint);font-weight:400">'+layerDesc[kcLayer]+'</span>';
   // 空状态
   if(items.length===0){
-    list.innerHTML='<div class="ku-list"><div class="kc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v16l-8-3-8 3V5z"/></svg><div>当前筛选下暂无内容</div></div></div>';
+    list.innerHTML='<div class="ku-list" style="grid-template-columns:1fr"><div class="kc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5a2 2 0 012-2h12a2 2 0 012 2v16l-8-3-8 3V5z"/></svg><div>当前筛选下暂无内容</div></div></div>';
     return;
   }
   // 渲染
@@ -2738,30 +2988,29 @@ function renderKcItem(i){
   const dt=new Date(i.ts);
   const ds=dt.toLocaleString('zh-CN',{month:'2-digit',day:'2-digit'});
   const color=KC_DOMAIN_COLORS[i.domain]||'#9AA3AF';
-  const sel=kcSelectedId===i.id?'sel':'';
   if(kcLayer==='raw'){
     const srcTag=i.sourceType==='网页收集'?'tag-web':i.sourceType==='本地文档'?'tag-gold':i.sourceType==='项目数据'?'tag-personal':'tag-soft';
-    return '<div class="src-card '+sel+'" onclick="selKcItem(\''+i.id+'\')">'+
-      '<div class="src-card-top"><span class="tag '+srcTag+'" style="padding:1px 6px">'+i.sourceType+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+i.domain+'</span></div>'+
+    return '<div class="src-card" onclick="openKcEditModal(\''+i.id+'\')">'+
+      '<div class="src-card-top"><span class="tag '+srcTag+'" style="padding:1px 6px">'+escHtml(i.sourceType)+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+escHtml(i.domain)+'</span></div>'+
       '<h5>'+escHtml(i.title)+'</h5>'+
       '<p>'+escHtml(i.summary)+'</p>'+
       '<div class="src-card-foot"><span class="cite-c" style="font-family:var(--mono)">'+i.id+'</span><span>·</span><span>引用 '+i.citeCount+' 次</span><span>·</span><span>'+ds+'</span></div>'+
     '</div>';
   }else if(kcLayer==='output'){
     const oTag=i.sourceType==='SOP'?'tag-gold':'tag-personal';
-    return '<div class="out-card '+sel+'" onclick="selKcItem(\''+i.id+'\')">'+
-      '<div class="out-card-top"><span class="tag '+oTag+'" style="padding:1px 6px">'+i.sourceType+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+i.domain+'</span>'+(i.steps>0?'<span class="tag tag-soft" style="padding:1px 6px">'+i.steps+' 步</span>':'')+'</div>'+
+    return '<div class="out-card" onclick="openKcEditModal(\''+i.id+'\')">'+
+      '<div class="out-card-top"><span class="tag '+oTag+'" style="padding:1px 6px">'+escHtml(i.sourceType)+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+escHtml(i.domain)+'</span>'+(i.steps>0?'<span class="tag tag-soft" style="padding:1px 6px">'+i.steps+' 步</span>':'')+'</div>'+
       '<h5>'+escHtml(i.title)+'</h5>'+
       '<p>'+escHtml(i.summary)+'</p>'+
-      '<div class="out-card-foot"><span class="cite-c" style="font-family:var(--mono)">'+i.id+'</span><span>·</span><span>'+i.status+'</span><span>·</span><span>'+ds+'</span></div>'+
+      '<div class="out-card-foot"><span class="cite-c" style="font-family:var(--mono)">'+i.id+'</span><span>·</span><span>'+escHtml(i.status)+'</span><span>·</span><span>'+ds+'</span></div>'+
     '</div>';
   }else{
     const tagClass=i.tag==='核心知识'?'tag-gold':i.tag==='个人观点'||i.tag==='实践经验'||i.tag==='方法/原则'||i.tag==='案例'?'tag-personal':i.tag==='外部事实'?'tag-web':'tag-soft';
-    return '<div class="ku '+sel+'" onclick="selKcItem(\''+i.id+'\')">'+
-      '<div class="ku-top"><span class="tag '+tagClass+'" style="padding:1px 6px">'+i.tag+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+i.domain+'</span></div>'+
+    return '<div class="ku" onclick="openKcEditModal(\''+i.id+'\')">'+
+      '<div class="ku-top"><span class="tag '+tagClass+'" style="padding:1px 6px">'+escHtml(i.tag)+'</span><span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+escHtml(i.domain)+'</span></div>'+
       '<h5>'+escHtml(i.title)+'</h5>'+
       '<p>'+escHtml(i.summary)+'</p>'+
-      '<div class="ku-foot"><span class="cite-c">'+i.id+'</span><span>·</span><span>引用 '+i.citeCount+' 次</span><span>·</span><span>'+(i.status||'')+'</span><span>·</span><span>'+ds+'</span></div>'+
+      '<div class="ku-foot"><span class="cite-c">'+i.id+'</span><span>·</span><span>引用 '+i.citeCount+' 次</span><span>·</span><span>'+escHtml(i.status||'')+'</span><span>·</span><span>'+ds+'</span></div>'+
     '</div>';
   }
 }
@@ -2771,15 +3020,14 @@ function escHtml(s){return (s||'').replace(/</g,'&lt;');}
 /* ====== 知识中心：选中条目 → 渲染详情 ====== */
 function selKcItem(id){
   kcSelectedId=id;
-  // 更新选中高亮
   document.querySelectorAll('#kcList .ku, #kcList .src-card, #kcList .out-card').forEach(k=>k.classList.remove('sel'));
   const el=document.querySelector('#kcList [onclick*="'+id+'"]');
   if(el)el.classList.add('sel');
-  renderKcDetail();
 }
 
 function renderKcDetail(){
   const panel=document.getElementById('kcDetail');
+  if(!panel)return;
   if(!kcSelectedId){
     panel.innerHTML='<div class="kc-empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg><div>选择左侧条目查看详情</div></div>';
     return;
@@ -2853,6 +3101,222 @@ function renderKcDetail(){
       '</div>'+
       '<div class="d-actions"><button class="btn btn-primary" onclick="openSopDetail(\''+item.id+'\')">📖 查看完整'+escHtml(item.sourceType)+'</button></div>';
   }
+}
+
+/* ====== 知识中心：编辑弹窗 ====== */
+let kcEditCurrentId=null;
+let kcEditCurrentLayer='raw';
+
+function openKcEditModal(id){
+  kcEditCurrentId=id;
+  kcEditCurrentLayer=kcLayer;
+  const item=kcData[kcLayer].find(i=>i.id===id);
+  if(!item)return;
+  document.getElementById('kcEditTitle').textContent=(kcLayer==='raw'?'编辑原始资料':kcLayer==='unit'?'编辑知识单元':'编辑成果');
+  document.getElementById('kcEditTitleInput').value=item.title||'';
+  const content=item.body?stripHtml(item.body):item.summary||'';
+  document.getElementById('kcEditContentInput').value=content;
+  // 领域下拉
+  const domainSel=document.getElementById('kcEditDomainInput');
+  domainSel.innerHTML=KC_DOMAINS.map(d=>'<option value="'+d+'" '+(d===item.domain?'selected':'')+'>'+d+'</option>').join('');
+  // 标签下拉
+  const tagSel=document.getElementById('kcEditTagInput');
+  const tagList=kcLayer==='raw'?['灵感','观察','复盘','经验','待验证']:kcLayer==='unit'?['灵感','观察','复盘','经验','待验证','核心知识','个人观点','外部事实','方法/原则','案例','实践经验']:["SOP","复盘报告"];
+  tagSel.innerHTML=tagList.map(t=>'<option value="'+t+'" '+(t===item.tag||t===item.recordType?'selected':'')+'>'+t+'</option>').join('');
+  // 元信息
+  const metaSec=document.getElementById('kcEditMetaSection');
+  const metaEl=document.getElementById('kcEditMeta');
+  metaEl.innerHTML='';
+  if(kcLayer==='raw'){
+    metaEl.innerHTML='<div class="d-meta-cell"><label>编号</label><span>'+item.id+'</span></div>'+
+      '<div class="d-meta-cell"><label>来源类型</label><span>'+escHtml(item.sourceType)+'</span></div>'+
+      '<div class="d-meta-cell"><label>来源地址</label><span>'+escHtml(item.sourceUrl||'—')+'</span></div>'+
+      '<div class="d-meta-cell"><label>引用次数</label><span>'+item.citeCount+' 次</span></div>';
+    metaSec.style.display='block';
+  }else if(kcLayer==='unit'){
+    metaEl.innerHTML='<div class="d-meta-cell"><label>编号</label><span>'+item.id+'</span></div>'+
+      '<div class="d-meta-cell"><label>来源</label><span>'+escHtml(item.sourceRef||'—')+' '+escHtml(item.sourceType)+'</span></div>'+
+      '<div class="d-meta-cell"><label>状态</label><span>'+escHtml(item.status||'—')+'</span></div>'+
+      '<div class="d-meta-cell"><label>引用次数</label><span>'+item.citeCount+' 次</span></div>';
+    metaSec.style.display='block';
+  }else{
+    metaEl.innerHTML='<div class="d-meta-cell"><label>编号</label><span>'+item.id+'</span></div>'+
+      '<div class="d-meta-cell"><label>类型</label><span>'+escHtml(item.sourceType)+'</span></div>'+
+      '<div class="d-meta-cell"><label>来源知识</label><span>'+escHtml(item.sourceRef||'—')+'</span></div>'+
+      '<div class="d-meta-cell"><label>引用次数</label><span>'+item.citeCount+' 次</span></div>';
+    metaSec.style.display='block';
+  }
+  // 关联
+  const relSec=document.getElementById('kcEditRelSection');
+  const relEl=document.getElementById('kcEditRel');
+  relEl.innerHTML='';
+  if(kcLayer==='raw'){
+    const units=kcData.unit.filter(u=>u.sourceRef===item.id);
+    if(units.length){
+      relEl.innerHTML=units.map(u=>'<div class="rel" onclick="closeModal(\'kcEditModal\');kcTab(document.querySelectorAll(\'.kc-tab\')[1],\'unit\');setTimeout(()=>openKcEditModal(\''+u.id+'\'),150)"><span class="r-type">'+u.id+'</span><b>'+escHtml(u.title)+'</b></div>').join('');
+    }else{relEl.innerHTML='<div style="font-size:12px;color:var(--text-faint);padding:8px 0">暂无关联知识单元</div>';}
+    relSec.style.display='block';
+  }else if(kcLayer==='unit'){
+    const raw=kcData.raw.find(r=>r.id===item.sourceRef);
+    relEl.innerHTML=(raw?'<div class="rel" onclick="closeModal(\'kcEditModal\');kcTab(document.querySelectorAll(\'.kc-tab\')[0],\'raw\');setTimeout(()=>openKcEditModal(\''+raw.id+'\'),150)"><span class="r-type">来源</span><b>'+escHtml(raw.title)+'</b></div>':'')+
+      kcData.output.filter(o=>o.sourceRef===item.id).map(o=>'<div class="rel" onclick="closeModal(\'kcEditModal\');kcTab(document.querySelectorAll(\'.kc-tab\')[2],\'output\');setTimeout(()=>openKcEditModal(\''+o.id+'\'),150)"><span class="r-type">成果</span><b>'+escHtml(o.title)+'</b></div>').join('');
+    relSec.style.display='block';
+  }else{
+    const unit=kcData.unit.find(u=>u.id===item.sourceRef);
+    relEl.innerHTML=(unit?'<div class="rel" onclick="closeModal(\'kcEditModal\');kcTab(document.querySelectorAll(\'.kc-tab\')[1],\'unit\');setTimeout(()=>openKcEditModal(\''+unit.id+'\'),150)"><span class="r-type">来源</span><b>'+escHtml(unit.title)+'</b></div>':'<div style="font-size:12px;color:var(--text-faint);padding:8px 0">暂无关联知识单元</div>');
+    relSec.style.display='block';
+  }
+  openModal('kcEditModal');
+}
+
+function stripHtml(html){return (html||'').replace(/<[^>]+>/g,'').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');}
+
+function saveKcEdit(){
+  if(!kcEditCurrentId){
+    saveKcAddFromModal();
+    return;
+  }
+  const item=kcData[kcEditCurrentLayer].find(i=>i.id===kcEditCurrentId);
+  if(!item)return;
+  item.title=document.getElementById('kcEditTitleInput').value.trim()||item.title;
+  const content=document.getElementById('kcEditContentInput').value.trim();
+  if(kcEditCurrentLayer==='unit'){
+    item.body='<p>'+escHtml(content).replace(/\n/g,'</p><p>')+'</p>';
+  }else{
+    item.summary=content;
+  }
+  item.domain=document.getElementById('kcEditDomainInput').value;
+  const tag=document.getElementById('kcEditTagInput').value;
+  item.tag=tag;
+  if(item.recordType!==undefined)item.recordType=tag;
+  saveKcData();
+  renderKcList();
+  closeModal('kcEditModal');
+  toast('已保存');
+}
+
+function deleteKcItem(){
+  if(!kcEditCurrentId)return;
+  if(!confirm('确定删除这条'+(kcEditCurrentLayer==='raw'?'原始资料':kcEditCurrentLayer==='unit'?'知识单元':'成果')+'？'))return;
+  kcData[kcEditCurrentLayer]=kcData[kcEditCurrentLayer].filter(i=>i.id!==kcEditCurrentId);
+  saveKcData();
+  updateKcCounts();
+  renderKcList();
+  closeModal('kcEditModal');
+  toast('已删除');
+}
+
+function openKcAddModal(){
+  kcEditCurrentId=null;
+  kcEditCurrentLayer='raw';
+  document.getElementById('kcEditTitle').textContent='新增原始资料';
+  document.getElementById('kcEditTitleInput').value='';
+  document.getElementById('kcEditContentInput').value='';
+  const domainSel=document.getElementById('kcEditDomainInput');
+  domainSel.innerHTML=KC_DOMAINS.map(d=>'<option value="'+d+'">'+d+'</option>').join('');
+  const tagSel=document.getElementById('kcEditTagInput');
+  tagSel.innerHTML=['灵感','观察','复盘','经验','待验证'].map(t=>'<option value="'+t+'">'+t+'</option>').join('');
+  document.getElementById('kcEditMetaSection').style.display='none';
+  document.getElementById('kcEditRelSection').style.display='none';
+  openModal('kcEditModal');
+}
+
+function saveKcAddFromModal(){
+  const title=document.getElementById('kcEditTitleInput').value.trim();
+  const content=document.getElementById('kcEditContentInput').value.trim();
+  if(!title&&!content){toast('请输入标题或内容');return;}
+  const id='RAW-U-'+Date.now();
+  const domain=document.getElementById('kcEditDomainInput').value;
+  const tag=document.getElementById('kcEditTagInput').value;
+  kcData.raw.unshift({
+    id:id,domain:domain,title:title||content.slice(0,50),
+    summary:content||title,
+    sourceType:'手动录入',sourceUrl:'',ts:Date.now(),citeCount:0,tag:tag
+  });
+  saveKcData();updateKcCounts();renderKcList();closeModal('kcEditModal');toast('已新增原始资料');
+}
+
+/* ====== SOP 生成器：主题 → 推荐 → 复选 → 生成 ====== */
+let sopBuilderSelection=new Set();
+function openSopBuilder(){
+  document.getElementById('sopBuilderTheme').value='';
+  document.getElementById('sopBuilderTitle').value='';
+  document.getElementById('sopBuilderList').innerHTML='<div style="font-size:13px;color:var(--text-faint);padding:12px 0">先输入主题，系统会从原始资料和知识单元中推荐相关内容。</div>';
+  document.getElementById('sopBuilderCount').textContent='已选 0 条';
+  sopBuilderSelection=new Set();
+  openModal('sopBuilderModal');
+  setTimeout(()=>document.getElementById('sopBuilderTheme').focus(),100);
+}
+
+function recommendForSop(){
+  const theme=document.getElementById('sopBuilderTheme').value.trim().toLowerCase();
+  const container=document.getElementById('sopBuilderList');
+  const titleIn=document.getElementById('sopBuilderTitle');
+  if(!theme){container.innerHTML='<div style="font-size:13px;color:var(--text-faint);padding:12px 0">先输入主题，系统会从原始资料和知识单元中推荐相关内容。</div>';sopBuilderSelection.clear();updateSopCount();return;}
+  if(!titleIn.value.trim())titleIn.value=theme+' SOP';
+  // 按主题关键词匹配 raw + unit
+  const keywords=theme.split(/\s+/).filter(w=>w.length>1);
+  const score=(item)=>{
+    const text=((item.title||'')+' '+(item.summary||'')+' '+(item.body||'')).toLowerCase();
+    return keywords.reduce((sum,k)=>sum+(text.includes(k)?1:0),0)+(item.domain&&theme.includes(item.domain.slice(0,2))?2:0);
+  };
+  let candidates=[
+    ...kcData.raw.map(i=>({...i,layer:'raw'})),
+    ...kcData.unit.map(i=>({...i,layer:'unit'}))
+  ].filter(i=>score(i)>0).sort((a,b)=>score(b)-score(a)).slice(0,12);
+  if(candidates.length===0){
+    container.innerHTML='<div style="font-size:13px;color:var(--text-faint);padding:12px 0">未找到强相关条目。可尝试换几个关键词，或先去知识中心录入相关资料。</div>';
+    return;
+  }
+  container.innerHTML=candidates.map(i=>{
+    const checked=sopBuilderSelection.has(i.id)?'checked':'';
+    const selected=sopBuilderSelection.has(i.id)?'selected':'';
+    const color=KC_DOMAIN_COLORS[i.domain]||'#9AA3AF';
+    return '<div class="kc-sop-rec '+selected+'" onclick="toggleSopSelection(\''+i.id+'\',event)">'+
+      '<input type="checkbox" '+checked+' onclick="event.stopPropagation();toggleSopSelection(\''+i.id+'\',event)">'+
+      '<div style="flex:1;min-width:0">'+
+        '<div class="rec-title">'+escHtml(i.title)+' <span class="cand-type-badge" style="background:'+color+'22;color:'+color+'">'+escHtml(i.domain)+'</span></div>'+
+        '<div class="rec-meta">'+(i.layer==='raw'?'原始资料':'知识单元')+' · '+escHtml(i.tag||i.recordType||'')+' · 引用 '+(i.citeCount||0)+' 次</div>'+
+        '<div class="rec-summary">'+escHtml(i.summary||stripHtml(i.body||''))+'</div>'+
+      '</div>'+
+    '</div>';
+  }).join('');
+}
+
+function toggleSopSelection(id,e){
+  e&&e.stopPropagation&&e.stopPropagation();
+  if(sopBuilderSelection.has(id))sopBuilderSelection.delete(id);else sopBuilderSelection.add(id);
+  recommendForSop();
+  updateSopCount();
+}
+function updateSopCount(){document.getElementById('sopBuilderCount').textContent='已选 '+sopBuilderSelection.size+' 条';}
+
+function generateSopFromSelection(){
+  const theme=document.getElementById('sopBuilderTheme').value.trim();
+  const title=document.getElementById('sopBuilderTitle').value.trim()||(theme+' SOP');
+  if(!theme){toast('请先输入 SOP 主题');return;}
+  const ids=Array.from(sopBuilderSelection);
+  const selected=[
+    ...kcData.raw.filter(i=>ids.includes(i.id)),
+    ...kcData.unit.filter(i=>ids.includes(i.id))
+  ];
+  const domain=selected.length?selected[0].domain:(detectDomain(theme)||'个人成长');
+  // 生成一个简单的 SOP 正文：把选中条目标题作为步骤
+  const steps=selected.length?selected.map((s,idx)=>'## 步骤 '+(idx+1)+'：'+s.title+'\n'+stripHtml(s.summary||s.body||'').slice(0,200)).join('\n\n'):'## 步骤 1\n请基于主题「'+theme+'」补充具体步骤。';
+  const body='<h3>目标</h3><p>'+theme+'</p><h3>适用范围</h3><p>'+domain+'</p><h3>执行步骤</h3><p>'+steps.replace(/\n/g,'</p><p>')+'</p><h3>检查清单</h3><p>□ 已确认所有步骤可执行<br>□ 已标注数据来源</p>';
+  const outId='SOP-U-'+Date.now();
+  kcData.output.unshift({
+    id:outId,domain:domain,title:title,
+    summary:'基于 '+selected.length+' 条知识生成的「'+theme+'」SOP 草稿',
+    sourceType:'SOP',sourceRef:selected.map(s=>s.id).join(',')||'手动生成',
+    ts:Date.now(),citeCount:0,tag:'经验',status:'草稿 · v1',steps:selected.length||1,version:'v1',
+    body:body,meta:{来源:'SOP 生成器 · '+selected.length+' 条知识',状态:'草稿',引用次数:'0 次'}
+  });
+  saveKcData();updateKcCounts();
+  closeModal('sopBuilderModal');
+  kcTab(document.querySelectorAll('.kc-tab')[2],'output');
+  setTimeout(()=>openKcEditModal(outId),150);
+  toast('已生成 SOP 草稿：'+title.slice(0,30));
 }
 function saveCandidate(t){toast('已加入待整理箱 · 待你确认后才写入正式知识');addInboxItem({category:'pending',source:'AI问答',trigger:t,detail:'',ts:Date.now(),recordType:'灵感'});addRecordToKcRaw(t,'灵感');}
 function confirmCand(b){
@@ -3195,6 +3659,9 @@ function openSettings(){
 
 function closeModal(id){
   document.getElementById(id).classList.remove('show');
+}
+function openModal(id){
+  document.getElementById(id).classList.add('show');
 }
 
 function switchProvider(p){
@@ -4794,6 +5261,8 @@ renderHomeRecall(); // 渲染首页回溯条目
 renderRecallCards(); // 渲染回溯页面
 renderWeeklyTopics(); // 渲染本周专题
 initProjectData();
+loadRulesData(); // 加载个人规则
+renderRulesList();
 // 启动初始化结束：之后的保存才算「用户真实变更」，才会打时间戳并同步云端
 _seedingDemo=false;
 initAuth();

@@ -64,8 +64,12 @@ create table if not exists public.records (
   user_id uuid        not null references auth.users(id) on delete cascade,
   type    text        not null default '灵感',
   content text        not null,
-  ts      timestamptz not null default now()
+  ts      timestamptz not null default now(),
+  domain  text                   -- 知识领域（个人成长/短视频运营/AI应用…）；代码写入依赖该列
 );
+
+-- 兼容：已在生产库执行过旧版脚本、缺失 domain 列时，补加该列（幂等）
+alter table public.records add column if not exists domain text;
 
 create index if not exists records_user_ts_idx on public.records (user_id, ts desc);
 
