@@ -1342,6 +1342,11 @@ body::after{
             <b>豆包 (火山方舟)</b><small>字节跳动 · 多模态</small>
           </div>
         </div>
+        <div class="set-field" style="margin-top:12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button type="button" onclick="testConnection()" style="background:var(--gold-dim);color:#1a1206;border:none;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600">测试连接（真实请求一次）</button>
+          <span id="connTestResult" style="font-size:13px"></span>
+        </div>
+        <div class="set-hint" style="margin-top:6px">上方"已连接"只是表示<b>已填 Key</b>，不代表 Key 有效。点「测试连接」会真正调用一次 API，立刻告诉你能否联通。</div>
       </div>
       <div class="set-section" id="deepseekSettings">
         <div class="set-field">
@@ -3615,7 +3620,7 @@ function updateSettingsStatus(){
   const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
   if(hasKey){
     status.className='set-status ok';
-    text.textContent='API 已配置 · '+aiSettings.provider.toUpperCase()+' · AI 功能可用';
+    text.textContent='API Key 已填（未验证）· '+aiSettings.provider.toUpperCase()+' · 点「测试连接」确认';
   }else{
     status.className='set-status warn';
     text.textContent='尚未配置 API Key，AI 暂不可用（请先在设置填写 DeepSeek / 豆包 Key）';
@@ -3628,13 +3633,34 @@ function updateApiStatus(){
   const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
   if(hasKey){
     el.className='api-status on';
-    text.textContent=aiSettings.provider==='deepseek'?'DeepSeek 已连接':'豆包 已连接';
+    text.textContent=aiSettings.provider==='deepseek'?'DeepSeek Key 已填（未验证）':'豆包 Key 已填（未验证）';
   }else{
     el.className='api-status off';
     text.textContent='AI 未配置';
   }
   const wp=document.getElementById('webPlugin');
   if(wp)wp.textContent=aiSettings.tavilyApiKey?'Tavily（已配置·可联网）':'Tavily（未配置）';
+}
+
+// 真正发一次最小请求，验证当前提供商的 Key 是否有效（替换原来“已连接”的假提示）
+async function testConnection(){
+  const res=document.getElementById('connTestResult');
+  if(res)res.innerHTML='<span style="color:var(--text-faint)">测试中…</span>';
+  const hasKey=aiSettings.provider==='deepseek'?aiSettings.dsApiKey:aiSettings.dbApiKey;
+  if(aiSettings.provider==='doubao'&&!aiSettings.dbModel){
+    if(res)res.innerHTML='<span style="color:var(--danger)">请先填写豆包的 Endpoint ID（ep-xxxx）</span>';
+    return;
+  }
+  if(!hasKey){
+    if(res)res.innerHTML='<span style="color:var(--danger)">未填写当前提供商的 API Key</span>';
+    return;
+  }
+  const r=await callAI([{role:'user',content:'ping'}],{stream:false,max_tokens:8,temperature:0});
+  if(r.error){
+    if(res)res.innerHTML='<span style="color:var(--danger)">连接失败：'+escHtml(r.error)+'</span>';
+  }else{
+    if(res)res.innerHTML='<span style="color:#2e9e5b;font-weight:600">连接成功 ✓ 模型已正常响应</span>';
+  }
 }
 
 function updateModelDisplay(){
@@ -3674,6 +3700,24 @@ function switchProvider(p){
 }
 
 /* ====== 统一 AI 调用接口 ====== */
+// 带超时的 fetch：避免请求卡死时无限转圈（原实现无超时，是“一直转圈”的根因）
+function fetchWithTimeout(url,options,timeoutMs){
+  timeoutMs=timeoutMs||30000;
+  return new Promise((resolve,reject)=>{
+    const ctrl=new AbortController();
+    const tid=setTimeout(()=>ctrl.abort(),timeoutMs);
+    options.signal=ctrl.signal;
+    fetch(url,options).then(res=>{clearTimeout(tid);resolve(res);},err=>{
+      clearTimeout(tid);
+      if(err&&err.name==='AbortError'){
+        reject(new Error('请求超时（'+(timeoutMs/1000)+'秒无响应）——可能是网络被拦截、Key 无效触发长时间等待，或服务暂不可用'));
+      }else{
+        reject(err);
+      }
+    });
+  });
+}
+
 async function callAI(messages,opts){
   opts=opts||{};
   if(aiSettings.provider==='deepseek'){
@@ -3695,17 +3739,21 @@ async function callDeepSeek(messages,opts){
       temperature:opts.temperature??0.7,
       max_tokens:opts.max_tokens||2048
     };
-    const res=await fetch('https://api.deepseek.com/v1/chat/completions',{
+    const res=await fetchWithTimeout('https://api.deepseek.com/v1/chat/completions',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
         'Authorization':'Bearer '+aiSettings.dsApiKey
       },
       body:JSON.stringify(body)
-    });
+    },30000);
     if(!res.ok){
       const err=await res.text();
-      return {error:'API 错误 ('+res.status+')：'+err.substring(0,200)};
+      let hint='';
+      if(res.status===401)hint='（Key 无效/过期/复制带空格，请到 platform.deepseek.com 重新生成）';
+      else if(res.status===404)hint='（模型名不存在，请确认模型选择）';
+      else if(res.status===429)hint='（请求过于频繁或额度不足）';
+      return {error:'API 错误 ('+res.status+')：'+err.substring(0,200)+hint};
     }
     if(opts.stream){
       return res;
@@ -3719,7 +3767,7 @@ async function callDeepSeek(messages,opts){
 
 async function callDoubao(messages,opts){
   if(!aiSettings.dbApiKey||!aiSettings.dbModel){
-    return {error:'未配置豆包 API Key 或模型 ID，请点击右上角设置按钮配置'};
+    return {error:'未配置豆包 API Key 或模型 ID（注意：豆包此处必须填 Endpoint ID，形如 ep-xxxx，不是模型名），请点击右上角设置按钮配置'};
   }
   try{
     const body={
@@ -3729,17 +3777,21 @@ async function callDoubao(messages,opts){
       temperature:opts.temperature??0.7,
       max_tokens:opts.max_tokens||2048
     };
-    const res=await fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions',{
+    const res=await fetchWithTimeout('https://ark.cn-beijing.volces.com/api/v3/chat/completions',{
       method:'POST',
       headers:{
         'Content-Type':'application/json',
         'Authorization':'Bearer '+aiSettings.dbApiKey
       },
       body:JSON.stringify(body)
-    });
+    },30000);
     if(!res.ok){
       const err=await res.text();
-      return {error:'API 错误 ('+res.status+')：'+err.substring(0,200)};
+      let hint='';
+      if(res.status===401)hint='（Key 无效/过期，或模型 ID 不是有效的 Endpoint ID）';
+      else if(res.status===400)hint='（模型 ID 错误：豆包此处必须填 Endpoint ID，形如 ep-xxxx，不能填模型名如 doubao-xxx）';
+      else if(res.status===429)hint='（请求过于频繁或额度不足）';
+      return {error:'API 错误 ('+res.status+')：'+err.substring(0,200)+hint};
     }
     if(opts.stream){
       return res;
